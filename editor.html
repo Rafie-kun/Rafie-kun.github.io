@@ -383,14 +383,8 @@ nav {
         <div class="field"><label>PHONE / WHATSAPP</label><input type="text" id="phone" value="+880 1319 343526"></div>
         <div class="field"><label>LINKEDIN URL</label><input type="text" id="linkedin" placeholder="https://linkedin.com/in/..."></div>
       </div>
-      <div class="field-row">
-        <div class="field"><label>X / TWITTER URL</label><input type="text" id="twitter" placeholder="https://x.com/..."></div>
-        <div class="field"><label>INSTAGRAM URL</label><input type="text" id="instagram" placeholder="https://instagram.com/..."></div>
-      </div>
-      <div class="field-row">
-        <div class="field"><label>YOUTUBE URL</label><input type="text" id="youtube" placeholder="https://youtube.com/..."></div>
-        <div class="field"><label>TELEGRAM URL</label><input type="text" id="telegram" placeholder="https://t.me/..."></div>
-      </div>
+
+
       <div class="field"><label>OTHER LINK (optional)</label><input type="text" id="otherLink" placeholder="https://..."></div>
     </div>
   </div>
@@ -721,10 +715,6 @@ function buildHTML() {
   const discord = g('discord') || '';
   const phone = g('phone') || '';
   const linkedin = g('linkedin') || '';
-  const twitter = g('twitter') || '';
-  const instagram = g('instagram') || '';
-  const youtube = g('youtube') || '';
-  const telegram = g('telegram') || '';
   const otherLink = g('otherLink') || '';
 
   const pfpHTML = pfpData
@@ -780,12 +770,9 @@ function buildHTML() {
     discord ? `<a href="https://discord.com/users/${discord}" target="_blank" class="contact-card"><div class="contact-icon">💬</div><div><div class="contact-label">DISCORD</div><div class="contact-value">${discord}</div></div></a>` : '',
     phone ? `<a href="tel:${phone.replace(/\s/g,'')}" class="contact-card"><div class="contact-icon">📱</div><div><div class="contact-label">PHONE / WHATSAPP</div><div class="contact-value">${phone}</div></div></a>` : '',
     linkedin ? `<a href="${linkedin}" target="_blank" class="contact-card"><div class="contact-icon">🔗</div><div><div class="contact-label">LINKEDIN</div><div class="contact-value">View Profile</div></div></a>` : '',
-    twitter ? `<a href="${twitter}" target="_blank" class="contact-card"><div class="contact-icon">𝕏</div><div><div class="contact-label">X / TWITTER</div><div class="contact-value">View Profile</div></div></a>` : '',
-    instagram ? `<a href="${instagram}" target="_blank" class="contact-card"><div class="contact-icon">📸</div><div><div class="contact-label">INSTAGRAM</div><div class="contact-value">View Profile</div></div></a>` : '',
-    youtube ? `<a href="${youtube}" target="_blank" class="contact-card"><div class="contact-icon">▶</div><div><div class="contact-label">YOUTUBE</div><div class="contact-value">Watch Channel</div></div></a>` : '',
-    telegram ? `<a href="${telegram}" target="_blank" class="contact-card"><div class="contact-icon">✈</div><div><div class="contact-label">TELEGRAM</div><div class="contact-value">Open Chat</div></div></a>` : '',
     otherLink ? `<a href="${otherLink}" target="_blank" class="contact-card"><div class="contact-icon">🌐</div><div><div class="contact-label">WEBSITE</div><div class="contact-value">${otherLink}</div></div></a>` : ''
-  ].filter(Boolean).join('');  return `<!DOCTYPE html>
+  ].filter(Boolean).join('');
+  return `<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -1037,4 +1024,6 @@ document.addEventListener('click',e=>{if(e.target.closest('a,button'))return;for
 </script>
 </body>
 </html>
+
+
 
