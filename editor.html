@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -383,8 +383,6 @@ nav {
         <div class="field"><label>PHONE / WHATSAPP</label><input type="text" id="phone" value="+880 1319 343526"></div>
         <div class="field"><label>LINKEDIN URL</label><input type="text" id="linkedin" placeholder="https://linkedin.com/in/..."></div>
       </div>
-
-
       <div class="field"><label>OTHER LINK (optional)</label><input type="text" id="otherLink" placeholder="https://..."></div>
     </div>
   </div>
@@ -772,6 +770,7 @@ function buildHTML() {
     linkedin ? `<a href="${linkedin}" target="_blank" class="contact-card"><div class="contact-icon">🔗</div><div><div class="contact-label">LINKEDIN</div><div class="contact-value">View Profile</div></div></a>` : '',
     otherLink ? `<a href="${otherLink}" target="_blank" class="contact-card"><div class="contact-icon">🌐</div><div><div class="contact-label">WEBSITE</div><div class="contact-value">${otherLink}</div></div></a>` : ''
   ].filter(Boolean).join('');
+
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -1010,7 +1009,7 @@ footer{background:#111;border-top:4px solid #333;padding:24px;text-align:center;
   <div class="contact-grid">${contactItems}</div>
 </section>
 <footer>
-  <div class="footer-text">© 2026 <span>${name}</span> · Built block by block · Made with ❤️ &amp; ☕<br>${github.toLowerCase()}.github.io</div>
+  <div class="footer-text">© 2025 <span>${name}</span> · Built block by block · Made with ❤️ &amp; ☕<br>${github.toLowerCase()}.github.io</div>
 </footer>
 <script>
 function fillRow(id,type){const r=document.getElementById(id);if(!r)return;const c=Math.ceil(window.innerWidth/48)+2;for(let i=0;i<c;i++){const b=document.createElement('div');b.className='block '+type;r.appendChild(b);}}
@@ -1024,6 +1023,3 @@ document.addEventListener('click',e=>{if(e.target.closest('a,button'))return;for
 </script>
 </body>
 </html>
-
-
-
