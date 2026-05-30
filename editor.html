@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Rafie â€” Portfolio Editor</title>
+<title>Rafie — Portfolio Editor</title>
 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -264,44 +264,44 @@ nav {
 <body>
 
 <nav>
-  <div class="nav-logo">â› PORTFOLIO EDITOR</div>
+  <div class="nav-logo">⛏ PORTFOLIO EDITOR</div>
   <div class="nav-sub">rafie-kun.github.io</div>
-  <a href="https://rafie-kun.github.io" target="_blank" class="preview-link">PREVIEW SITE â†’</a>
+  <a href="https://rafie-kun.github.io" target="_blank" class="preview-link">PREVIEW SITE →</a>
 </nav>
 
 <div class="app">
 
   <!-- TOKEN -->
   <div class="token-box">
-    <div class="token-title">ðŸ”‘ GITHUB TOKEN (stays in your browser only)</div>
+    <div class="token-title">🔑 GITHUB TOKEN (stays in your browser only)</div>
     <div class="token-row">
       <input type="password" id="ghToken" placeholder="Paste your ghp_... token here" autocomplete="off">
       <button class="mc-btn btn-red" onclick="testToken()">TEST</button>
     </div>
-    <div class="token-status" id="tokenStatus">â¬† Enter your token to enable publishing</div>
+    <div class="token-status" id="tokenStatus">⬆ Enter your token to enable publishing</div>
   </div>
 
   <!-- PROFILE -->
   <div class="editor-section">
     <div class="section-head" onclick="toggleSection(this)">
-      <div class="section-icon">ðŸ‘¤</div>
+      <div class="section-icon">👤</div>
       <div class="section-title">Profile &amp; About</div>
-      <div class="section-arrow open">â–¶</div>
+      <div class="section-arrow open">▶</div>
     </div>
     <div class="section-body open">
       <div class="pfp-area">
-        <div class="pfp-preview" id="pfpPreview"><span id="pfpPlaceholder">ðŸ“·</span></div>
+        <div class="pfp-preview" id="pfpPreview"><span id="pfpPlaceholder">📷</span></div>
         <div class="pfp-upload-area">
           <div class="field">
             <label>PROFILE PHOTO</label>
             <input type="file" id="pfpInput" accept="image/*" onchange="handlePfp(this)">
           </div>
-          <div style="font-size:16px; color:var(--muted);">JPG/PNG Â· Will be embedded in your site</div>
+          <div style="font-size:16px; color:var(--muted);">JPG/PNG · Will be embedded in your site</div>
         </div>
       </div>
       <div class="field-row">
         <div class="field"><label>FULL NAME</label><input type="text" id="name" value="Hossain Fazle Rafie"></div>
-        <div class="field"><label>ROLE / TITLE</label><input type="text" id="role" value="Freelancer Â· HS Student Â· Coder Â· Psych Student"></div>
+        <div class="field"><label>ROLE / TITLE</label><input type="text" id="role" value="Freelancer · HS Student · Coder · Psych Student"></div>
       </div>
       <div class="field-row3">
         <div class="field"><label>AGE</label><input type="text" id="age" value="19"></div>
@@ -309,7 +309,7 @@ nav {
         <div class="field"><label>LOCATION</label><input type="text" id="location" value="Dhaka, BD"></div>
       </div>
       <div class="field"><label>ABOUT ME (bio text)</label>
-        <textarea id="about">Hey, I'm Rafie â€” a 19-year-old self-taught coder, freelancer, and psychology student from Bangladesh. Just like a Minecraft player who spawns with nothing and builds an empire block by block, I started from zero and am crafting my path one skill at a time. By day I'm writing code and picking up freelance gigs. By night I'm diving into the human mind through psychology. Think of me as a player running two parallel worlds â€” one made of logic and syntax, the other of behaviour and cognition. Still early in the game, but the inventory is growing â€” and I'm not logging off anytime soon. ðŸŽ®</textarea>
+        <textarea id="about">Hey, I'm Rafie — a 19-year-old self-taught coder, freelancer, and psychology student from Bangladesh. Just like a Minecraft player who spawns with nothing and builds an empire block by block, I started from zero and am crafting my path one skill at a time. By day I'm writing code and picking up freelance gigs. By night I'm diving into the human mind through psychology. Think of me as a player running two parallel worlds — one made of logic and syntax, the other of behaviour and cognition. Still early in the game, but the inventory is growing — and I'm not logging off anytime soon. 🎮</textarea>
       </div>
       <div class="field"><label>GITHUB USERNAME</label><input type="text" id="github" value="Rafie-kun"></div>
     </div>
@@ -318,9 +318,9 @@ nav {
   <!-- WORK EXPERIENCE -->
   <div class="editor-section">
     <div class="section-head" onclick="toggleSection(this)">
-      <div class="section-icon">ðŸ’¼</div>
+      <div class="section-icon">💼</div>
       <div class="section-title">Work Experience</div>
-      <div class="section-arrow">â–¶</div>
+      <div class="section-arrow">▶</div>
     </div>
     <div class="section-body">
       <div id="workList"></div>
@@ -331,9 +331,9 @@ nav {
   <!-- SKILLS -->
   <div class="editor-section">
     <div class="section-head" onclick="toggleSection(this)">
-      <div class="section-icon">ðŸŽ’</div>
+      <div class="section-icon">🎒</div>
       <div class="section-title">Skills / Inventory</div>
-      <div class="section-arrow">â–¶</div>
+      <div class="section-arrow">▶</div>
     </div>
     <div class="section-body">
       <div id="skillsList"></div>
@@ -344,9 +344,9 @@ nav {
   <!-- PROJECTS -->
   <div class="editor-section">
     <div class="section-head" onclick="toggleSection(this)">
-      <div class="section-icon">ðŸ—‚</div>
+      <div class="section-icon">🗂</div>
       <div class="section-title">Projects / Builds</div>
-      <div class="section-arrow">â–¶</div>
+      <div class="section-arrow">▶</div>
     </div>
     <div class="section-body">
       <div id="projectsList"></div>
@@ -357,9 +357,9 @@ nav {
   <!-- ACHIEVEMENTS -->
   <div class="editor-section">
     <div class="section-head" onclick="toggleSection(this)">
-      <div class="section-icon">ðŸ†</div>
+      <div class="section-icon">🏆</div>
       <div class="section-title">Achievements</div>
-      <div class="section-arrow">â–¶</div>
+      <div class="section-arrow">▶</div>
     </div>
     <div class="section-body">
       <div id="achievementsList"></div>
@@ -370,9 +370,9 @@ nav {
   <!-- CONTACT -->
   <div class="editor-section">
     <div class="section-head" onclick="toggleSection(this)">
-      <div class="section-icon">ðŸ“¬</div>
+      <div class="section-icon">📬</div>
       <div class="section-title">Contact Info</div>
-      <div class="section-arrow">â–¶</div>
+      <div class="section-arrow">▶</div>
     </div>
     <div class="section-body">
       <div class="field-row">
@@ -393,16 +393,16 @@ nav {
 
 <!-- PUBLISH BAR -->
 <div class="publish-bar">
-  <div class="publish-status" id="publishStatus">Ready to publish Â· Enter token above</div>
-  <button class="mc-btn btn-gray" onclick="saveLocal()">ðŸ’¾ SAVE LOCALLY</button>
-  <button class="mc-btn btn-gold" onclick="publishSite()">ðŸš€ PUBLISH TO GITHUB</button>
+  <div class="publish-status" id="publishStatus">Ready to publish · Enter token above</div>
+  <button class="mc-btn btn-gray" onclick="saveLocal()">💾 SAVE LOCALLY</button>
+  <button class="mc-btn btn-gold" onclick="publishSite()">🚀 PUBLISH TO GITHUB</button>
 </div>
 
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
 
 <script>
-// â”€â”€ DEFAULT DATA â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── DEFAULT DATA ──────────────────────────────────────────────────────────────
 let pfpData = '';
 
 const defaultWork = [
@@ -412,31 +412,31 @@ const defaultWork = [
 ];
 
 const defaultSkills = [
-  { emoji:'ðŸ', name:'Python', rarity:'rare' },
-  { emoji:'ðŸŒ', name:'HTML / CSS', rarity:'uncommon' },
-  { emoji:'âš¡', name:'JavaScript', rarity:'rare' },
-  { emoji:'ðŸ§ ', name:'Psychology', rarity:'epic' },
-  { emoji:'ðŸ™', name:'Git / GitHub', rarity:'uncommon' },
-  { emoji:'ðŸ’¬', name:'Freelancing', rarity:'legendary' },
-  { emoji:'ðŸ”', name:'Problem Solving', rarity:'common' },
-  { emoji:'ðŸŽ¨', name:'UI Design', rarity:'rare' },
-  { emoji:'ðŸŽ®', name:'Minecraft', rarity:'epic' }
+  { emoji:'🐍', name:'Python', rarity:'rare' },
+  { emoji:'🌐', name:'HTML / CSS', rarity:'uncommon' },
+  { emoji:'⚡', name:'JavaScript', rarity:'rare' },
+  { emoji:'🧠', name:'Psychology', rarity:'epic' },
+  { emoji:'🐙', name:'Git / GitHub', rarity:'uncommon' },
+  { emoji:'💬', name:'Freelancing', rarity:'legendary' },
+  { emoji:'🔍', name:'Problem Solving', rarity:'common' },
+  { emoji:'🎨', name:'UI Design', rarity:'rare' },
+  { emoji:'🎮', name:'Minecraft', rarity:'epic' }
 ];
 
 const defaultProjects = [
-  { emoji:'ðŸ’°', name:'CraftEconomy', desc:'A budget tracking app built for real-world money management.', link:'https://github.com/Rafie-kun/CraftEconomy', tags:'Python, Finance, CLI', coming:false },
-  { emoji:'ðŸŒ', name:'Portfolio Website', desc:'This very site â€” a Minecraft-themed personal portfolio.', link:'https://github.com/Rafie-kun/Rafie-kun.github.io', tags:'HTML, CSS, JS', coming:false }
+  { emoji:'💰', name:'CraftEconomy', desc:'A budget tracking app built for real-world money management.', link:'https://github.com/Rafie-kun/CraftEconomy', tags:'Python, Finance, CLI', coming:false },
+  { emoji:'🌐', name:'Portfolio Website', desc:'This very site — a Minecraft-themed personal portfolio.', link:'https://github.com/Rafie-kun/Rafie-kun.github.io', tags:'HTML, CSS, JS', coming:false }
 ];
 
 const defaultAchievements = [
-  { icon:'ðŸŽ“', title:'Taking the First Step', desc:'Enrolled in Psychology â€” studying human behaviour & the mind', locked:false },
-  { icon:'ðŸ’¼', title:'Freelancer Mode: ON', desc:'Started taking on real freelance work as a student', locked:false },
-  { icon:'ðŸŒ', title:'First Deploy', desc:'Launched a live website â€” rafie-kun.github.io', locked:false },
-  { icon:'ðŸ“', title:'Content Creator', desc:'Writing articles for Dynamic Teen Collection', locked:false },
-  { icon:'ðŸ†', title:'???', desc:'Keep grinding. This one is coming soon.', locked:true }
+  { icon:'🎓', title:'Taking the First Step', desc:'Enrolled in Psychology — studying human behaviour & the mind', locked:false },
+  { icon:'💼', title:'Freelancer Mode: ON', desc:'Started taking on real freelance work as a student', locked:false },
+  { icon:'🌐', title:'First Deploy', desc:'Launched a live website — rafie-kun.github.io', locked:false },
+  { icon:'📝', title:'Content Creator', desc:'Writing articles for Dynamic Teen Collection', locked:false },
+  { icon:'🏆', title:'???', desc:'Keep grinding. This one is coming soon.', locked:true }
 ];
 
-// â”€â”€ INIT â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── INIT ──────────────────────────────────────────────────────────────────────
 window.onload = () => {
   renderWork(defaultWork);
   renderSkills(defaultSkills);
@@ -449,12 +449,12 @@ window.onload = () => {
   const savedToken = localStorage.getItem('rafie_token_hint');
   if (savedToken) {
     document.getElementById('ghToken').value = savedToken;
-    document.getElementById('tokenStatus').textContent = 'âœ… Token loaded from last session';
+    document.getElementById('tokenStatus').textContent = '✅ Token loaded from last session';
     document.getElementById('tokenStatus').style.color = 'var(--green)';
   }
 };
 
-// â”€â”€ SECTION TOGGLE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── SECTION TOGGLE ────────────────────────────────────────────────────────────
 function toggleSection(head) {
   const body = head.nextElementSibling;
   const arrow = head.querySelector('.section-arrow');
@@ -463,7 +463,7 @@ function toggleSection(head) {
   arrow.classList.toggle('open', !isOpen);
 }
 
-// â”€â”€ PFP â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── PFP ───────────────────────────────────────────────────────────────────────
 function handlePfp(input) {
   const file = input.files[0];
   if (!file) return;
@@ -481,7 +481,7 @@ function showPfp(src) {
   p.innerHTML = `<img src="${src}" alt="Profile">`;
 }
 
-// â”€â”€ WORK â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── WORK ──────────────────────────────────────────────────────────────────────
 let workData = [];
 function renderWork(data) {
   workData = JSON.parse(JSON.stringify(data));
@@ -492,7 +492,7 @@ function renderWork(data) {
     <div class="list-item" id="work_${i}">
       <div class="list-item-header">
         <span class="item-num">JOB #${i+1}</span>
-        <button class="remove-btn" onclick="removeWork(${i})">âœ• REMOVE</button>
+        <button class="remove-btn" onclick="removeWork(${i})">✕ REMOVE</button>
       </div>
       <div class="field-row">
         <div class="field"><label>JOB TITLE</label><input type="text" value="${esc(w.title)}" oninput="workData[${i}].title=this.value"></div>
@@ -503,8 +503,8 @@ function renderWork(data) {
         <div class="field"><label>END YEAR</label><input type="text" value="${esc(w.end)}" placeholder="or leave blank" oninput="workData[${i}].end=this.value"></div>
         <div class="field"><label>CURRENT JOB?</label>
           <select onchange="workData[${i}].current=this.value==='true'">
-            <option value="true" ${w.current?'selected':''}>Yes â€” Current</option>
-            <option value="false" ${!w.current?'selected':''}>No â€” Past Job</option>
+            <option value="true" ${w.current?'selected':''}>Yes — Current</option>
+            <option value="false" ${!w.current?'selected':''}>No — Past Job</option>
           </select>
         </div>
       </div>
@@ -515,7 +515,7 @@ function renderWork(data) {
 function addWork() { workData.push({title:'',company:'',current:false,start:'',end:'',desc:''}); renderWork(workData); }
 function removeWork(i) { workData.splice(i,1); renderWork(workData); }
 
-// â”€â”€ SKILLS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── SKILLS ────────────────────────────────────────────────────────────────────
 let skillsData = [];
 function renderSkills(data) {
   skillsData = JSON.parse(JSON.stringify(data));
@@ -526,7 +526,7 @@ function renderSkills(data) {
     <div class="list-item" id="skill_${i}">
       <div class="list-item-header">
         <span class="item-num">SKILL #${i+1}</span>
-        <button class="remove-btn" onclick="removeSkill(${i})">âœ• REMOVE</button>
+        <button class="remove-btn" onclick="removeSkill(${i})">✕ REMOVE</button>
       </div>
       <div class="field-row3">
         <div class="field"><label>EMOJI ICON</label><input type="text" value="${esc(s.emoji)}" oninput="skillsData[${i}].emoji=this.value"></div>
@@ -544,10 +544,10 @@ function renderSkills(data) {
     </div>`;
   });
 }
-function addSkill() { skillsData.push({emoji:'â­',name:'New Skill',rarity:'common'}); renderSkills(skillsData); }
+function addSkill() { skillsData.push({emoji:'⭐',name:'New Skill',rarity:'common'}); renderSkills(skillsData); }
 function removeSkill(i) { skillsData.splice(i,1); renderSkills(skillsData); }
 
-// â”€â”€ PROJECTS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── PROJECTS ──────────────────────────────────────────────────────────────────
 let projectsData = [];
 function renderProjects(data) {
   projectsData = JSON.parse(JSON.stringify(data));
@@ -558,7 +558,7 @@ function renderProjects(data) {
     <div class="list-item" id="proj_${i}">
       <div class="list-item-header">
         <span class="item-num">PROJECT #${i+1}</span>
-        <button class="remove-btn" onclick="removeProject(${i})">âœ• REMOVE</button>
+        <button class="remove-btn" onclick="removeProject(${i})">✕ REMOVE</button>
       </div>
       <div class="field-row">
         <div class="field"><label>EMOJI ICON</label><input type="text" value="${esc(p.emoji)}" oninput="projectsData[${i}].emoji=this.value"></div>
@@ -578,10 +578,10 @@ function renderProjects(data) {
     </div>`;
   });
 }
-function addProject() { projectsData.push({emoji:'ðŸ”®',name:'New Project',desc:'',link:'',tags:'',coming:true}); renderProjects(projectsData); }
+function addProject() { projectsData.push({emoji:'🔮',name:'New Project',desc:'',link:'',tags:'',coming:true}); renderProjects(projectsData); }
 function removeProject(i) { projectsData.splice(i,1); renderProjects(projectsData); }
 
-// â”€â”€ ACHIEVEMENTS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── ACHIEVEMENTS ──────────────────────────────────────────────────────────────
 let achievementsData = [];
 function renderAchievements(data) {
   achievementsData = JSON.parse(JSON.stringify(data));
@@ -592,15 +592,15 @@ function renderAchievements(data) {
     <div class="list-item" id="ach_${i}">
       <div class="list-item-header">
         <span class="item-num">ACH #${i+1}</span>
-        <button class="remove-btn" onclick="removeAchievement(${i})">âœ• REMOVE</button>
+        <button class="remove-btn" onclick="removeAchievement(${i})">✕ REMOVE</button>
       </div>
       <div class="field-row3">
         <div class="field"><label>ICON</label><input type="text" value="${esc(a.icon)}" oninput="achievementsData[${i}].icon=this.value"></div>
         <div class="field"><label>TITLE</label><input type="text" value="${esc(a.title)}" oninput="achievementsData[${i}].title=this.value"></div>
         <div class="field"><label>STATUS</label>
           <select onchange="achievementsData[${i}].locked=this.value==='true'">
-            <option value="false" ${!a.locked?'selected':''}>Unlocked âœ…</option>
-            <option value="true" ${a.locked?'selected':''}>Locked ðŸ”’</option>
+            <option value="false" ${!a.locked?'selected':''}>Unlocked ✅</option>
+            <option value="true" ${a.locked?'selected':''}>Locked 🔒</option>
           </select>
         </div>
       </div>
@@ -608,10 +608,10 @@ function renderAchievements(data) {
     </div>`;
   });
 }
-function addAchievement() { achievementsData.push({icon:'ðŸ†',title:'New Achievement',desc:'',locked:false}); renderAchievements(achievementsData); }
+function addAchievement() { achievementsData.push({icon:'🏆',title:'New Achievement',desc:'',locked:false}); renderAchievements(achievementsData); }
 function removeAchievement(i) { achievementsData.splice(i,1); renderAchievements(achievementsData); }
 
-// â”€â”€ HELPERS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── HELPERS ───────────────────────────────────────────────────────────────────
 function esc(str) { return String(str||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 function g(id) { return document.getElementById(id)?.value || ''; }
 
@@ -628,30 +628,30 @@ function setStatus(msg, type='') {
   s.className = 'publish-status ' + type;
 }
 
-// â”€â”€ TOKEN TEST â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── TOKEN TEST ────────────────────────────────────────────────────────────────
 async function testToken() {
   const token = document.getElementById('ghToken').value.trim();
   if (!token) { toast('Please enter a token first!', true); return; }
-  document.getElementById('tokenStatus').textContent = 'â³ Testing token...';
+  document.getElementById('tokenStatus').textContent = '⏳ Testing token...';
   try {
     const r = await fetch('https://api.github.com/user', { headers: { Authorization: 'Bearer ' + token } });
     const data = await r.json();
     if (data.login) {
-      document.getElementById('tokenStatus').textContent = 'âœ… Authenticated as @' + data.login;
+      document.getElementById('tokenStatus').textContent = '✅ Authenticated as @' + data.login;
       document.getElementById('tokenStatus').style.color = 'var(--green)';
       localStorage.setItem('rafie_token_hint', token);
       toast('Token works! You can now publish.');
     } else {
-      document.getElementById('tokenStatus').textContent = 'âŒ Invalid token â€” check and try again';
+      document.getElementById('tokenStatus').textContent = '❌ Invalid token — check and try again';
       document.getElementById('tokenStatus').style.color = 'var(--red)';
     }
   } catch(e) {
-    document.getElementById('tokenStatus').textContent = 'âŒ Network error';
+    document.getElementById('tokenStatus').textContent = '❌ Network error';
     document.getElementById('tokenStatus').style.color = 'var(--red)';
   }
 }
 
-// â”€â”€ SAVE LOCAL â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── SAVE LOCAL ────────────────────────────────────────────────────────────────
 function saveLocal() {
   const html = buildHTML();
   const blob = new Blob([html], {type:'text/html'});
@@ -662,11 +662,11 @@ function saveLocal() {
   toast('index.html downloaded!');
 }
 
-// â”€â”€ PUBLISH â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── PUBLISH ───────────────────────────────────────────────────────────────────
 async function publishSite() {
   const token = document.getElementById('ghToken').value.trim();
   if (!token) { toast('Enter your GitHub token first!', true); return; }
-  setStatus('â³ Building site...', 'loading');
+  setStatus('⏳ Building site...', 'loading');
   const html = buildHTML();
   const encoded = btoa(unescape(encodeURIComponent(html)));
   const owner = 'Rafie-kun';
@@ -675,13 +675,13 @@ async function publishSite() {
   const headers = { Authorization: 'Bearer '+token, 'Content-Type':'application/json' };
 
   try {
-    setStatus('â³ Checking existing file...', 'loading');
+    setStatus('⏳ Checking existing file...', 'loading');
     let sha = '';
     const check = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}`, { headers });
     if (check.ok) { const d = await check.json(); sha = d.sha; }
 
-    setStatus('â³ Uploading to GitHub...', 'loading');
-    const body = { message:'âœï¸ Update portfolio via editor', content: encoded };
+    setStatus('⏳ Uploading to GitHub...', 'loading');
+    const body = { message:'✏️ Update portfolio via editor', content: encoded };
     if (sha) body.sha = sha;
 
     const put = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}`, {
@@ -689,23 +689,23 @@ async function publishSite() {
     });
 
     if (put.ok) {
-      setStatus('âœ… Published! Live in ~30 seconds', 'success');
-      toast('ðŸŽ‰ Site published to GitHub!');
+      setStatus('✅ Published! Live in ~30 seconds', 'success');
+      toast('🎉 Site published to GitHub!');
     } else {
       const err = await put.json();
-      setStatus('âŒ Error: ' + (err.message || 'Unknown error'), 'error');
+      setStatus('❌ Error: ' + (err.message || 'Unknown error'), 'error');
       toast('Publish failed: ' + (err.message||'check token'), true);
     }
   } catch(e) {
-    setStatus('âŒ Network error â€” try again', 'error');
+    setStatus('❌ Network error — try again', 'error');
     toast('Network error!', true);
   }
 }
 
-// â”€â”€ BUILD HTML â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── BUILD HTML ────────────────────────────────────────────────────────────────
 function buildHTML() {
   const name = g('name') || 'Hossain Fazle Rafie';
-  const role = g('role') || 'Freelancer Â· Student Â· Coder';
+  const role = g('role') || 'Freelancer · Student · Coder';
   const age = g('age') || '19';
   const level = g('level') || 'Intermediate';
   const location = g('location') || 'Dhaka, BD';
@@ -726,7 +726,7 @@ function buildHTML() {
     <div class="work-item ${w.current?'current':'past'}">
       <div class="work-badge">${w.current?'<span class="badge-current">CURRENT</span>':'<span class="badge-past">PAST</span>'}</div>
       <div class="work-title">${w.title}</div>
-      <div class="work-company">ðŸ“ ${w.company} Â· ${w.start}${w.end?' â€“ '+w.end:w.current?' â€“ Present':''}</div>
+      <div class="work-company">📍 ${w.company} · ${w.start}${w.end?' – '+w.end:w.current?' – Present':''}</div>
       <div class="work-desc">${w.desc}</div>
     </div>`).join('');
 
@@ -741,8 +741,8 @@ function buildHTML() {
   // Projects HTML
   const projectsHTML = projectsData.map(p => {
     const tagsHTML = (p.tags||'').split(',').filter(Boolean).map(t => `<span class="tag tag-green">${t.trim()}</span>`).join('');
-    const comingOverlay = p.coming ? `<div class="coming-soon-overlay"><div class="coming-soon-text">â› COMING SOON â›<br><br>CHUNK LOADING...</div></div>` : '';
-    const linkBtn = !p.coming && p.link ? `<a href="${p.link}" target="_blank" class="mc-btn btn-green" style="font-size:8px;padding:8px 14px;">View Project â†’</a>` : '';
+    const comingOverlay = p.coming ? `<div class="coming-soon-overlay"><div class="coming-soon-text">⛏ COMING SOON ⛏<br><br>CHUNK LOADING...</div></div>` : '';
+    const linkBtn = !p.coming && p.link ? `<a href="${p.link}" target="_blank" class="mc-btn btn-green" style="font-size:8px;padding:8px 14px;">View Project →</a>` : '';
     return `
     <div class="project-card" style="position:relative;">
       <div class="project-card-top">${p.emoji}</div>
@@ -777,7 +777,7 @@ function buildHTML() {
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>${name} â€” Portfolio</title>
+<title>${name} — Portfolio</title>
 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323:wght@400&display=swap" rel="stylesheet">
 <style>
 :root{--green:#5aac44;--dark-green:#3d7a2e;--dirt:#8B6340;--dark-dirt:#6b4c30;--wood:#a0762a;--gold:#FFD700;--diamond:#4de6e6;--redstone:#e03030;--bg:#1a1a2e;--text:#f0f0f0;--muted:#aaa;}
@@ -820,7 +820,7 @@ nav{background:#2d2d2d;border-bottom:4px solid #000;box-shadow:0 4px 0 #555;padd
 .pfp-wrap{margin-bottom:16px;}
 .pfp-img{width:120px;height:120px;border:4px solid var(--gold);box-shadow:4px 4px 0 #000;object-fit:cover;image-rendering:auto;}
 .hero-namebox{background:rgba(0,0,0,.85);border:4px solid #555;box-shadow:6px 6px 0 #000,inset 0 0 0 2px #ffffff15;padding:28px 48px;display:inline-block;margin-bottom:20px;position:relative;}
-.hero-namebox::before{content:'â–¶ PLAYER CARD â—€';position:absolute;top:-14px;left:50%;transform:translateX(-50%);background:var(--green);color:#000;font-family:'Press Start 2P',monospace;font-size:8px;padding:4px 10px;border:2px solid #000;white-space:nowrap;}
+.hero-namebox::before{content:'▶ PLAYER CARD ◀';position:absolute;top:-14px;left:50%;transform:translateX(-50%);background:var(--green);color:#000;font-family:'Press Start 2P',monospace;font-size:8px;padding:4px 10px;border:2px solid #000;white-space:nowrap;}
 .hero-name{font-family:'Press Start 2P',monospace;font-size:clamp(18px,3vw,28px);color:var(--gold);text-shadow:3px 3px 0 #000,-1px -1px 0 #000;letter-spacing:2px;line-height:1.4;margin-bottom:12px;}
 .hero-role{font-size:22px;color:var(--diamond);text-shadow:1px 1px 0 #000;margin-bottom:8px;}
 .hero-sub{font-size:18px;color:var(--muted);}
@@ -920,7 +920,7 @@ footer{background:#111;border-top:4px solid #333;padding:24px;text-align:center;
 </head>
 <body>
 <nav>
-  <div class="nav-logo">â› RAFIE.EXE</div>
+  <div class="nav-logo">⛏ RAFIE.EXE</div>
   <ul class="nav-links">
     <li><a href="#about">About</a></li>
     <li><a href="#work">Work</a></li>
@@ -949,14 +949,14 @@ footer{background:#111;border-top:4px solid #333;padding:24px;text-align:center;
     ${pfpHTML}
     <div class="hero-namebox">
       <div class="hero-name">${name}</div>
-      <div class="hero-role">âš¡ ${role}</div>
-      <div class="hero-sub">Level ${age} Â· ${level} Â· ${location}</div>
-      <div class="hearts">â¤ï¸â¤ï¸â¤ï¸â¤ï¸â¤ï¸â¤ï¸â¤ï¸â¤ï¸â¤ï¸ðŸ–¤</div>
+      <div class="hero-role">⚡ ${role}</div>
+      <div class="hero-sub">Level ${age} · ${level} · ${location}</div>
+      <div class="hearts">❤️❤️❤️❤️❤️❤️❤️❤️❤️🖤</div>
     </div>
     <div class="cta-buttons">
-      <a href="#projects" class="mc-btn btn-green">ðŸ—‚ View Projects</a>
-      <a href="https://github.com/${github}" target="_blank" class="mc-btn btn-blue">ðŸ™ GitHub</a>
-      <a href="#contact" class="mc-btn" style="background:#2a2a2a;color:#fff;">ðŸ“¬ Contact</a>
+      <a href="#projects" class="mc-btn btn-green">🗂 View Projects</a>
+      <a href="https://github.com/${github}" target="_blank" class="mc-btn btn-blue">🐙 GitHub</a>
+      <a href="#contact" class="mc-btn" style="background:#2a2a2a;color:#fff;">📬 Contact</a>
     </div>
   </div>
 </div>
@@ -966,10 +966,10 @@ footer{background:#111;border-top:4px solid #333;padding:24px;text-align:center;
   <div class="about-panel">
     <p class="about-text">${about}</p>
     <div class="stats-row">
-      <div class="stat-card"><div class="stat-icon">ðŸŽ‚</div><div class="stat-value">AGE ${age}</div><div class="stat-label">Years Alive</div></div>
-      <div class="stat-card"><div class="stat-icon">ðŸ’»</div><div class="stat-value">${level.toUpperCase()}</div><div class="stat-label">Coder Level</div></div>
-      <div class="stat-card"><div class="stat-icon">ðŸ§ </div><div class="stat-value">STUDENT</div><div class="stat-label">Psychology</div></div>
-      <div class="stat-card"><div class="stat-icon">ðŸŒ</div><div class="stat-value">${location.toUpperCase()}</div><div class="stat-label">Spawn Point</div></div>
+      <div class="stat-card"><div class="stat-icon">🎂</div><div class="stat-value">AGE ${age}</div><div class="stat-label">Years Alive</div></div>
+      <div class="stat-card"><div class="stat-icon">💻</div><div class="stat-value">${level.toUpperCase()}</div><div class="stat-label">Coder Level</div></div>
+      <div class="stat-card"><div class="stat-icon">🧠</div><div class="stat-value">STUDENT</div><div class="stat-label">Psychology</div></div>
+      <div class="stat-card"><div class="stat-icon">🌍</div><div class="stat-value">${location.toUpperCase()}</div><div class="stat-label">Spawn Point</div></div>
     </div>
   </div>
 </section>
@@ -982,7 +982,7 @@ footer{background:#111;border-top:4px solid #333;padding:24px;text-align:center;
 <section id="skills">
   <div class="section-header"><div class="section-icon icon-gold"></div><div class="section-title">// Inventory / Skills</div></div>
   <div class="skills-grid">${skillsHTML}</div>
-  <p style="margin-top:16px;font-family:'Press Start 2P',monospace;font-size:8px;color:#555;">HOVER ITEMS TO SEE RARITY Â· COMMON â†’ UNCOMMON â†’ RARE â†’ EPIC â†’ LEGENDARY</p>
+  <p style="margin-top:16px;font-family:'Press Start 2P',monospace;font-size:8px;color:#555;">HOVER ITEMS TO SEE RARITY · COMMON → UNCOMMON → RARE → EPIC → LEGENDARY</p>
 </section>
 <div class="pixel-divider"></div>
 <section id="projects">
@@ -998,10 +998,10 @@ footer{background:#111;border-top:4px solid #333;padding:24px;text-align:center;
 <section id="github">
   <div class="section-header"><div class="section-icon icon-iron"></div><div class="section-title">// GitHub / Code Vault</div></div>
   <div class="github-panel">
-    <span class="github-icon-big">ðŸ™</span>
+    <span class="github-icon-big">🐙</span>
     <div class="github-username">@${github}</div>
     <div class="github-desc">All my code, experiments, and builds live here.</div>
-    <a href="https://github.com/${github}" target="_blank" class="mc-btn btn-blue">Open GitHub Profile â†’</a>
+    <a href="https://github.com/${github}" target="_blank" class="mc-btn btn-blue">Open GitHub Profile →</a>
   </div>
 </section>
 <div class="pixel-divider"></div>
@@ -1010,7 +1010,7 @@ footer{background:#111;border-top:4px solid #333;padding:24px;text-align:center;
   <div class="contact-grid">${contactItems}</div>
 </section>
 <footer>
-  <div class="footer-text">Â© 2026 <span>${name}</span> Â· Built block by block Â· Made with â¤ï¸ &amp; â˜•<br>${github.toLowerCase()}.github.io</div>
+  <div class="footer-text">© 2026 <span>${name}</span> · Built block by block · Made with ❤️ &amp; ☕<br>${github.toLowerCase()}.github.io</div>
 </footer>
 <script>
 function fillRow(id,type){const r=document.getElementById(id);if(!r)return;const c=Math.ceil(window.innerWidth/48)+2;for(let i=0;i<c;i++){const b=document.createElement('div');b.className='block '+type;r.appendChild(b);}}
