@@ -1,1 +1,1666 @@
-<!-- editor-data:{"name":"Hossain Fazle Rafie","role":"Freelancer · HS Student · Coder · Psych Student","age":"19","level":"Intermediate","location":"Dhaka, BD","about":"Hey, I'm Rafie — a 19-year-old self-taught coder, freelancer, and psychology student from Dhaka, Bangladesh. Like a Minecraft player who spawns in a dungeon with no gear, I started from zero and built my skill tree one block at a time. By day I write articles and pick up freelance gigs. By night I study the human mind through psychology. Two worlds, one character. The dungeon is dark but the glowstone lights the way. Still early game. Inventory growing. Not logging off. 🔥","github":"Rafie-kun","email":"rafiecool249@gmail.com","discord":"rafiekunsimp","phone":"+880 1319 343526","linkedin":""} -->
+<!-- editor-data:{"name":"Hossain Fazle Rafie","role":"Freelancer · HS Student · Coder · Psych Student","age":"19","level":"Intermediate","location":"Dhaka, BD","about":"Hey, I'm Rafie — a 19-year-old self-taught coder, freelancer, and psychology student from Dhaka, Bangladesh. Like a Minecraft player who spawns in a dungeon with no gear, I started from zero and built my skill tree one block at a time. By day I write articles and pick up freelance gigs. By night I study the human mind through psychology. Two worlds, one character. The dungeon is dark but the glowstone lights the way. Still early game. Inventory growing. Not logging off. 🔥","github":"Rafie-kun","email":"rafiecool249@gmail.com","discord":"rafiekunsimp","phone":"+880 1319 343526","linkedin":""} --<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rafie — Portfolio</title>
+<meta name="description" content="Hossain Fazle Rafie — Freelancer, coder, and psychology student from Dhaka, Bangladesh. Minecraft-themed portfolio.">
+<meta property="og:title" content="Rafie — Portfolio">
+<meta property="og:description" content="Freelancer · Coder · Psych Student from Dhaka, BD">
+<meta property="og:url" content="https://rafie-kun.github.io">
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+<style>
+:root {
+  --night-sky: #0e1a2b;
+  --night-mid: #152236;
+  --night-deep: #0a1020;
+  --stone: #3a3f4a;
+  --stone-light: #4e5566;
+  --stone-dark: #252830;
+  --mossy: #2d4a2a;
+  --mossy-light: #3a5e35;
+  --dirt: #5c3d1e;
+  --wood: #7a5c2e;
+  --campfire: #ff8c00;
+  --campfire-bright: #ffcc44;
+  --campfire-red: #e63000;
+  --glowstone: #ffd080;
+  --glowstone-dim: #c8982a;
+  --lantern: #ffaa33;
+  --blue-mist: #2a4a7a;
+  --blue-glow: #4a7aaa;
+  --teal: #2a8a7a;
+  --teal-bright: #44ccbb;
+  --gold: #d4a820;
+  --gold-bright: #f0cc44;
+  --text: #c8d8e8;
+  --text-bright: #e8f0f8;
+  --text-dim: #6a7a8a;
+  --border: #2a3a4a;
+  --border-light: #3a4a5a;
+  --panel: #111820;
+  --panel-light: #182030;
+  --green-torch: #44dd44;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  background: var(--night-deep);
+  font-family: 'VT323', monospace;
+  color: var(--text);
+  font-size: 20px;
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+
+/* PIXEL SCROLLBAR */
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: var(--stone-dark); }
+::-webkit-scrollbar-thumb {
+  background: var(--stone);
+  border: 2px solid var(--stone-dark);
+  image-rendering: pixelated;
+}
+
+/* STONE BLOCK TEXTURE */
+.stone-texture {
+  background-color: var(--panel);
+  background-image:
+    repeating-linear-gradient(0deg, transparent, transparent 15px, rgba(255,255,255,0.018) 15px, rgba(255,255,255,0.018) 16px),
+    repeating-linear-gradient(90deg, transparent, transparent 15px, rgba(255,255,255,0.018) 15px, rgba(255,255,255,0.018) 16px);
+}
+
+/* ANIMATIONS */
+@keyframes campfireFlicker {
+  0%,100% { opacity:1; transform:scaleY(1) scaleX(1); filter:brightness(1); }
+  20% { opacity:.85; transform:scaleY(.92) scaleX(1.05); filter:brightness(.9); }
+  40% { opacity:1; transform:scaleY(1.06) scaleX(.97); filter:brightness(1.15); }
+  60% { opacity:.9; transform:scaleY(.96) scaleX(1.02); filter:brightness(.95); }
+  80% { opacity:1; transform:scaleY(1.03) scaleX(.98); filter:brightness(1.08); }
+}
+
+@keyframes glowPulse {
+  0%,100% { box-shadow: 0 0 12px var(--glowstone), 0 0 24px rgba(255,208,128,.3); }
+  50% { box-shadow: 0 0 20px var(--glowstone), 0 0 40px rgba(255,208,128,.5); }
+}
+
+@keyframes particleRise {
+  0% { transform:translateY(0) rotate(0deg); opacity:1; }
+  100% { transform:translateY(-60px) rotate(180deg); opacity:0; }
+}
+
+@keyframes shimmer {
+  0% { background-position:-200% center; }
+  100% { background-position:200% center; }
+}
+
+@keyframes blockReveal {
+  0% { opacity:0; transform:translateY(16px); }
+  100% { opacity:1; transform:translateY(0); }
+}
+
+@keyframes lanternSwing {
+  0%,100% { transform:rotate(-4deg); }
+  50% { transform:rotate(4deg); }
+}
+
+@keyframes mistFloat {
+  0% { transform:translateX(-100px) translateY(0); opacity:0; }
+  10% { opacity:.5; }
+  90% { opacity:.5; }
+  100% { transform:translateX(calc(100vw + 100px)) translateY(-20px); opacity:0; }
+}
+
+@keyframes formSlideIn {
+  0% { opacity:0; transform:translateY(8px); }
+  100% { opacity:1; transform:translateY(0); }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* NAV */
+nav {
+  position: fixed;
+  top:0; left:0; right:0;
+  z-index: 1000;
+  background: var(--night-deep);
+  border-bottom: 4px solid var(--stone-dark);
+  box-shadow: 0 4px 0 #000, 0 0 30px rgba(0,0,0,.8);
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 56px;
+}
+
+nav::after {
+  content:'';
+  position:absolute;
+  bottom:-6px; left:0; right:0;
+  height:2px;
+  background:linear-gradient(90deg,transparent,var(--glowstone),var(--campfire),var(--glowstone),transparent);
+  background-size:200% auto;
+  animation:shimmer 4s linear infinite;
+}
+
+.nav-logo {
+  font-family:'Press Start 2P',monospace;
+  font-size:11px;
+  color:var(--glowstone);
+  text-shadow:0 0 8px var(--glowstone), 2px 2px 0 #000;
+  letter-spacing:1px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+.nav-torch {
+  font-size:16px;
+  animation:campfireFlicker 2s ease-in-out infinite;
+  filter:drop-shadow(0 0 4px var(--campfire));
+}
+
+.nav-links {
+  display:flex;
+  gap:4px;
+  list-style:none;
+}
+
+.nav-links a {
+  font-family:'Press Start 2P',monospace;
+  font-size:7px;
+  color:var(--text);
+  text-decoration:none;
+  background:var(--stone-dark);
+  border:2px solid var(--stone);
+  border-bottom:4px solid #000;
+  border-right:4px solid #000;
+  padding:6px 10px;
+  display:block;
+  transition:all .1s;
+  letter-spacing:.5px;
+  image-rendering:pixelated;
+}
+
+.nav-links a:hover {
+  background:var(--stone);
+  color:var(--glowstone);
+  border-color:var(--glowstone-dim);
+  transform:translate(-1px,-1px);
+  box-shadow:2px 2px 0 #000;
+  text-shadow:0 0 6px var(--glowstone);
+}
+
+/* HERO */
+.hero {
+  min-height:100vh;
+  position:relative;
+  overflow:hidden;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:80px 20px 60px;
+}
+
+.sky {
+  position:absolute;
+  inset:0;
+  background:linear-gradient(to bottom,
+    #060c14 0%,
+    #0b1525 20%,
+    #0e1a2e 40%,
+    #111e30 55%,
+    #0d1820 65%,
+    #090e14 80%,
+    #050810 100%
+  );
+}
+
+.stars-layer {
+  position:absolute;
+  inset:0;
+  z-index:1;
+  pointer-events:none;
+}
+
+.mist-layer {
+  position:absolute;
+  bottom:0; left:0; right:0;
+  height:40%;
+  z-index:2;
+  pointer-events:none;
+}
+
+.mist-strip {
+  position:absolute;
+  height:60px;
+  background:linear-gradient(90deg,transparent,rgba(42,74,122,.25),rgba(42,74,122,.15),transparent);
+  border-radius:50%;
+  animation:mistFloat linear infinite;
+}
+
+.terrain-layer {
+  position:absolute;
+  bottom:0; left:0; right:0;
+  z-index:3;
+  pointer-events:none;
+}
+
+.block-row {
+  position:absolute;
+  left:0; right:0;
+  display:flex;
+}
+
+.pxblock { flex-shrink:0; border:2px solid rgba(0,0,0,.5); image-rendering:pixelated; }
+.pxblock-stone { width:48px; height:48px; background:var(--stone); border-top:3px solid var(--stone-light); border-left:3px solid #5a6070; border-bottom:3px solid #1a1e24; border-right:3px solid #1a1e24; }
+.pxblock-mossy { width:48px; height:48px; background:var(--mossy); border-top:3px solid var(--mossy-light); border-left:3px solid #3a5e35; border-bottom:3px solid #1a2a18; border-right:3px solid #1a2a18; }
+.pxblock-dirt { width:48px; height:48px; background:var(--dirt); border-top:3px solid #7a5a30; border-left:3px solid #6a4a20; border-bottom:3px solid #3a2010; border-right:3px solid #3a2010; }
+.pxblock-dark { width:48px; height:48px; background:var(--stone-dark); border-top:3px solid var(--stone); border-left:3px solid var(--stone); border-bottom:3px solid #000; border-right:3px solid #000; }
+
+.row-grass { bottom:192px; }
+.row-stone1 { bottom:144px; }
+.row-stone2 { bottom:96px; }
+.row-stone3 { bottom:48px; }
+.row-stone4 { bottom:0; }
+
+/* CAMPFIRE */
+.campfire-wrap {
+  position:absolute;
+  bottom:200px;
+  left:50%;
+  transform:translateX(-50%);
+  z-index:8;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
+
+.campfire-base { width:32px; height:16px; background:var(--stone-dark); border:2px solid #000; border-top:3px solid var(--stone); position:relative; }
+.campfire-logs { width:40px; height:8px; background:var(--wood); border:2px solid #000; margin-top:-2px; }
+.campfire-flame { font-size:40px; line-height:1; margin-bottom:-8px; animation:campfireFlicker 1.6s ease-in-out infinite; filter:drop-shadow(0 0 12px var(--campfire)) drop-shadow(0 0 24px var(--campfire-red)); }
+.campfire-glow { position:absolute; bottom:-20px; left:50%; transform:translateX(-50%); width:200px; height:120px; background:radial-gradient(ellipse,rgba(255,140,0,.25) 0%,rgba(230,48,0,.1) 40%,transparent 70%); pointer-events:none; animation:glowPulse 2s ease-in-out infinite; }
+
+/* LANTERNS */
+.lantern { position:absolute; z-index:7; display:flex; flex-direction:column; align-items:center; }
+.lantern-chain { width:2px; height:24px; background:#888; }
+.lantern-body { font-size:18px; animation:lanternSwing 3s ease-in-out infinite; filter:drop-shadow(0 0 6px var(--lantern)) drop-shadow(0 0 12px rgba(255,170,51,.4)); }
+.lantern-glow { position:absolute; top:20px; left:50%; transform:translateX(-50%); width:80px; height:80px; background:radial-gradient(circle,rgba(255,170,51,.3) 0%,transparent 70%); pointer-events:none; }
+
+.glowstone-block { width:48px; height:48px; background:var(--glowstone); border-top:3px solid #ffe8a0; border-left:3px solid #e8c040; border-bottom:3px solid #a07010; border-right:3px solid #a07010; border:2px solid #000; animation:glowPulse 2.5s ease-in-out infinite; flex-shrink:0; }
+
+/* HERO PLAYER CARD */
+.hero-content {
+  position:relative;
+  z-index:10;
+  text-align:center;
+  margin-bottom:56px;
+}
+
+.player-card {
+  display:inline-block;
+  background:var(--panel);
+  border:4px solid var(--stone);
+  border-right:4px solid #000;
+  border-bottom:4px solid #000;
+  box-shadow:6px 6px 0 #000, inset 0 0 0 2px rgba(255,255,255,.06);
+  padding:28px 44px 24px;
+  position:relative;
+  margin-bottom:24px;
+}
+
+.player-card::before {
+  content:'▶ PLAYER INFO ◀';
+  position:absolute;
+  top:-16px; left:50%;
+  transform:translateX(-50%);
+  background:var(--stone);
+  color:var(--glowstone);
+  font-family:'Press Start 2P',monospace;
+  font-size:7px;
+  padding:4px 12px;
+  border:2px solid var(--stone-light);
+  border-bottom:none;
+  white-space:nowrap;
+  text-shadow:0 0 6px var(--glowstone);
+  letter-spacing:1px;
+}
+
+.player-name { font-family:'Press Start 2P',monospace; font-size:clamp(16px,3vw,26px); color:var(--glowstone); text-shadow:0 0 10px var(--glowstone-dim), 3px 3px 0 #000; letter-spacing:2px; line-height:1.4; margin-bottom:10px; display:block; }
+.player-class { font-size:22px; color:var(--teal-bright); text-shadow:0 0 6px var(--teal); margin-bottom:8px; }
+.player-level { font-size:18px; color:var(--text-dim); }
+
+.hp-row { margin:14px 0 6px; display:flex; align-items:center; gap:10px; }
+.hp-label { font-family:'Press Start 2P',monospace; font-size:7px; color:#dd3333; text-shadow:0 0 4px #dd3333; white-space:nowrap; }
+.hp-bar { flex:1; height:14px; background:#111; border:2px solid var(--stone); overflow:hidden; position:relative; }
+.hp-fill { height:100%; width:90%; background:linear-gradient(90deg,#881111,#dd2222,#ff4444,#dd2222); background-size:200% 100%; animation:shimmer 1.5s linear infinite; }
+.hp-fill::after { content:''; position:absolute; top:2px; left:4px; right:4px; height:3px; background:rgba(255,255,255,.25); }
+.hearts { display:flex; gap:3px; justify-content:center; margin-top:10px; }
+.heart { font-size:16px; }
+
+.hero-btns { display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-top:16px; }
+
+.mc-btn {
+  font-family:'Press Start 2P',monospace;
+  font-size:9px;
+  padding:10px 18px;
+  text-decoration:none;
+  display:inline-block;
+  border:3px solid #000;
+  border-right:4px solid #000;
+  border-bottom:4px solid #000;
+  cursor:pointer;
+  transition:all .1s;
+  letter-spacing:.5px;
+  image-rendering:pixelated;
+}
+
+.mc-btn:hover { transform:translate(-1px,-1px); box-shadow:3px 3px 0 #000; }
+.mc-btn:active { transform:translate(2px,2px); box-shadow:none; }
+.btn-green { background:#4a8a3a; color:#ccffcc; border-top-color:#6aaa5a; border-left-color:#6aaa5a; }
+.btn-green:hover { background:#5aaa4a; }
+.btn-blue { background:#2a4a8a; color:#aaccff; border-top-color:#4a6aaa; border-left-color:#4a6aaa; }
+.btn-blue:hover { background:#3a5aaa; }
+.btn-dark { background:var(--stone-dark); color:var(--text); border-top-color:var(--stone); border-left-color:var(--stone); }
+.btn-dark:hover { background:var(--stone); }
+
+/* PIXEL DIVIDER */
+.mc-divider { height:48px; overflow:hidden; display:flex; border-top:3px solid #000; border-bottom:3px solid #000; }
+.div-block { flex:1; height:48px; border-right:2px solid rgba(0,0,0,.4); }
+
+/* SECTIONS */
+section { max-width:920px; margin:0 auto; padding:56px 24px; }
+.sec-head { display:flex; align-items:center; gap:14px; margin-bottom:32px; }
+.sec-icon-block { width:48px; height:48px; border:3px solid #000; border-right:4px solid #000; border-bottom:4px solid #000; box-shadow:inset 0 0 0 2px rgba(255,255,255,.1); display:flex; align-items:center; justify-content:center; font-size:24px; flex-shrink:0; }
+.icon-glowstone { background:var(--glowstone); animation:glowPulse 2.5s ease-in-out infinite; }
+.icon-stone { background:var(--stone); }
+.icon-mossy { background:var(--mossy); }
+.icon-teal { background:var(--teal); }
+.icon-dark { background:var(--stone-dark); }
+.icon-blue { background:var(--blue-mist); }
+.icon-campfire { background:var(--campfire-red); }
+.sec-title { font-family:'Press Start 2P',monospace; font-size:clamp(11px,2vw,16px); color:var(--glowstone); text-shadow:2px 2px 0 #000, 0 0 8px var(--glowstone-dim); letter-spacing:1px; }
+.sec-line { flex:1; height:3px; background:linear-gradient(90deg,var(--stone),transparent); border-top:1px solid var(--stone-light); }
+
+/* ABOUT PANEL */
+.about-panel { background:var(--panel); border:3px solid var(--stone); border-right:4px solid #000; border-bottom:4px solid #000; box-shadow:inset 0 0 0 2px rgba(255,255,255,.04); padding:28px; position:relative; }
+.about-panel::before { content:''; position:absolute; top:0; left:0; right:0; height:4px; background:repeating-linear-gradient(90deg,var(--mossy) 0,var(--mossy) 16px,var(--mossy-light) 16px,var(--mossy-light) 32px,var(--stone) 32px,var(--stone) 48px); }
+.about-text { font-size:21px; color:var(--text); line-height:1.8; }
+.hi-gold { color:var(--glowstone); text-shadow:0 0 6px var(--glowstone-dim); }
+.hi-teal { color:var(--teal-bright); }
+.hi-green { color:#88dd88; }
+
+.stat-row { display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:10px; margin-top:22px; }
+.stat-c { background:var(--panel-light); border:3px solid var(--stone); border-right:4px solid #000; border-bottom:4px solid #000; padding:12px; text-align:center; transition:all .1s; }
+.stat-c:hover { transform:translate(-1px,-1px); box-shadow:2px 2px 0 #000; border-color:var(--glowstone-dim); }
+.stat-c-icon { font-size:26px; margin-bottom:6px; display:block; }
+.stat-c-val { font-family:'Press Start 2P',monospace; font-size:9px; color:var(--glowstone); margin-bottom:4px; }
+.stat-c-lab { font-size:16px; color:var(--text-dim); }
+
+/* TIMELINE */
+.timeline { padding-left:28px; position:relative; }
+.timeline::before { content:''; position:absolute; left:4px; top:0; bottom:0; width:4px; background:linear-gradient(to bottom,var(--stone-light),var(--stone),transparent); border-right:2px solid #000; }
+.tl-item { background:var(--panel); border:3px solid var(--stone); border-right:4px solid #000; border-bottom:4px solid #000; padding:18px 20px; margin-bottom:14px; position:relative; transition:all .15s; }
+.tl-item:hover { border-color:var(--glowstone-dim); transform:translate(-1px,-1px); box-shadow:2px 2px 0 #000; }
+.tl-item.current { border-left:4px solid var(--teal-bright); }
+.tl-dot { position:absolute; left:-32px; top:20px; width:16px; height:16px; background:var(--stone); border:3px solid #000; transform:rotate(45deg); }
+.tl-dot.active { background:var(--campfire); animation:glowPulse 2s ease-in-out infinite; }
+.badge { font-family:'Press Start 2P',monospace; font-size:7px; padding:3px 8px; border:2px solid; display:inline-block; margin-bottom:8px; }
+.badge-active { color:var(--teal-bright); border-color:var(--teal); background:rgba(42,138,122,.2); }
+.badge-done { color:var(--text-dim); border-color:var(--stone); background:transparent; }
+.tl-title { font-family:'Press Start 2P',monospace; font-size:10px; color:var(--glowstone); margin-bottom:5px; line-height:1.4; }
+.tl-company { font-size:18px; color:var(--teal-bright); margin-bottom:6px; }
+.tl-desc { font-size:17px; color:var(--text-dim); }
+
+/* SKILLS */
+.skill-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(86px,1fr)); gap:10px; }
+.skill-c { background:var(--panel); border:3px solid var(--stone); border-right:4px solid #000; border-bottom:4px solid #000; padding:12px 8px; text-align:center; cursor:default; position:relative; transition:all .1s; }
+.skill-c:hover { transform:translate(-1px,-2px); box-shadow:2px 3px 0 #000; }
+.skill-c:hover .skill-tip { opacity:1; }
+.skill-emoji { font-size:26px; display:block; margin-bottom:5px; }
+.skill-name { font-family:'Press Start 2P',monospace; font-size:6px; color:var(--text-dim); line-height:1.4; }
+.skill-tip { position:absolute; bottom:calc(100% + 6px); left:50%; transform:translateX(-50%); background:var(--stone-dark); color:var(--glowstone); font-family:'Press Start 2P',monospace; font-size:6px; padding:4px 8px; border:2px solid var(--stone); white-space:nowrap; opacity:0; transition:opacity .15s; pointer-events:none; z-index:20; letter-spacing:.5px; }
+.r-common { border-color:var(--stone); }
+.r-uncommon { border-top-color:#4a8a3a; border-left-color:#4a8a3a; }
+.r-uncommon:hover { border-color:#6aaa5a; }
+.r-rare { border-top-color:var(--blue-mist); border-left-color:var(--blue-mist); }
+.r-rare:hover { border-color:var(--blue-glow); }
+.r-epic { border-top-color:#5a2a8a; border-left-color:#5a2a8a; }
+.r-epic:hover { border-color:#8a4acc; }
+.r-legendary { border-top-color:var(--glowstone-dim); border-left-color:var(--glowstone-dim); }
+.r-legendary:hover { border-color:var(--glowstone); box-shadow:0 0 10px rgba(212,168,32,.3); }
+
+/* PROJECTS */
+.proj-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(268px,1fr)); gap:16px; }
+.proj-card { background:var(--panel); border:3px solid var(--stone); border-right:4px solid #000; border-bottom:4px solid #000; position:relative; transition:all .15s; overflow:hidden; }
+.proj-card:hover { transform:translate(-2px,-2px); box-shadow:4px 4px 0 #000; border-color:var(--glowstone-dim); }
+.proj-top { height:84px; background:var(--panel-light); border-bottom:3px solid var(--stone); display:flex; align-items:center; justify-content:center; font-size:42px; }
+.proj-body { padding:18px; }
+.proj-title { font-family:'Press Start 2P',monospace; font-size:9px; color:var(--glowstone); margin-bottom:8px; line-height:1.5; }
+.proj-desc { font-size:18px; color:var(--text-dim); margin-bottom:12px; line-height:1.6; }
+.proj-tags { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:12px; }
+.tag { font-family:'Press Start 2P',monospace; font-size:6px; padding:3px 7px; border:2px solid; }
+.tag-green { border-color:#3a6a2a; color:#88cc88; background:rgba(58,106,42,.2); }
+.tag-blue { border-color:var(--blue-mist); color:var(--blue-glow); background:rgba(42,74,122,.2); }
+.tag-teal { border-color:var(--teal); color:var(--teal-bright); background:rgba(42,138,122,.15); }
+.locked-overlay { position:absolute; inset:0; background:rgba(10,16,32,.85); display:flex; align-items:center; justify-content:center; flex-direction:column; gap:10px; }
+.locked-text { font-family:'Press Start 2P',monospace; font-size:10px; color:var(--glowstone-dim); text-align:center; line-height:2; animation:campfireFlicker 2s ease-in-out infinite; }
+
+/* ACHIEVEMENTS */
+.ach-list { display:flex; flex-direction:column; gap:10px; }
+.ach-item { background:var(--panel); border:3px solid var(--stone); border-right:4px solid #000; border-bottom:4px solid #000; padding:16px 20px; display:flex; align-items:center; gap:14px; transition:all .15s; position:relative; }
+.ach-item:hover { border-color:var(--glowstone-dim); transform:translate(-1px,-1px); box-shadow:2px 2px 0 #000; }
+.ach-item.locked { opacity:.4; filter:grayscale(.8); }
+.ach-item::before { content:''; position:absolute; left:0; top:0; bottom:0; width:4px; background:var(--glowstone); }
+.ach-item.locked::before { background:var(--stone); }
+.ach-icon { font-size:28px; flex-shrink:0; width:40px; text-align:center; }
+.ach-info { flex:1; }
+.ach-title { font-family:'Press Start 2P',monospace; font-size:8px; color:var(--glowstone); margin-bottom:4px; line-height:1.4; }
+.ach-item.locked .ach-title { color:var(--text-dim); }
+.ach-desc { font-size:17px; color:var(--text-dim); }
+.ach-badge { font-family:'Press Start 2P',monospace; font-size:7px; padding:4px 8px; border:2px solid; flex-shrink:0; }
+.badge-done-g { color:var(--glowstone); border-color:var(--glowstone-dim); background:rgba(212,168,32,.1); }
+.badge-lock { color:var(--stone-light); border-color:var(--stone); background:transparent; }
+
+/* GITHUB */
+.github-panel { background:var(--panel); border:3px solid var(--stone); border-right:4px solid #000; border-bottom:4px solid #000; padding:36px; text-align:center; position:relative; }
+.github-panel::before { content:'── CODE VAULT ──'; position:absolute; top:-1px; left:50%; transform:translateX(-50%); font-family:'Press Start 2P',monospace; font-size:7px; color:var(--glowstone-dim); background:var(--panel); padding:0 12px; white-space:nowrap; letter-spacing:2px; }
+.github-icon { font-size:56px; display:block; margin-bottom:14px; }
+.github-name { font-family:'Press Start 2P',monospace; font-size:16px; color:var(--glowstone); margin-bottom:8px; text-shadow:0 0 8px var(--glowstone-dim); }
+.github-sub { font-size:19px; color:var(--text-dim); margin-bottom:22px; font-style:italic; }
+
+/* CONTACT LINKS */
+.contact-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:10px; margin-bottom:28px; }
+.contact-card { background:var(--panel); border:3px solid var(--stone); border-right:4px solid #000; border-bottom:4px solid #000; padding:16px 18px; display:flex; align-items:center; gap:12px; text-decoration:none; transition:all .15s; }
+.contact-card:hover { border-color:var(--glowstone-dim); transform:translate(-1px,-1px); box-shadow:2px 2px 0 #000; }
+.contact-icon { font-size:28px; flex-shrink:0; }
+.contact-label { font-family:'Press Start 2P',monospace; font-size:7px; color:var(--text-dim); margin-bottom:3px; letter-spacing:.5px; }
+.contact-val { font-size:18px; color:var(--text); word-break:break-all; }
+
+/* ═══════════════════════════════════════════════════
+   CONTACT FORM — Full Formspree integration
+   ═══════════════════════════════════════════════════ */
+.contact-form-wrap {
+  position:relative;
+}
+
+.contact-form {
+  background:var(--panel);
+  border:3px solid var(--stone);
+  border-right:4px solid #000;
+  border-bottom:4px solid #000;
+  box-shadow:inset 0 0 0 2px rgba(255,255,255,.03);
+  padding:36px 28px 28px;
+  position:relative;
+}
+
+.contact-form::before {
+  content:'▶ SEND A MESSAGE ◀';
+  position:absolute;
+  top:-16px; left:50%;
+  transform:translateX(-50%);
+  background:var(--stone);
+  color:var(--glowstone);
+  font-family:'Press Start 2P',monospace;
+  font-size:7px;
+  padding:4px 16px;
+  border:2px solid var(--stone-light);
+  border-bottom:none;
+  white-space:nowrap;
+  letter-spacing:1px;
+  text-shadow:0 0 6px var(--glowstone);
+}
+
+/* Decorative top accent bar */
+.contact-form::after {
+  content:'';
+  position:absolute;
+  top:0; left:0; right:0;
+  height:3px;
+  background:repeating-linear-gradient(90deg,
+    var(--campfire) 0,var(--campfire) 12px,
+    var(--glowstone-dim) 12px,var(--glowstone-dim) 24px,
+    var(--campfire-red) 24px,var(--campfire-red) 36px
+  );
+}
+
+.form-grid {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+  margin-bottom:14px;
+}
+
+.form-field { margin-bottom:14px; }
+.form-field:last-of-type { margin-bottom:0; }
+
+.form-field label {
+  display:flex;
+  align-items:center;
+  gap:6px;
+  font-family:'Press Start 2P',monospace;
+  font-size:7px;
+  color:var(--glowstone-dim);
+  margin-bottom:7px;
+  letter-spacing:.5px;
+}
+
+.form-field label .req {
+  color:var(--campfire-red);
+  font-size:10px;
+  line-height:1;
+}
+
+.form-field input,
+.form-field textarea,
+.form-field select {
+  width:100%;
+  background:#070e18;
+  border:3px solid var(--stone);
+  border-right:4px solid #000;
+  border-bottom:4px solid #000;
+  color:var(--text);
+  font-family:'VT323',monospace;
+  font-size:20px;
+  padding:11px 14px;
+  outline:none;
+  transition:border-color .15s, box-shadow .15s;
+  -webkit-appearance:none;
+}
+
+.form-field input::placeholder,
+.form-field textarea::placeholder {
+  color:var(--text-dim);
+  opacity:.6;
+}
+
+.form-field input:focus,
+.form-field textarea:focus,
+.form-field select:focus {
+  border-color:var(--glowstone-dim);
+  box-shadow:0 0 0 2px rgba(200,152,42,.15), inset 0 0 8px rgba(255,208,128,.04);
+}
+
+.form-field input.valid { border-color:var(--teal); }
+.form-field input.invalid { border-color:var(--campfire-red); }
+
+.form-field textarea {
+  resize:vertical;
+  min-height:110px;
+  max-height:320px;
+}
+
+.form-field select {
+  cursor:pointer;
+  background-color:#070e18;
+}
+
+.form-field select option { background:#111820; color:var(--text); }
+
+/* Character count */
+.char-count {
+  font-size:14px;
+  color:var(--text-dim);
+  text-align:right;
+  margin-top:4px;
+  font-family:'Press Start 2P',monospace;
+  font-size:6px;
+  letter-spacing:.5px;
+}
+
+.char-count.warn { color:var(--campfire); }
+.char-count.over { color:var(--campfire-red); }
+
+/* Honeypot (hidden anti-spam field) */
+.hp-trap { position:absolute; left:-9999px; opacity:0; height:0; overflow:hidden; }
+
+/* Submit button */
+.form-submit {
+  width:100%;
+  font-family:'Press Start 2P',monospace;
+  font-size:10px;
+  background:#2a5a2a;
+  color:#aaffaa;
+  border:3px solid #3a7a3a;
+  border-right:4px solid #000;
+  border-bottom:4px solid #000;
+  padding:14px;
+  cursor:pointer;
+  letter-spacing:1px;
+  transition:all .1s;
+  margin-top:18px;
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+}
+
+.form-submit:hover:not(:disabled) { background:#3a7a3a; transform:translate(-1px,-1px); box-shadow:2px 2px 0 #000; }
+.form-submit:active:not(:disabled) { transform:translate(1px,1px); box-shadow:none; }
+.form-submit:disabled { background:#1a3a1a; color:#4a7a4a; cursor:not-allowed; border-color:#2a4a2a; border-right-color:#000; border-bottom-color:#000; }
+
+.submit-spinner {
+  display:none;
+  width:14px; height:14px;
+  border:2px solid rgba(170,255,170,.3);
+  border-top-color:#aaffaa;
+  border-radius:50%;
+  animation:spin .7s linear infinite;
+}
+.form-submit.loading .submit-spinner { display:block; }
+.form-submit.loading .submit-label { opacity:.7; }
+
+/* Success state */
+.form-success {
+  display:none;
+  animation:formSlideIn .4s ease;
+  background:rgba(42,138,122,.1);
+  border:3px solid var(--teal);
+  border-right:4px solid #000;
+  border-bottom:4px solid #000;
+  padding:28px;
+  text-align:center;
+  margin-top:16px;
+}
+
+.form-success-icon { font-size:48px; display:block; margin-bottom:14px; }
+.form-success-title { font-family:'Press Start 2P',monospace; font-size:10px; color:var(--teal-bright); margin-bottom:10px; line-height:1.6; }
+.form-success-sub { font-size:18px; color:var(--text-dim); }
+
+/* Error state */
+.form-error-msg {
+  display:none;
+  margin-top:12px;
+  padding:12px 16px;
+  background:rgba(230,48,0,.1);
+  border:2px solid var(--campfire-red);
+  font-family:'Press Start 2P',monospace;
+  font-size:7px;
+  color:var(--campfire-red);
+  line-height:2;
+  letter-spacing:.5px;
+}
+
+.form-notice {
+  font-size:15px;
+  color:var(--text-dim);
+  margin-top:14px;
+  text-align:center;
+  line-height:1.6;
+}
+
+.form-notice a {
+  color:var(--glowstone-dim);
+  text-decoration:none;
+}
+
+.form-notice a:hover { color:var(--glowstone); text-decoration:underline; }
+
+/* FOOTER */
+footer { background:var(--night-deep); border-top:4px solid var(--stone-dark); box-shadow:0 -3px 0 #000; padding:24px; text-align:center; }
+.footer-text { font-family:'Press Start 2P',monospace; font-size:7px; color:var(--text-dim); line-height:2.4; letter-spacing:.5px; }
+.footer-text span { color:var(--glowstone-dim); }
+.footer-links { margin-top:10px; display:flex; justify-content:center; gap:16px; flex-wrap:wrap; }
+.footer-links a { font-family:'Press Start 2P',monospace; font-size:6px; color:var(--text-dim); text-decoration:none; }
+.footer-links a:hover { color:var(--glowstone); }
+
+/* EMBERS */
+.ember { position:fixed; width:4px; height:4px; border-radius:50%; pointer-events:none; animation:particleRise linear infinite; z-index:0; }
+
+/* SCROLL REVEAL */
+.reveal { opacity:0; transform:translateY(20px); transition:opacity .5s ease,transform .5s ease; }
+.reveal.visible { opacity:1; transform:translateY(0); }
+
+/* MINECRAFT MUSIC PLAYER */
+.mc-music-player {
+  position:fixed;
+  bottom:24px; left:24px;
+  z-index:999;
+  background:var(--panel);
+  border:3px solid var(--stone);
+  border-right:4px solid #000;
+  border-bottom:4px solid #000;
+  box-shadow:4px 4px 0 #000, 0 0 20px rgba(255,208,128,.08);
+  padding:10px 14px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  min-width:200px;
+  transition:all .2s;
+}
+.mc-music-player:hover { border-color:var(--glowstone-dim); }
+.music-btn {
+  background:var(--stone-dark);
+  border:2px solid var(--stone);
+  border-right:3px solid #000;
+  border-bottom:3px solid #000;
+  color:var(--glowstone);
+  font-size:16px;
+  width:30px; height:30px;
+  display:flex; align-items:center; justify-content:center;
+  cursor:pointer;
+  flex-shrink:0;
+  transition:all .1s;
+}
+.music-btn:hover { background:var(--stone); transform:translate(-1px,-1px); box-shadow:1px 1px 0 #000; }
+.music-info { flex:1; overflow:hidden; }
+.music-track {
+  font-family:'Press Start 2P',monospace;
+  font-size:6px;
+  color:var(--glowstone);
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  margin-bottom:4px;
+  letter-spacing:.5px;
+}
+.music-bar {
+  height:4px;
+  background:var(--stone-dark);
+  border:1px solid var(--stone);
+  overflow:hidden;
+}
+.music-bar-fill {
+  height:100%;
+  background:linear-gradient(90deg, var(--teal), var(--glowstone));
+  width:0%;
+  transition:width .5s linear;
+}
+.music-vol {
+  display:flex; align-items:center; gap:4px;
+}
+.music-vol input[type=range] {
+  width:50px;
+  accent-color:var(--glowstone);
+  cursor:pointer;
+}
+
+/* BACK TO TOP */
+.back-top {
+  position:fixed;
+  bottom:24px; right:24px;
+  z-index:999;
+  background:var(--stone-dark);
+  color:var(--glowstone);
+  font-family:'Press Start 2P',monospace;
+  font-size:8px;
+  border:3px solid var(--stone);
+  border-right:4px solid #000;
+  border-bottom:4px solid #000;
+  padding:8px 12px;
+  cursor:pointer;
+  text-decoration:none;
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .3s, transform .1s;
+}
+.back-top.visible { opacity:1; pointer-events:all; }
+.back-top:hover { transform:translate(-1px,-1px); box-shadow:2px 2px 0 #000; color:var(--campfire); }
+
+@media(max-width:680px) {
+  .nav-links { display:none; }
+  .player-card { padding:20px 20px 18px; }
+  .player-name { font-size:14px; }
+  .form-grid { grid-template-columns:1fr; }
+  .contact-grid { grid-template-columns:1fr; }
+  .stat-row { grid-template-columns:repeat(2,1fr); }
+}
+
+@media(max-width:420px) {
+  .player-card { padding:16px; }
+  section { padding:40px 16px; }
+  .hero-btns { flex-direction:column; align-items:center; }
+}
+</style>
+</head>
+<body>
+
+<!-- MINECRAFT MUSIC PLAYER -->
+<div class="mc-music-player" id="musicPlayer">
+  <button class="music-btn" id="musicPlayBtn" onclick="toggleMusic()" title="Play/Pause">▶</button>
+  <div class="music-info">
+    <div class="music-track" id="musicTrackName">♪ C418 — Sweden</div>
+    <div class="music-bar"><div class="music-bar-fill" id="musicBarFill"></div></div>
+  </div>
+  <div class="music-vol">
+    <span style="font-size:12px;">🔊</span>
+    <input type="range" min="0" max="100" value="40" id="musicVol" oninput="setMusicVol(this.value)">
+  </div>
+</div>
+
+<!-- BACK TO TOP -->
+<a class="back-top" id="backTop" href="#" aria-label="Back to top">▲ TOP</a>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">
+    <span class="nav-torch">🔥</span>
+    RAFIE.EXE
+    <span class="nav-torch" style="animation-delay:.8s">🔥</span>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#about">ABOUT</a></li>
+    <li><a href="#work">WORK</a></li>
+    <li><a href="#skills">SKILLS</a></li>
+    <li><a href="#projects">PROJECTS</a></li>
+    <li><a href="#achievements">WINS</a></li>
+    <li><a href="#github">GITHUB</a></li>
+    <li><a href="#contact">CONTACT</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="sky"></div>
+  <canvas id="starsCanvas" class="stars-layer"></canvas>
+  <div class="mist-layer" id="mistLayer"></div>
+
+  <div class="terrain-layer">
+    <div class="block-row row-grass" id="rowGrass"></div>
+    <div class="block-row row-stone1" id="rowS1"></div>
+    <div class="block-row row-stone2" id="rowS2"></div>
+    <div class="block-row row-stone3" id="rowS3"></div>
+    <div class="block-row row-stone4" id="rowS4"></div>
+  </div>
+
+  <div class="campfire-wrap">
+    <div class="campfire-glow"></div>
+    <div class="campfire-flame">🔥</div>
+    <div class="campfire-logs"></div>
+    <div class="campfire-base"></div>
+  </div>
+
+  <div class="lantern" style="left:15%;bottom:210px;">
+    <div class="lantern-chain"></div>
+    <div class="lantern-body">🏮</div>
+    <div class="lantern-glow"></div>
+  </div>
+  <div class="lantern" style="right:18%;bottom:220px;animation-delay:.5s">
+    <div class="lantern-chain"></div>
+    <div class="lantern-body">🏮</div>
+    <div class="lantern-glow"></div>
+  </div>
+  <div class="lantern" style="left:30%;bottom:205px;animation-delay:1s">
+    <div class="lantern-chain"></div>
+    <div class="lantern-body">🏮</div>
+    <div class="lantern-glow"></div>
+  </div>
+
+  <div class="hero-content">
+    <div class="player-card">
+      <span class="player-name">Hossain Fazle Rafie</span>
+      <div class="player-class">⚡ Freelancer · HS Student · Coder · Psych Student</div>
+      <div class="player-level">Level 19 · Intermediate · Dhaka, BD</div>
+      <div class="hp-row">
+        <span class="hp-label">❤ HP</span>
+        <div class="hp-bar"><div class="hp-fill"></div></div>
+        <span style="font-family:'Press Start 2P',monospace;font-size:7px;color:#dd2222;">900/1000</span>
+      </div>
+      <div class="hearts">❤️❤️❤️❤️❤️❤️❤️❤️❤️🖤</div>
+    </div>
+    <div class="hero-btns">
+      <a href="#projects" class="mc-btn btn-green">🗂 PROJECTS</a>
+      <a href="https://github.com/Rafie-kun" target="_blank" rel="noopener" class="mc-btn btn-blue">🐙 GITHUB</a>
+      <a href="#contact" class="mc-btn btn-dark">📬 CONTACT</a>
+    </div>
+  </div>
+</div>
+
+<div class="mc-divider" id="div1"></div>
+
+<!-- ABOUT -->
+<section id="about" class="reveal">
+  <div class="sec-head">
+    <div class="sec-icon-block icon-glowstone">📜</div>
+    <span class="sec-title">// About Me</span>
+    <div class="sec-line"></div>
+  </div>
+  <div class="about-panel">
+    <p class="about-text">
+      Hey, I'm <span class="hi-gold">Rafie</span> — a <span class="hi-teal">19-year-old</span> self-taught coder, freelancer, and psychology student from <span class="hi-gold">Dhaka, Bangladesh</span>. Like a Minecraft player who spawns in a dungeon with no gear, I started from zero and built my skill tree one block at a time.<br><br>
+      By day I write articles and pick up freelance gigs. By night I study the human mind through psychology. Two worlds, one character. The dungeon is dark but the <span class="hi-green">glowstone lights the way</span>.<br><br>
+      Still early game. Inventory growing. Not logging off. 🔥
+    </p>
+    <div class="stat-row">
+      <div class="stat-c"><span class="stat-c-icon">🎂</span><div class="stat-c-val">AGE 19</div><div class="stat-c-lab">Years Played</div></div>
+      <div class="stat-c"><span class="stat-c-icon">💻</span><div class="stat-c-val">INTERMEDIATE</div><div class="stat-c-lab">Coder Rank</div></div>
+      <div class="stat-c"><span class="stat-c-icon">🧠</span><div class="stat-c-val">STUDENT</div><div class="stat-c-lab">Psychology</div></div>
+      <div class="stat-c"><span class="stat-c-icon">🗺</span><div class="stat-c-val">DHAKA BD</div><div class="stat-c-lab">Spawn Point</div></div>
+    </div>
+  </div>
+</section>
+
+<div class="mc-divider" id="div2"></div>
+
+<!-- WORK -->
+<section id="work" class="reveal">
+  <div class="sec-head">
+    <div class="sec-icon-block icon-stone">⚒</div>
+    <span class="sec-title">// Work Experience</span>
+    <div class="sec-line"></div>
+  </div>
+  <div class="timeline">
+    <div class="tl-item current">
+      <div class="tl-dot active"></div>
+      <span class="badge badge-active">▶ CURRENT</span>
+      <div class="tl-title">Article Writer</div>
+      <div class="tl-company">📍 Dynamic Teen Collection · 2024 – Present</div>
+      <div class="tl-desc">Writing articles and content for a teen-focused publication brand.</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <span class="badge badge-done">COMPLETED</span>
+      <div class="tl-title">Freelancer</div>
+      <div class="tl-company">📍 Self-Employed · 2023 – 2024</div>
+      <div class="tl-desc">Solo runs. Took on contracts, built things, survived without a guild.</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <span class="badge badge-done">COMPLETED</span>
+      <div class="tl-title">Instagram Shop Manager</div>
+      <div class="tl-company">📍 Various Clients · 2023</div>
+      <div class="tl-desc">Managed and operated Instagram storefronts. Shops got taken down eventually.</div>
+    </div>
+  </div>
+</section>
+
+<div class="mc-divider" id="div3"></div>
+
+<!-- SKILLS -->
+<section id="skills" class="reveal">
+  <div class="sec-head">
+    <div class="sec-icon-block icon-mossy">🎒</div>
+    <span class="sec-title">// Skills / Inventory</span>
+    <div class="sec-line"></div>
+  </div>
+  <div class="skill-grid">
+    <div class="skill-c r-rare"><span class="skill-emoji">🐍</span><span class="skill-name">Python</span><div class="skill-tip">RARE · Intermediate</div></div>
+    <div class="skill-c r-uncommon"><span class="skill-emoji">🌐</span><span class="skill-name">HTML/CSS</span><div class="skill-tip">UNCOMMON · Solid</div></div>
+    <div class="skill-c r-rare"><span class="skill-emoji">⚡</span><span class="skill-name">JavaScript</span><div class="skill-tip">RARE · Learning</div></div>
+    <div class="skill-c r-epic"><span class="skill-emoji">🧠</span><span class="skill-name">Psychology</span><div class="skill-tip">EPIC · Studying</div></div>
+    <div class="skill-c r-uncommon"><span class="skill-emoji">🐙</span><span class="skill-name">Git/GitHub</span><div class="skill-tip">UNCOMMON · Regular</div></div>
+    <div class="skill-c r-legendary"><span class="skill-emoji">💬</span><span class="skill-name">Freelancing</span><div class="skill-tip">LEGENDARY · Active</div></div>
+    <div class="skill-c r-common"><span class="skill-emoji">🔍</span><span class="skill-name">Problem Solving</span><div class="skill-tip">COMMON</div></div>
+    <div class="skill-c r-rare"><span class="skill-emoji">🎨</span><span class="skill-name">UI Design</span><div class="skill-tip">RARE · Exploring</div></div>
+    <div class="skill-c r-uncommon"><span class="skill-emoji">📝</span><span class="skill-name">Content Writing</span><div class="skill-tip">UNCOMMON · Active</div></div>
+    <div class="skill-c r-epic"><span class="skill-emoji">🎮</span><span class="skill-name">Minecraft</span><div class="skill-tip">EPIC · Obviously</div></div>
+    <div class="skill-c r-legendary"><span class="skill-emoji">☕</span><span class="skill-name">Caffeine</span><div class="skill-tip">LEGENDARY · Max Lv</div></div>
+    <div class="skill-c r-common"><span class="skill-emoji">☁️</span><span class="skill-name">Cloud Basics</span><div class="skill-tip">COMMON · Basics</div></div>
+  </div>
+  <p style="margin-top:14px;font-family:'Press Start 2P',monospace;font-size:7px;color:var(--text-dim);">HOVER TO SEE RARITY · COMMON → UNCOMMON → RARE → EPIC → LEGENDARY</p>
+</section>
+
+<div class="mc-divider" id="div4"></div>
+
+<!-- PROJECTS -->
+<section id="projects" class="reveal">
+  <div class="sec-head">
+    <div class="sec-icon-block icon-teal">💰</div>
+    <span class="sec-title">// Projects / Builds</span>
+    <div class="sec-line"></div>
+  </div>
+  <div class="proj-grid">
+    <div class="proj-card">
+      <div class="proj-top">💰</div>
+      <div class="proj-body">
+        <div class="proj-title">CraftEconomy</div>
+        <div class="proj-desc">A budget tracking app for real-world money management. No magic — just maths.</div>
+        <div class="proj-tags">
+          <span class="tag tag-green">Python</span>
+          <span class="tag tag-blue">Finance</span>
+          <span class="tag tag-teal">CLI</span>
+        </div>
+        <a href="https://github.com/Rafie-kun/CraftEconomy" target="_blank" rel="noopener" class="mc-btn btn-green" style="font-size:8px;padding:8px 14px;">View on GitHub →</a>
+      </div>
+    </div>
+    <div class="proj-card">
+      <div class="proj-top">🌐</div>
+      <div class="proj-body">
+        <div class="proj-title">Dungeon Portfolio</div>
+        <div class="proj-desc">This very site. Minecraft dungeon-themed personal portfolio. Pure HTML/CSS/JS.</div>
+        <div class="proj-tags">
+          <span class="tag tag-green">HTML</span>
+          <span class="tag tag-blue">CSS</span>
+          <span class="tag tag-teal">JS</span>
+        </div>
+        <a href="https://github.com/Rafie-kun/Rafie-kun.github.io" target="_blank" rel="noopener" class="mc-btn btn-green" style="font-size:8px;padding:8px 14px;">View on GitHub →</a>
+      </div>
+    </div>
+    <div class="proj-card" style="position:relative;">
+      <div class="proj-top">🔮</div>
+      <div class="proj-body">
+        <div class="proj-title">Next Build...</div>
+        <div class="proj-desc">Something is being forged. Check back soon.</div>
+        <div class="proj-tags"><span class="tag tag-teal">Soon™</span></div>
+      </div>
+      <div class="locked-overlay">
+        <div style="font-size:36px;">🔒</div>
+        <div class="locked-text">CHEST LOCKED<br>COME BACK LATER</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="mc-divider" id="div5"></div>
+
+<!-- ACHIEVEMENTS -->
+<section id="achievements" class="reveal">
+  <div class="sec-head">
+    <div class="sec-icon-block icon-blue">🏆</div>
+    <span class="sec-title">// Achievements</span>
+    <div class="sec-line"></div>
+  </div>
+  <div class="ach-list">
+    <div class="ach-item">
+      <div class="ach-icon">🎓</div>
+      <div class="ach-info"><div class="ach-title">Taking the First Step</div><div class="ach-desc">Enrolled in Psychology — studying human behaviour &amp; the mind</div></div>
+      <div class="ach-badge badge-done-g">UNLOCKED</div>
+    </div>
+    <div class="ach-item">
+      <div class="ach-icon">💼</div>
+      <div class="ach-info"><div class="ach-title">Freelancer Mode: ON</div><div class="ach-desc">Started taking on real freelance work as a student</div></div>
+      <div class="ach-badge badge-done-g">UNLOCKED</div>
+    </div>
+    <div class="ach-item">
+      <div class="ach-icon">🌐</div>
+      <div class="ach-info"><div class="ach-title">First Deploy</div><div class="ach-desc">Launched a live website — rafie-kun.github.io</div></div>
+      <div class="ach-badge badge-done-g">UNLOCKED</div>
+    </div>
+    <div class="ach-item">
+      <div class="ach-icon">📝</div>
+      <div class="ach-info"><div class="ach-title">The Quill is Mightier</div><div class="ach-desc">Writing articles for Dynamic Teen Collection</div></div>
+      <div class="ach-badge badge-done-g">UNLOCKED</div>
+    </div>
+    <div class="ach-item locked">
+      <div class="ach-icon">💎</div>
+      <div class="ach-info"><div class="ach-title">Diamond Tier Coder</div><div class="ach-desc">Reach advanced level in software development</div></div>
+      <div class="ach-badge badge-lock">LOCKED</div>
+    </div>
+    <div class="ach-item locked">
+      <div class="ach-icon">🐉</div>
+      <div class="ach-info"><div class="ach-title">??? Hidden Achievement</div><div class="ach-desc">Keep grinding.</div></div>
+      <div class="ach-badge badge-lock">LOCKED</div>
+    </div>
+  </div>
+</section>
+
+<div class="mc-divider" id="div6"></div>
+
+<!-- GITHUB -->
+<section id="github" class="reveal">
+  <div class="sec-head">
+    <div class="sec-icon-block icon-dark">🐙</div>
+    <span class="sec-title">// GitHub</span>
+    <div class="sec-line"></div>
+  </div>
+  <div class="github-panel">
+    <span class="github-icon">🐙</span>
+    <div class="github-name">@Rafie-kun</div>
+    <div class="github-sub">All code, experiments, and builds live here.</div>
+    <a href="https://github.com/Rafie-kun" target="_blank" rel="noopener" class="mc-btn btn-blue">Open GitHub →</a>
+  </div>
+</section>
+
+<div class="mc-divider" id="div7"></div>
+
+<!-- CONTACT -->
+<section id="contact" class="reveal">
+  <div class="sec-head">
+    <div class="sec-icon-block icon-glowstone">📬</div>
+    <span class="sec-title">// Contact Me</span>
+    <div class="sec-line"></div>
+  </div>
+
+  <!-- QUICK LINKS -->
+  <div class="contact-grid">
+    <a href="mailto:rafiecool249@gmail.com" class="contact-card">
+      <div class="contact-icon">📧</div>
+      <div><div class="contact-label">EMAIL</div><div class="contact-val">rafiecool249@gmail.com</div></div>
+    </a>
+    <a href="https://discord.com/users/rafiekunsimp" target="_blank" rel="noopener" class="contact-card">
+      <div class="contact-icon">💬</div>
+      <div><div class="contact-label">DISCORD</div><div class="contact-val">rafiekunsimp</div></div>
+    </a>
+    <a href="https://wa.me/8801319343526" target="_blank" rel="noopener" class="contact-card">
+      <div class="contact-icon">📱</div>
+      <div><div class="contact-label">PHONE / WHATSAPP</div><div class="contact-val">+880 1319 343526</div></div>
+    </a>
+    <a href="https://github.com/Rafie-kun" target="_blank" rel="noopener" class="contact-card">
+      <div class="contact-icon">🐙</div>
+      <div><div class="contact-label">GITHUB</div><div class="contact-val">github.com/Rafie-kun</div></div>
+    </a>
+    <div class="contact-card" style="opacity:.4;cursor:not-allowed;">
+      <div class="contact-icon">🔗</div>
+      <div><div class="contact-label">LINKEDIN</div><div class="contact-val">Coming soon...</div></div>
+    </div>
+    <div class="contact-card" style="opacity:.4;cursor:not-allowed;">
+      <div class="contact-icon">🐦</div>
+      <div><div class="contact-label">TWITTER / X</div><div class="contact-val">Coming soon...</div></div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════
+       CONTACT FORM — powered by Web3Forms
+       Messages land at rafiecool249@gmail.com
+       ══════════════════════════════════════════════════ -->
+  <div class="contact-form-wrap">
+    <form
+      class="contact-form"
+      id="contactForm"
+      action="https://api.web3forms.com/submit"
+      method="POST"
+      novalidate
+    >
+      <!-- Web3Forms access key -->
+      <input type="hidden" name="access_key" value="6415f871-a4b7-430b-ab24-db5d9dfc5111">
+      <input type="hidden" name="subject" id="hiddenSubject" value="New message from portfolio">
+      <input type="hidden" name="redirect" value="false">
+      <input type="hidden" name="from_name" value="Rafie Portfolio">
+
+      <!-- Honeypot anti-spam field — bots fill this, humans don't see it -->
+      <div class="hp-trap" aria-hidden="true">
+        <input type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" style="display:none">
+      </div>
+
+      <div class="form-grid">
+        <div class="form-field">
+          <label for="fname">YOUR NAME <span class="req">*</span></label>
+          <input type="text" id="fname" name="name" placeholder="Steve..." autocomplete="name" required>
+        </div>
+        <div class="form-field">
+          <label for="femail">YOUR EMAIL <span class="req">*</span></label>
+          <input type="email" id="femail" name="email" placeholder="you@example.com" autocomplete="email" required>
+        </div>
+      </div>
+
+      <div class="form-field">
+        <label for="fsubject">SUBJECT</label>
+        <select id="fsubject" name="subject">
+          <option value="">— Pick a reason —</option>
+          <optgroup label="📧 General Mail">
+            <option value="Freelance / Hire">🛠 Freelance / Hire me</option>
+            <option value="Collaboration">🤝 Collaboration</option>
+            <option value="Just saying hi">👋 Just saying hi</option>
+            <option value="General Enquiry">📨 General Enquiry</option>
+          </optgroup>
+          <optgroup label="🐛 Issues / Feedback">
+            <option value="Bug Report">🐛 Bug / Something broken</option>
+            <option value="Project Feedback">📋 Project Feedback</option>
+            <option value="Feature Request">💡 Feature Request / Suggestion</option>
+            <option value="Other">🔮 Other</option>
+          </optgroup>
+        </select>
+      </div>
+
+      <div class="form-field">
+        <label for="fmessage">MESSAGE <span class="req">*</span></label>
+        <textarea id="fmessage" name="message" placeholder="Write your message here..." required maxlength="2000"></textarea>
+        <div class="char-count" id="charCount">0 / 2000</div>
+      </div>
+
+      <button type="submit" class="form-submit" id="formSubmit">
+        <div class="submit-spinner" id="submitSpinner"></div>
+        <span class="submit-label" id="submitLabel">⚔ SEND MESSAGE</span>
+      </button>
+
+      <div class="form-error-msg" id="formError">
+        ❌ Something went wrong. Please try emailing me directly:<br>
+        <a href="mailto:rafiecool249@gmail.com" style="color:var(--campfire);">rafiecool249@gmail.com</a>
+      </div>
+
+      <p class="form-notice">
+        Messages go straight to <a href="mailto:rafiecool249@gmail.com">rafiecool249@gmail.com</a> · I reply within 24–48 hrs.
+      </p>
+    </form>
+
+    <!-- Success panel shown after submit -->
+    <div class="form-success" id="formSuccess">
+      <span class="form-success-icon">✉️</span>
+      <div class="form-success-title">MESSAGE DELIVERED!</div>
+      <div class="form-success-sub">Thanks for reaching out! I'll get back to you within 24–48 hours. Check your inbox for a confirmation.</div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-text">
+    © 2026 <span>Hossain Fazle Rafie</span> · Built block by block · Pure HTML/CSS/JS<br>
+    rafie-kun.github.io · No Creepers were harmed in the making of this site 🔥
+  </div>
+  <div class="footer-links">
+    <a href="mailto:rafiecool249@gmail.com">EMAIL</a>
+    <a href="https://github.com/Rafie-kun" target="_blank" rel="noopener">GITHUB</a>
+    <a href="#about">ABOUT</a>
+    <a href="#contact">CONTACT</a>
+  </div>
+</footer>
+
+<script>
+// ═══════════════════════════════════════════════
+// DIVIDERS
+// ═══════════════════════════════════════════════
+function fillDivider(id) {
+  const d = document.getElementById(id);
+  if(!d) return;
+  const colors = ['#3a3f4a','#2d4a2a','#3a3f4a','#252830','#4e5566','#2d4a2a','#3a3f4a'];
+  const count = Math.ceil(window.innerWidth / 80) + 2;
+  for(let i=0;i<count;i++){
+    const b = document.createElement('div');
+    b.className = 'div-block';
+    b.style.background = colors[i % colors.length];
+    d.appendChild(b);
+  }
+}
+['div1','div2','div3','div4','div5','div6','div7'].forEach(fillDivider);
+
+// ═══════════════════════════════════════════════
+// TERRAIN ROWS
+// ═══════════════════════════════════════════════
+function fillRow(id, types) {
+  const row = document.getElementById(id);
+  if(!row) return;
+  const count = Math.ceil(window.innerWidth / 48) + 4;
+  for(let i=0;i<count;i++){
+    const b = document.createElement('div');
+    b.className = 'pxblock ' + types[i % types.length];
+    row.appendChild(b);
+  }
+}
+fillRow('rowGrass', ['pxblock-mossy','pxblock-stone','pxblock-mossy','pxblock-mossy','pxblock-stone']);
+fillRow('rowS1', ['pxblock-stone','pxblock-dark','pxblock-stone','pxblock-stone','pxblock-mossy']);
+fillRow('rowS2', ['pxblock-dark','pxblock-stone','pxblock-dark','pxblock-stone','pxblock-dark']);
+fillRow('rowS3', ['pxblock-stone','pxblock-dark','pxblock-dark','pxblock-stone','pxblock-dark']);
+fillRow('rowS4', ['pxblock-dark','pxblock-dark','pxblock-stone','pxblock-dark','pxblock-dark']);
+
+// ═══════════════════════════════════════════════
+// STARS CANVAS
+// ═══════════════════════════════════════════════
+const canvas = document.getElementById('starsCanvas');
+const ctx = canvas ? canvas.getContext('2d') : null;
+function drawStars() {
+  if(!canvas||!ctx) return;
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  for(let i=0;i<200;i++){
+    const x = Math.random()*canvas.width;
+    const y = Math.random()*canvas.height*.65;
+    const r = Math.random()*1.5+.3;
+    const alpha = Math.random()*.8+.2;
+    ctx.beginPath();
+    ctx.arc(x,y,r,0,Math.PI*2);
+    ctx.fillStyle = `rgba(180,210,255,${alpha})`;
+    ctx.fill();
+  }
+}
+drawStars();
+let resizeTimer;
+window.addEventListener('resize', () => { clearTimeout(resizeTimer); resizeTimer = setTimeout(drawStars, 150); });
+
+// ═══════════════════════════════════════════════
+// MIST STRIPS
+// ═══════════════════════════════════════════════
+const mistLayer = document.getElementById('mistLayer');
+for(let i=0;i<7;i++){
+  const m = document.createElement('div');
+  m.className = 'mist-strip';
+  m.style.cssText = `
+    width:${200+Math.random()*300}px;
+    bottom:${Math.random()*60}%;
+    animation-duration:${22+Math.random()*28}s;
+    animation-delay:${-Math.random()*30}s;
+    opacity:${.12+Math.random()*.22};
+    height:${30+Math.random()*40}px;
+  `;
+  mistLayer.appendChild(m);
+}
+
+// ═══════════════════════════════════════════════
+// EMBERS
+// ═══════════════════════════════════════════════
+for(let i=0;i<12;i++){
+  const e = document.createElement('div');
+  e.className = 'ember';
+  e.style.cssText = `
+    left:calc(50% + ${(Math.random()-.5)*44}px);
+    bottom:${198+Math.random()*44}px;
+    background:${['#ff8c00','#ffcc44','#ff4500','#ffa500','#ffd080'][Math.floor(Math.random()*5)]};
+    width:${2+Math.random()*3}px;
+    height:${2+Math.random()*3}px;
+    animation-duration:${2+Math.random()*3.5}s;
+    animation-delay:${Math.random()*5}s;
+  `;
+  document.body.appendChild(e);
+}
+
+// ═══════════════════════════════════════════════
+// SMOOTH SCROLL
+// ═══════════════════════════════════════════════
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const href = a.getAttribute('href');
+    if(href === '#') { window.scrollTo({top:0,behavior:'smooth'}); e.preventDefault(); return; }
+    const el = document.querySelector(href);
+    if(el){ e.preventDefault(); el.scrollIntoView({behavior:'smooth'}); }
+  });
+});
+
+// ═══════════════════════════════════════════════
+// SCROLL REVEAL + BACK TO TOP
+// ═══════════════════════════════════════════════
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(en => { if(en.isIntersecting) en.target.classList.add('visible'); });
+}, { threshold:0.08 });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+const backTop = document.getElementById('backTop');
+window.addEventListener('scroll', () => {
+  backTop.classList.toggle('visible', window.scrollY > 400);
+}, {passive:true});
+
+// ═══════════════════════════════════════════════
+// CLICK SPARKS
+// ═══════════════════════════════════════════════
+document.addEventListener('click', e => {
+  if(e.target.closest('a,button,input,textarea,select')) return;
+  for(let i=0;i<5;i++){
+    const p = document.createElement('div');
+    p.style.cssText = `
+      position:fixed;
+      width:6px;height:6px;
+      pointer-events:none;z-index:9999;
+      left:${e.clientX+(Math.random()-.5)*24}px;
+      top:${e.clientY+(Math.random()-.5)*24}px;
+      background:${['#ffd080','#ff8c00','#ffcc44','#44ccbb','#ff4500'][Math.floor(Math.random()*5)]};
+      border:1px solid #000;
+      animation:particleRise ${.5+Math.random()*.5}s ease-out forwards;
+    `;
+    document.body.appendChild(p);
+    setTimeout(()=>p.remove(),1000);
+  }
+});
+
+// ═══════════════════════════════════════════════
+// CONTACT FORM — Web3Forms AJAX submission
+// Messages land at rafiecool249@gmail.com
+// ═══════════════════════════════════════════════
+(function() {
+  const form      = document.getElementById('contactForm');
+  const btn       = document.getElementById('formSubmit');
+  const label     = document.getElementById('submitLabel');
+  const spinner   = document.getElementById('submitSpinner');
+  const success   = document.getElementById('formSuccess');
+  const errorMsg  = document.getElementById('formError');
+  const charCount = document.getElementById('charCount');
+  const msgArea   = document.getElementById('fmessage');
+  const hiddenSub = document.getElementById('hiddenSubject');
+  const subSel    = document.getElementById('fsubject');
+
+  if(!form) return;
+
+  // Character counter
+  msgArea.addEventListener('input', () => {
+    const len = msgArea.value.length;
+    const max = parseInt(msgArea.getAttribute('maxlength')) || 2000;
+    charCount.textContent = len + ' / ' + max;
+    charCount.className = 'char-count' + (len > max*0.9 ? (len >= max ? ' over' : ' warn') : '');
+  });
+
+  // Sync subject dropdown to hidden field for better email subjects
+  subSel.addEventListener('change', () => {
+    const val = subSel.value;
+    hiddenSub.value = val ? 'Portfolio: ' + val : 'New message from Rafie portfolio';
+  });
+
+  // Live validation feedback
+  const nameIn  = document.getElementById('fname');
+  const emailIn = document.getElementById('femail');
+
+  function validateEmail(v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }
+
+  emailIn.addEventListener('blur', () => {
+    if(emailIn.value) {
+      emailIn.classList.toggle('valid', validateEmail(emailIn.value));
+      emailIn.classList.toggle('invalid', !validateEmail(emailIn.value));
+    }
+  });
+
+  nameIn.addEventListener('blur', () => {
+    if(nameIn.value.trim().length >= 2) {
+      nameIn.classList.add('valid');
+      nameIn.classList.remove('invalid');
+    } else if(nameIn.value.length > 0) {
+      nameIn.classList.add('invalid');
+      nameIn.classList.remove('valid');
+    }
+  });
+
+  // AJAX form submission via Web3Forms — stays on page, shows success panel
+  form.addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    // Honeypot check (Web3Forms botcheck)
+    const bot = form.querySelector('input[name="botcheck"]');
+    if(bot && bot.checked) return;
+
+    // Basic validation
+    const name = nameIn.value.trim();
+    const email = emailIn.value.trim();
+    const message = msgArea.value.trim();
+
+    if(!name || name.length < 2) { nameIn.focus(); nameIn.classList.add('invalid'); return; }
+    if(!validateEmail(email)) { emailIn.focus(); emailIn.classList.add('invalid'); return; }
+    if(!message || message.length < 5) { msgArea.focus(); return; }
+
+    // Loading state
+    btn.disabled = true;
+    btn.classList.add('loading');
+    label.textContent = 'SENDING...';
+    errorMsg.style.display = 'none';
+
+    try {
+      const res = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({
+          access_key: '6415f871-a4b7-430b-ab24-db5d9dfc5111',
+          name: name,
+          email: email,
+          subject: hiddenSub.value || 'New message from Rafie portfolio',
+          message: message,
+          from_name: 'Rafie Portfolio',
+          botcheck: ''
+        })
+      });
+
+      const json = await res.json();
+
+      if(json.success) {
+        form.style.display = 'none';
+        success.style.display = 'block';
+        success.scrollIntoView({behavior:'smooth', block:'nearest'});
+      } else {
+        throw new Error(json.message || 'Submission failed');
+      }
+    } catch(err) {
+      errorMsg.style.display = 'block';
+      errorMsg.innerHTML = '❌ Something went wrong. Please try emailing directly:<br><a href="mailto:rafiecool249@gmail.com" style="color:var(--campfire);">rafiecool249@gmail.com</a>';
+      btn.disabled = false;
+      btn.classList.remove('loading');
+      label.textContent = '⚔ SEND MESSAGE';
+    }
+  });
+})(); // end contact form IIFE
+
+// ═══════════════════════════════════════════════
+// MINECRAFT AMBIENT MUSIC ENGINE
+// C418-style piano using Web Audio API
+// Tracks: Living Mice, Sweden, Wet Hands, Calm
+// ═══════════════════════════════════════════════
+(function() {
+
+  // Note frequencies (Hz)
+  const N = {
+    C3:130.81, D3:146.83, E3:164.81, F3:174.61, G3:196.00, A3:220.00, B3:246.94,
+    C4:261.63, D4:293.66, E4:329.63, F4:349.23, G4:392.00, A4:440.00, B4:493.88,
+    C5:523.25, D5:587.33, E5:659.25, F5:698.46, G5:783.99, A5:880.00,
+    Bb3:233.08, Bb4:466.16, F3s:185.00, C4s:277.18, D4s:311.13, G4s:415.30, A4s:466.16,
+    R:0 // rest
+  };
+
+  const MC_TRACKS = [
+    {
+      name: 'C418 \u2014 Living Mice',
+      // Living Mice: haunting minor key melody — the iconic one
+      notes: [
+        [N.E4,0.6],[N.R,0.1],[N.E4,0.6],[N.R,0.1],[N.G4,0.8],[N.R,0.2],
+        [N.E4,0.6],[N.R,0.1],[N.D4,0.6],[N.R,0.1],[N.C4,1.2],[N.R,0.3],
+        [N.D4,0.6],[N.R,0.1],[N.E4,0.6],[N.R,0.1],[N.G4,0.8],[N.R,0.2],
+        [N.A4,0.6],[N.R,0.1],[N.G4,0.6],[N.R,0.1],[N.E4,1.5],[N.R,0.5],
+        [N.C4,0.6],[N.R,0.1],[N.D4,0.6],[N.R,0.1],[N.E4,0.8],[N.R,0.2],
+        [N.F4,0.6],[N.R,0.1],[N.E4,0.6],[N.R,0.1],[N.D4,1.2],[N.R,0.3],
+        [N.C4,0.6],[N.R,0.1],[N.B3,0.6],[N.R,0.1],[N.C4,0.8],[N.R,0.2],
+        [N.D4,0.6],[N.R,0.1],[N.E4,0.6],[N.R,0.1],[N.C4,2.0],[N.R,0.8],
+        [N.G3,0.6],[N.R,0.1],[N.A3,0.6],[N.R,0.1],[N.B3,0.8],[N.R,0.2],
+        [N.C4,0.6],[N.R,0.1],[N.B3,0.6],[N.R,0.1],[N.A3,1.2],[N.R,0.3],
+        [N.G3,0.6],[N.R,0.1],[N.A3,0.6],[N.R,0.1],[N.B3,0.8],[N.R,0.2],
+        [N.C4,0.6],[N.R,0.1],[N.D4,0.6],[N.R,0.1],[N.E4,1.8],[N.R,1.0]
+      ]
+    },
+    {
+      name: 'C418 \u2014 Sweden',
+      // Sweden: gentle flowing melody in C major
+      notes: [
+        [N.C4,0.8],[N.E4,0.6],[N.G4,0.8],[N.C5,1.0],[N.R,0.2],
+        [N.B4,0.6],[N.A4,0.6],[N.G4,0.8],[N.E4,0.6],[N.C4,1.2],[N.R,0.4],
+        [N.D4,0.8],[N.F4,0.6],[N.A4,0.8],[N.D5,1.0],[N.R,0.2],
+        [N.C5,0.6],[N.B4,0.6],[N.A4,0.8],[N.G4,0.6],[N.E4,1.5],[N.R,0.5],
+        [N.E4,0.8],[N.G4,0.6],[N.B4,0.8],[N.E5,1.0],[N.R,0.2],
+        [N.D5,0.6],[N.C5,0.6],[N.B4,0.8],[N.A4,0.6],[N.G4,1.2],[N.R,0.4],
+        [N.C4,0.8],[N.E4,0.6],[N.G4,0.8],[N.B4,0.6],[N.C5,1.8],[N.R,1.0]
+      ]
+    },
+    {
+      name: 'C418 \u2014 Wet Hands',
+      // Wet Hands: simple soft descending
+      notes: [
+        [N.E5,1.2],[N.R,0.2],[N.D5,0.8],[N.C5,0.8],[N.B4,1.2],[N.R,0.3],
+        [N.A4,0.8],[N.G4,0.8],[N.E4,1.5],[N.R,0.5],
+        [N.G4,0.8],[N.A4,0.6],[N.B4,0.8],[N.C5,1.2],[N.R,0.3],
+        [N.D5,0.8],[N.E5,0.6],[N.D5,0.8],[N.C5,1.5],[N.R,0.5],
+        [N.B4,0.8],[N.A4,0.6],[N.G4,0.8],[N.E4,1.2],[N.R,0.3],
+        [N.C4,0.8],[N.D4,0.6],[N.E4,0.8],[N.G4,0.6],[N.C5,2.5],[N.R,1.0]
+      ]
+    },
+    {
+      name: 'C418 \u2014 Calm',
+      // Calm: slow sparse notes
+      notes: [
+        [N.C4,2.0],[N.R,0.8],[N.E4,1.5],[N.R,0.5],[N.G4,2.0],[N.R,0.8],
+        [N.A4,1.5],[N.G4,0.5],[N.E4,1.0],[N.R,0.5],[N.C4,2.5],[N.R,1.0],
+        [N.B3,1.5],[N.R,0.5],[N.C4,1.0],[N.E4,0.8],[N.G4,2.0],[N.R,0.8],
+        [N.A4,1.5],[N.R,0.5],[N.G4,1.0],[N.R,0.5],[N.E4,2.0],[N.R,0.8],
+        [N.D4,1.5],[N.R,0.5],[N.C4,1.0],[N.B3,0.8],[N.C4,3.0],[N.R,1.5]
+      ]
+    }
+  ];
+
+  let audioCtx = null;
+  let playing = false;
+  let currentTrack = 0;
+  let masterGain = null;
+  let scheduler = null;
+  let barInterval = null;
+  let trackStart = 0;
+  let trackDuration = 0;
+
+  function getCtx() {
+    if (!audioCtx) {
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      masterGain = audioCtx.createGain();
+      masterGain.gain.value = 0.4;
+      masterGain.connect(audioCtx.destination);
+    }
+    return audioCtx;
+  }
+
+  function playNote(freq, dur, t) {
+    if (!freq) return;
+    const ctx = getCtx();
+    // Two oscillators: fundamental + soft octave for richness
+    [1, 2].forEach((mult, i) => {
+      const osc = ctx.createOscillator();
+      const g   = ctx.createGain();
+      const lpf = ctx.createBiquadFilter();
+      lpf.type = 'lowpass';
+      lpf.frequency.value = 1800;
+      osc.type = 'sine';
+      osc.frequency.value = freq * mult;
+      osc.connect(lpf); lpf.connect(g); g.connect(masterGain);
+      const vol = i === 0 ? 1.0 : 0.18;
+      g.gain.setValueAtTime(0, t);
+      g.gain.linearRampToValueAtTime(vol, t + 0.03);
+      g.gain.exponentialRampToValueAtTime(vol * 0.35, t + dur * 0.5);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + dur * 1.4);
+      osc.start(t);
+      osc.stop(t + dur * 1.5);
+    });
+  }
+
+  function playTrack(idx) {
+    const ctx = getCtx();
+    const track = MC_TRACKS[idx];
+    trackStart = ctx.currentTime + 0.15;
+    trackDuration = track.notes.reduce((s,[,d]) => s + d, 0);
+    let t = trackStart;
+    track.notes.forEach(([f, d]) => { playNote(f, d, t); t += d; });
+    scheduler = setTimeout(() => {
+      if (!playing) return;
+      currentTrack = (currentTrack + 1) % MC_TRACKS.length;
+      document.getElementById('musicTrackName').textContent = '\u266a ' + MC_TRACKS[currentTrack].name;
+      playTrack(currentTrack);
+    }, (trackDuration + 1.5) * 1000);
+  }
+
+  function startBar() {
+    const fill = document.getElementById('musicBarFill');
+    barInterval = setInterval(() => {
+      if (!audioCtx || !playing) return;
+      const pct = Math.min(100, ((audioCtx.currentTime - trackStart) / trackDuration) * 100);
+      fill.style.width = Math.max(0, pct) + '%';
+    }, 250);
+  }
+
+  window.toggleMusic = function() {
+    const btn = document.getElementById('musicPlayBtn');
+    if (!playing) {
+      playing = true;
+      btn.textContent = '\u23f8';
+      document.getElementById('musicTrackName').textContent = '\u266a ' + MC_TRACKS[currentTrack].name;
+      getCtx();
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+      playTrack(currentTrack);
+      startBar();
+    } else {
+      playing = false;
+      btn.textContent = '\u25b6';
+      clearTimeout(scheduler);
+      clearInterval(barInterval);
+      audioCtx.suspend();
+      document.getElementById('musicBarFill').style.width = '0%';
+    }
+  };
+
+  window.setMusicVol = function(val) {
+    if (masterGain) masterGain.gain.value = val / 100;
+  };
+
+})(); // end music engine
+</script>
+</body>
+</html>
