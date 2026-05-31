@@ -715,6 +715,70 @@ footer { background:var(--night-deep); border-top:4px solid var(--stone-dark); b
 .reveal { opacity:0; transform:translateY(20px); transition:opacity .5s ease,transform .5s ease; }
 .reveal.visible { opacity:1; transform:translateY(0); }
 
+/* MINECRAFT MUSIC PLAYER */
+.mc-music-player {
+  position:fixed;
+  bottom:24px; left:24px;
+  z-index:999;
+  background:var(--panel);
+  border:3px solid var(--stone);
+  border-right:4px solid #000;
+  border-bottom:4px solid #000;
+  box-shadow:4px 4px 0 #000, 0 0 20px rgba(255,208,128,.08);
+  padding:10px 14px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  min-width:200px;
+  transition:all .2s;
+}
+.mc-music-player:hover { border-color:var(--glowstone-dim); }
+.music-btn {
+  background:var(--stone-dark);
+  border:2px solid var(--stone);
+  border-right:3px solid #000;
+  border-bottom:3px solid #000;
+  color:var(--glowstone);
+  font-size:16px;
+  width:30px; height:30px;
+  display:flex; align-items:center; justify-content:center;
+  cursor:pointer;
+  flex-shrink:0;
+  transition:all .1s;
+}
+.music-btn:hover { background:var(--stone); transform:translate(-1px,-1px); box-shadow:1px 1px 0 #000; }
+.music-info { flex:1; overflow:hidden; }
+.music-track {
+  font-family:'Press Start 2P',monospace;
+  font-size:6px;
+  color:var(--glowstone);
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  margin-bottom:4px;
+  letter-spacing:.5px;
+}
+.music-bar {
+  height:4px;
+  background:var(--stone-dark);
+  border:1px solid var(--stone);
+  overflow:hidden;
+}
+.music-bar-fill {
+  height:100%;
+  background:linear-gradient(90deg, var(--teal), var(--glowstone));
+  width:0%;
+  transition:width .5s linear;
+}
+.music-vol {
+  display:flex; align-items:center; gap:4px;
+}
+.music-vol input[type=range] {
+  width:50px;
+  accent-color:var(--glowstone);
+  cursor:pointer;
+}
+
 /* BACK TO TOP */
 .back-top {
   position:fixed;
@@ -754,6 +818,19 @@ footer { background:var(--night-deep); border-top:4px solid var(--stone-dark); b
 </style>
 </head>
 <body>
+
+<!-- MINECRAFT MUSIC PLAYER -->
+<div class="mc-music-player" id="musicPlayer">
+  <button class="music-btn" id="musicPlayBtn" onclick="toggleMusic()" title="Play/Pause">▶</button>
+  <div class="music-info">
+    <div class="music-track" id="musicTrackName">♪ C418 — Sweden</div>
+    <div class="music-bar"><div class="music-bar-fill" id="musicBarFill"></div></div>
+  </div>
+  <div class="music-vol">
+    <span style="font-size:12px;">🔊</span>
+    <input type="range" min="0" max="100" value="40" id="musicVol" oninput="setMusicVol(this.value)">
+  </div>
+</div>
 
 <!-- BACK TO TOP -->
 <a class="back-top" id="backTop" href="#" aria-label="Back to top">▲ TOP</a>
@@ -1418,7 +1495,172 @@ document.addEventListener('click', e => {
       label.textContent = '⚔ SEND MESSAGE';
     }
   });
-})();
+})(); // end contact form IIFE
+
+// ═══════════════════════════════════════════════
+// MINECRAFT AMBIENT MUSIC ENGINE
+// C418-style piano using Web Audio API
+// Tracks: Living Mice, Sweden, Wet Hands, Calm
+// ═══════════════════════════════════════════════
+(function() {
+
+  // Note frequencies (Hz)
+  const N = {
+    C3:130.81, D3:146.83, E3:164.81, F3:174.61, G3:196.00, A3:220.00, B3:246.94,
+    C4:261.63, D4:293.66, E4:329.63, F4:349.23, G4:392.00, A4:440.00, B4:493.88,
+    C5:523.25, D5:587.33, E5:659.25, F5:698.46, G5:783.99, A5:880.00,
+    Bb3:233.08, Bb4:466.16, F3s:185.00, C4s:277.18, D4s:311.13, G4s:415.30, A4s:466.16,
+    R:0 // rest
+  };
+
+  const MC_TRACKS = [
+    {
+      name: 'C418 \u2014 Living Mice',
+      // Living Mice: haunting minor key melody — the iconic one
+      notes: [
+        [N.E4,0.6],[N.R,0.1],[N.E4,0.6],[N.R,0.1],[N.G4,0.8],[N.R,0.2],
+        [N.E4,0.6],[N.R,0.1],[N.D4,0.6],[N.R,0.1],[N.C4,1.2],[N.R,0.3],
+        [N.D4,0.6],[N.R,0.1],[N.E4,0.6],[N.R,0.1],[N.G4,0.8],[N.R,0.2],
+        [N.A4,0.6],[N.R,0.1],[N.G4,0.6],[N.R,0.1],[N.E4,1.5],[N.R,0.5],
+        [N.C4,0.6],[N.R,0.1],[N.D4,0.6],[N.R,0.1],[N.E4,0.8],[N.R,0.2],
+        [N.F4,0.6],[N.R,0.1],[N.E4,0.6],[N.R,0.1],[N.D4,1.2],[N.R,0.3],
+        [N.C4,0.6],[N.R,0.1],[N.B3,0.6],[N.R,0.1],[N.C4,0.8],[N.R,0.2],
+        [N.D4,0.6],[N.R,0.1],[N.E4,0.6],[N.R,0.1],[N.C4,2.0],[N.R,0.8],
+        [N.G3,0.6],[N.R,0.1],[N.A3,0.6],[N.R,0.1],[N.B3,0.8],[N.R,0.2],
+        [N.C4,0.6],[N.R,0.1],[N.B3,0.6],[N.R,0.1],[N.A3,1.2],[N.R,0.3],
+        [N.G3,0.6],[N.R,0.1],[N.A3,0.6],[N.R,0.1],[N.B3,0.8],[N.R,0.2],
+        [N.C4,0.6],[N.R,0.1],[N.D4,0.6],[N.R,0.1],[N.E4,1.8],[N.R,1.0]
+      ]
+    },
+    {
+      name: 'C418 \u2014 Sweden',
+      // Sweden: gentle flowing melody in C major
+      notes: [
+        [N.C4,0.8],[N.E4,0.6],[N.G4,0.8],[N.C5,1.0],[N.R,0.2],
+        [N.B4,0.6],[N.A4,0.6],[N.G4,0.8],[N.E4,0.6],[N.C4,1.2],[N.R,0.4],
+        [N.D4,0.8],[N.F4,0.6],[N.A4,0.8],[N.D5,1.0],[N.R,0.2],
+        [N.C5,0.6],[N.B4,0.6],[N.A4,0.8],[N.G4,0.6],[N.E4,1.5],[N.R,0.5],
+        [N.E4,0.8],[N.G4,0.6],[N.B4,0.8],[N.E5,1.0],[N.R,0.2],
+        [N.D5,0.6],[N.C5,0.6],[N.B4,0.8],[N.A4,0.6],[N.G4,1.2],[N.R,0.4],
+        [N.C4,0.8],[N.E4,0.6],[N.G4,0.8],[N.B4,0.6],[N.C5,1.8],[N.R,1.0]
+      ]
+    },
+    {
+      name: 'C418 \u2014 Wet Hands',
+      // Wet Hands: simple soft descending
+      notes: [
+        [N.E5,1.2],[N.R,0.2],[N.D5,0.8],[N.C5,0.8],[N.B4,1.2],[N.R,0.3],
+        [N.A4,0.8],[N.G4,0.8],[N.E4,1.5],[N.R,0.5],
+        [N.G4,0.8],[N.A4,0.6],[N.B4,0.8],[N.C5,1.2],[N.R,0.3],
+        [N.D5,0.8],[N.E5,0.6],[N.D5,0.8],[N.C5,1.5],[N.R,0.5],
+        [N.B4,0.8],[N.A4,0.6],[N.G4,0.8],[N.E4,1.2],[N.R,0.3],
+        [N.C4,0.8],[N.D4,0.6],[N.E4,0.8],[N.G4,0.6],[N.C5,2.5],[N.R,1.0]
+      ]
+    },
+    {
+      name: 'C418 \u2014 Calm',
+      // Calm: slow sparse notes
+      notes: [
+        [N.C4,2.0],[N.R,0.8],[N.E4,1.5],[N.R,0.5],[N.G4,2.0],[N.R,0.8],
+        [N.A4,1.5],[N.G4,0.5],[N.E4,1.0],[N.R,0.5],[N.C4,2.5],[N.R,1.0],
+        [N.B3,1.5],[N.R,0.5],[N.C4,1.0],[N.E4,0.8],[N.G4,2.0],[N.R,0.8],
+        [N.A4,1.5],[N.R,0.5],[N.G4,1.0],[N.R,0.5],[N.E4,2.0],[N.R,0.8],
+        [N.D4,1.5],[N.R,0.5],[N.C4,1.0],[N.B3,0.8],[N.C4,3.0],[N.R,1.5]
+      ]
+    }
+  ];
+
+  let audioCtx = null;
+  let playing = false;
+  let currentTrack = 0;
+  let masterGain = null;
+  let scheduler = null;
+  let barInterval = null;
+  let trackStart = 0;
+  let trackDuration = 0;
+
+  function getCtx() {
+    if (!audioCtx) {
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      masterGain = audioCtx.createGain();
+      masterGain.gain.value = 0.4;
+      masterGain.connect(audioCtx.destination);
+    }
+    return audioCtx;
+  }
+
+  function playNote(freq, dur, t) {
+    if (!freq) return;
+    const ctx = getCtx();
+    // Two oscillators: fundamental + soft octave for richness
+    [1, 2].forEach((mult, i) => {
+      const osc = ctx.createOscillator();
+      const g   = ctx.createGain();
+      const lpf = ctx.createBiquadFilter();
+      lpf.type = 'lowpass';
+      lpf.frequency.value = 1800;
+      osc.type = 'sine';
+      osc.frequency.value = freq * mult;
+      osc.connect(lpf); lpf.connect(g); g.connect(masterGain);
+      const vol = i === 0 ? 1.0 : 0.18;
+      g.gain.setValueAtTime(0, t);
+      g.gain.linearRampToValueAtTime(vol, t + 0.03);
+      g.gain.exponentialRampToValueAtTime(vol * 0.35, t + dur * 0.5);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + dur * 1.4);
+      osc.start(t);
+      osc.stop(t + dur * 1.5);
+    });
+  }
+
+  function playTrack(idx) {
+    const ctx = getCtx();
+    const track = MC_TRACKS[idx];
+    trackStart = ctx.currentTime + 0.15;
+    trackDuration = track.notes.reduce((s,[,d]) => s + d, 0);
+    let t = trackStart;
+    track.notes.forEach(([f, d]) => { playNote(f, d, t); t += d; });
+    scheduler = setTimeout(() => {
+      if (!playing) return;
+      currentTrack = (currentTrack + 1) % MC_TRACKS.length;
+      document.getElementById('musicTrackName').textContent = '\u266a ' + MC_TRACKS[currentTrack].name;
+      playTrack(currentTrack);
+    }, (trackDuration + 1.5) * 1000);
+  }
+
+  function startBar() {
+    const fill = document.getElementById('musicBarFill');
+    barInterval = setInterval(() => {
+      if (!audioCtx || !playing) return;
+      const pct = Math.min(100, ((audioCtx.currentTime - trackStart) / trackDuration) * 100);
+      fill.style.width = Math.max(0, pct) + '%';
+    }, 250);
+  }
+
+  window.toggleMusic = function() {
+    const btn = document.getElementById('musicPlayBtn');
+    if (!playing) {
+      playing = true;
+      btn.textContent = '\u23f8';
+      document.getElementById('musicTrackName').textContent = '\u266a ' + MC_TRACKS[currentTrack].name;
+      getCtx();
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+      playTrack(currentTrack);
+      startBar();
+    } else {
+      playing = false;
+      btn.textContent = '\u25b6';
+      clearTimeout(scheduler);
+      clearInterval(barInterval);
+      audioCtx.suspend();
+      document.getElementById('musicBarFill').style.width = '0%';
+    }
+  };
+
+  window.setMusicVol = function(val) {
+    if (masterGain) masterGain.gain.value = val / 100;
+  };
+
+})(); // end music engine
 </script>
 </body>
 </html>
