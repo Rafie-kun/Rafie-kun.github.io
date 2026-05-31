@@ -1104,11 +1104,18 @@ footer { background:var(--night-deep); border-top:4px solid var(--stone-dark); b
         <label for="fsubject">SUBJECT</label>
         <select id="fsubject" name="subject">
           <option value="">— Pick a reason —</option>
-          <option value="Freelance / Hire">🛠 Freelance / Hire me</option>
-          <option value="Collaboration">🤝 Collaboration</option>
-          <option value="Project Feedback">📋 Project Feedback</option>
-          <option value="Just saying hi">👋 Just saying hi</option>
-          <option value="Other">🔮 Other</option>
+          <optgroup label="📧 General Mail">
+            <option value="Freelance / Hire">🛠 Freelance / Hire me</option>
+            <option value="Collaboration">🤝 Collaboration</option>
+            <option value="Just saying hi">👋 Just saying hi</option>
+            <option value="General Enquiry">📨 General Enquiry</option>
+          </optgroup>
+          <optgroup label="🐛 Issues / Feedback">
+            <option value="Bug Report">🐛 Bug / Something broken</option>
+            <option value="Project Feedback">📋 Project Feedback</option>
+            <option value="Feature Request">💡 Feature Request / Suggestion</option>
+            <option value="Other">🔮 Other</option>
+          </optgroup>
         </select>
       </div>
 
