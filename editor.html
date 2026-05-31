@@ -919,61 +919,103 @@ async function requestNotifPermission() {
   return perm === 'granted';
 }
 
-function sendBrowserNotif(title, body, icon = '📬') {
+let pendingOpenIssueId = null; // track which issue to auto-open
+
+function sendBrowserNotif(title, bodyText, issueId = null) {
   if (Notification.permission !== 'granted') return;
   const n = new Notification('📬 ' + title, {
-    body: body,
+    body: bodyText,
     icon: 'https://rafie-kun.github.io/favicon.ico',
-    badge: 'https://rafie-kun.github.io/favicon.ico',
-    tag: 'portfolio-message',
+    tag: 'portfolio-msg-' + (issueId || 'new'),
     requireInteraction: true
   });
   n.onclick = () => {
     window.focus();
-    document.getElementById('inboxBody').scrollIntoView({ behavior: 'smooth' });
     n.close();
+    // Store which issue to open, then scroll to inbox
+    if (issueId) {
+      pendingOpenIssueId = issueId;
+      openIssueById(issueId);
+    } else {
+      document.getElementById('inboxBody').scrollIntoView({ behavior: 'smooth' });
+    }
   };
-  // Also play a subtle beep
+  // Pixel beep sound
   try {
     const ctx = new (window.AudioContext || window.webkitAudioContext)();
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
-    osc.connect(gain);
-    gain.connect(ctx.destination);
-    osc.frequency.setValueAtTime(880, ctx.currentTime);
-    osc.frequency.setValueAtTime(660, ctx.currentTime + 0.1);
-    gain.gain.setValueAtTime(0.3, ctx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.4);
-    osc.start(ctx.currentTime);
-    osc.stop(ctx.currentTime + 0.4);
+    [880, 660, 990].forEach((freq, i) => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.connect(gain); gain.connect(ctx.destination);
+      osc.frequency.value = freq;
+      gain.gain.setValueAtTime(0.25, ctx.currentTime + i * 0.12);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + i * 0.12 + 0.15);
+      osc.start(ctx.currentTime + i * 0.12);
+      osc.stop(ctx.currentTime + i * 0.12 + 0.15);
+    });
   } catch(e) {}
+}
+
+function openIssueById(issueId) {
+  // Make sure inbox is open
+  const inboxBody = document.getElementById('inboxBody');
+  if (!inboxBody.classList.contains('open')) {
+    inboxBody.classList.add('open');
+    const arrow = document.querySelector('.inbox-arrow');
+    if (arrow) arrow.classList.add('open');
+  }
+  inboxBody.scrollIntoView({ behavior: 'smooth' });
+
+  // Try to find and click the card
+  setTimeout(() => {
+    const card = document.querySelector(`[data-issue-id="${issueId}"]`);
+    if (card) {
+      card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      card.click();
+      // Flash highlight
+      card.style.borderColor = 'var(--gold-bright)';
+      card.style.boxShadow = '0 0 16px rgba(255,215,0,.4)';
+      setTimeout(() => { card.style.borderColor = ''; card.style.boxShadow = ''; }, 2000);
+    }
+  }, 500);
 }
 
 async function pollForNewMessages(token) {
   try {
-    const r = await fetch(`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/issues?state=open&per_page=30`, {
+    const r = await fetch(`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/issues?state=open&per_page=30&sort=created&direction=desc`, {
       headers: { Authorization: 'Bearer ' + token }
     });
     if (!r.ok) return;
     const issues = await r.json();
     if (!Array.isArray(issues)) return;
 
-    const currentCount = issues.length;
-    const newCount = currentCount - lastKnownCount;
+    const currentIds = issues.map(i => i.id);
+    const knownIds = JSON.parse(localStorage.getItem('rafie_known_ids') || '[]');
+    const newIssues = knownIds.length > 0 ? issues.filter(i => !knownIds.includes(i.id)) : [];
 
-    if (lastKnownCount > 0 && newCount > 0) {
-      // New messages arrived!
-      const newest = issues[0];
-      sendBrowserNotif(
-        'New Message on Portfolio!',
-        newest.title + ' — click to view in inbox'
-      );
-      toast('📬 ' + newCount + ' new message' + (newCount > 1 ? 's' : '') + ' arrived!');
+    if (newIssues.length > 0) {
+      newIssues.forEach(issue => {
+        const info = parseIssueBody(issue.body || '');
+        const from = info.from || issue.user?.login || 'Someone';
+        const subject = info.subject || issue.title || 'New message';
+        const preview = info.message
+          ? info.message.substring(0, 100) + (info.message.length > 100 ? '...' : '')
+          : issue.body?.substring(0, 100) || '';
+
+        // Rich notification: FROM + SUBJECT + message preview
+        const notifBody = [
+          '👤 ' + from,
+          '📌 ' + subject,
+          preview ? '💬 ' + preview : ''
+        ].filter(Boolean).join('\n');
+
+        sendBrowserNotif('New Message!', notifBody, issue.id);
+        toast('📬 New message from ' + from + '!');
+      });
       loadInbox();
     }
 
-    lastKnownCount = currentCount;
-    localStorage.setItem('rafie_last_count', currentCount);
+    localStorage.setItem('rafie_known_ids', JSON.stringify(currentIds));
     updateBadge(issues);
   } catch(e) {}
 }
@@ -1240,6 +1282,7 @@ function renderInbox(issues, container) {
     const card = document.createElement('div');
     card.className = 'msg-card' + (isUnread?' unread':'');
     card.dataset.issueId = issue.id;
+    card.setAttribute('data-issue-id', issue.id);
 
     // Try to parse as contact form message, fallback to raw issue display
     const info = parseIssueBody(issue.body || '');
