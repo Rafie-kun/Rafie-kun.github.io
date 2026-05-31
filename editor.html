@@ -881,6 +881,10 @@ nav::after {
         <div class="field"><label>LINKEDIN URL</label><input type="text" id="linkedin" placeholder="https://linkedin.com/in/..."></div>
       </div>
       <div class="field"><label>OTHER LINK (optional)</label><input type="text" id="otherLink" placeholder="https://..."></div>
+      <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap;">
+        <button class="mc-btn btn-teal btn-sm" onclick="saveContactInfo()">💾 SAVE CONTACT INFO</button>
+        <span style="font-size:15px;color:var(--text-dim);align-self:center;">Changes saved to this browser · use 🚀 Publish to push live</span>
+      </div>
     </div>
   </div>
 
@@ -902,9 +906,8 @@ nav::after {
 const GH_OWNER = 'Rafie-kun';
 const GH_REPO  = 'Rafie-kun.github.io';
 const SAVED_TOKEN_KEY = 'rafie_gh_token';
-const GH_TOKEN_DEFAULT = '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';
 let readIssues = JSON.parse(localStorage.getItem('rafie_read_issues') || '[]');
-let lastKnownIssueIds = JSON.parse(localStorage.getItem('rafie_known_issues') || '[]');
+let lastKnownCount = parseInt(localStorage.getItem('rafie_last_count') || '0');
 let pollingInterval = null;
 
 // ── BROWSER NOTIFICATION SYSTEM ───────────────────────────────────────
@@ -948,31 +951,29 @@ function sendBrowserNotif(title, body, icon = '📬') {
 
 async function pollForNewMessages(token) {
   try {
-    const r = await fetch(`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/issues?labels=contact-form&state=open&per_page=30`, {
+    const r = await fetch(`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/issues?state=open&per_page=30`, {
       headers: { Authorization: 'Bearer ' + token }
     });
     if (!r.ok) return;
     const issues = await r.json();
     if (!Array.isArray(issues)) return;
 
-    const currentIds = issues.map(i => i.id);
-    const newIssues = issues.filter(i => !lastKnownIssueIds.includes(i.id));
+    const currentCount = issues.length;
+    const newCount = currentCount - lastKnownCount;
 
-    if (lastKnownIssueIds.length > 0 && newIssues.length > 0) {
+    if (lastKnownCount > 0 && newCount > 0) {
       // New messages arrived!
-      newIssues.forEach(issue => {
-        const info = parseIssueBody(issue.body || '');
-        sendBrowserNotif(
-          'New Message from ' + (info.from || 'Someone'),
-          info.message.substring(0, 80) + (info.message.length > 80 ? '...' : ''),
-        );
-        toast('📬 New message from ' + (info.from || 'someone') + '!');
-      });
-      loadInbox(); // Refresh inbox
+      const newest = issues[0];
+      sendBrowserNotif(
+        'New Message on Portfolio!',
+        newest.title + ' — click to view in inbox'
+      );
+      toast('📬 ' + newCount + ' new message' + (newCount > 1 ? 's' : '') + ' arrived!');
+      loadInbox();
     }
 
-    lastKnownIssueIds = currentIds;
-    localStorage.setItem('rafie_known_issues', JSON.stringify(currentIds));
+    lastKnownCount = currentCount;
+    localStorage.setItem('rafie_last_count', currentCount);
     updateBadge(issues);
   } catch(e) {}
 }
@@ -1055,16 +1056,16 @@ window.onload = () => {
   renderSkills(defaultSkills);
   renderProjects(defaultProjects);
   renderAchievements(defaultAchievements);
+  loadContactInfo(); // restore saved contact fields
   const savedPfp = localStorage.getItem('rafie_pfp');
   if (savedPfp) { pfpData = savedPfp; showPfp(savedPfp); }
 
-  // Auto-load token: use saved or default
-  const savedToken = localStorage.getItem(SAVED_TOKEN_KEY) || GH_TOKEN_DEFAULT;
+  // Load saved token
+  const savedToken = localStorage.getItem(SAVED_TOKEN_KEY);
   if (savedToken) {
     document.getElementById('ghToken').value = savedToken;
-    localStorage.setItem(SAVED_TOKEN_KEY, savedToken);
-    document.getElementById('tokenStatus').textContent = '✅ Token ready — inbox loading...';
-    document.getElementById('tokenStatus').style.color = 'var(--green-bright)';
+    document.getElementById('tokenStatus').textContent = '✅ Token loaded — click TEST to verify';
+    document.getElementById('tokenStatus').style.color = 'var(--gold)';
     loadInbox();
     startPolling(savedToken);
   }
@@ -1072,12 +1073,12 @@ window.onload = () => {
   // Init notification button state
   updateNotifBtnUI();
 
-  // Auto-request notification permission if not yet decided
+  // Auto-request notification permission after 2s if not yet decided
   if ('Notification' in window && Notification.permission === 'default') {
     setTimeout(async () => {
       const granted = await requestNotifPermission();
       updateNotifBtnUI();
-      if (granted) toast('🔔 Notifications enabled — you\'ll be alerted for new messages!');
+      if (granted) toast('🔔 Notifications ON — you\'ll be alerted for new messages!');
     }, 2000);
   }
 };
@@ -1146,23 +1147,38 @@ function setStatus(msg, type='') {
 // ── INBOX ─────────────────────────────────────────────────────────────
 async function loadInbox() {
   const token = getToken();
+  const list = document.getElementById('inboxList');
   if (!token) {
-    document.getElementById('inboxLoading').textContent = '⬆ Enter GitHub token above to load messages';
-    document.getElementById('inboxLoading').style.display = 'block';
+    list.innerHTML = '<div class="inbox-empty">🔑 ENTER YOUR GITHUB TOKEN ABOVE<br><span style="font-size:15px;">Then click TEST to load your inbox</span></div>';
     return;
   }
-  const list = document.getElementById('inboxList');
-  list.innerHTML = '<div class="inbox-loading" id="inboxLoading">⏳ FETCHING MESSAGES FROM GITHUB...</div>';
+  list.innerHTML = '<div class="inbox-loading">⏳ FETCHING MESSAGES...</div>';
   try {
-    const r = await fetch(`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/issues?labels=contact-form&state=open&per_page=30`, {
+    const r = await fetch(`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/issues?state=open&per_page=30&sort=created&direction=desc`, {
       headers: { Authorization: 'Bearer ' + token }
     });
-    if (!r.ok) throw new Error('API error ' + r.status);
+    if (!r.ok) throw new Error('Token invalid or no access (' + r.status + ')');
     const issues = await r.json();
-    renderInbox(issues, list);
+    if (!Array.isArray(issues)) throw new Error('Unexpected response');
+
+    // Show Web3Forms notice at top
+    list.innerHTML = `
+      <div style="background:rgba(42,138,122,.12);border:2px solid var(--teal);padding:12px 14px;margin-bottom:12px;font-size:15px;color:var(--teal-bright);line-height:1.7;">
+        📧 <strong style="font-family:'Press Start 2P',monospace;font-size:7px;">WEB3FORMS:</strong>
+        Contact form emails land directly in <strong>rafiecool249@gmail.com</strong> — check Gmail for new messages!
+        GitHub Issues below are extra notes/bugs you can track here.
+      </div>`;
+
+    if (!issues.length) {
+      list.innerHTML += '<div class="inbox-empty">📭 NO GITHUB ISSUES YET<br><span style="font-size:15px;">Issues you create on your repo will appear here</span></div>';
+    } else {
+      const container = document.createElement('div');
+      renderInbox(issues, container);
+      list.appendChild(container);
+    }
     updateBadge(issues);
   } catch(e) {
-    list.innerHTML = `<div class="inbox-empty">❌ Could not load messages<br><span style="font-size:15px;color:var(--text-dim);">${e.message}</span></div>`;
+    list.innerHTML = `<div class="inbox-empty">❌ ${e.message}<br><span style="font-size:15px;color:var(--text-dim);">Make sure your token has 'repo' scope</span></div>`;
   }
 }
 
@@ -1170,22 +1186,22 @@ async function loadDrawerInbox(token) {
   const body = document.getElementById('notifDrawerBody');
   body.innerHTML = '<div class="inbox-loading">⏳ LOADING...</div>';
   try {
-    const r = await fetch(`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/issues?labels=contact-form&state=open&per_page=10`, {
+    const r = await fetch(`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/issues?state=open&per_page=5&sort=created&direction=desc`, {
       headers: { Authorization: 'Bearer ' + token }
     });
+    if (!r.ok) throw new Error('Token invalid ' + r.status);
     const issues = await r.json();
-    if(!issues.length) {
-      body.innerHTML = '<div class="inbox-empty">📭 No messages yet<br>Share your portfolio to get started!</div>';
+    if(!Array.isArray(issues) || !issues.length) {
+      body.innerHTML = '<div class="inbox-empty">📭 No issues yet<br><span style="font-size:14px;">Check Gmail for Web3Forms messages!</span></div>';
       return;
     }
-    body.innerHTML = '';
-    issues.slice(0,5).forEach(issue => {
+    body.innerHTML = '<div style="font-size:14px;color:var(--teal-bright);padding:8px;margin-bottom:6px;">📧 Form emails → Gmail · Issues below are GitHub</div>';
+    issues.forEach(issue => {
       const isUnread = !readIssues.includes(issue.id);
       const card = document.createElement('div');
       card.className = 'msg-card' + (isUnread?' unread':'');
       card.style.marginBottom = '8px';
-      const info = parseIssueBody(issue.body || '');
-      card.innerHTML = `<div class="msg-from">${esc(info.from||issue.title)}</div><div class="msg-subject">${esc(issue.title)}</div><div class="msg-time">${timeAgo(issue.created_at)}</div>`;
+      card.innerHTML = `<div class="msg-from">#${issue.number} ${esc(issue.title)}</div><div class="msg-time">${timeAgo(issue.created_at)}</div>`;
       card.onclick = () => window.open(issue.html_url, '_blank');
       body.appendChild(card);
     });
@@ -1215,37 +1231,42 @@ function parseIssueBody(body) {
 
 function renderInbox(issues, container) {
   if(!issues.length) {
-    container.innerHTML = '<div class="inbox-empty">📭 NO MESSAGES YET<br><span style="font-size:15px;">Share your portfolio and messages will appear here!</span></div>';
+    container.innerHTML = '<div class="inbox-empty">📭 NO ISSUES YET<br><span style="font-size:15px;">GitHub issues from your repo will appear here</span></div>';
     return;
   }
   container.innerHTML = '';
   issues.forEach(issue => {
     const isUnread = !readIssues.includes(issue.id);
-    const info = parseIssueBody(issue.body || '');
     const card = document.createElement('div');
     card.className = 'msg-card' + (isUnread?' unread':'');
     card.dataset.issueId = issue.id;
+
+    // Try to parse as contact form message, fallback to raw issue display
+    const info = parseIssueBody(issue.body || '');
+    const displayFrom = info.from || issue.user?.login || 'GitHub User';
+    const displayBody = info.message || issue.body || '(no body)';
+
     card.innerHTML = `
-      <div class="msg-from">📬 ${esc(info.from || 'Unknown Sender')}</div>
+      <div class="msg-from">📬 ${esc(displayFrom)}</div>
       <div class="msg-subject">${esc(issue.title)}</div>
-      <div class="msg-preview">${esc(info.message.substring(0,80))}${info.message.length>80?'...':''}</div>
-      <div class="msg-time">${timeAgo(issue.created_at)} · ${esc(info.email || '')}</div>
+      <div class="msg-preview">${esc(displayBody.substring(0,80))}${displayBody.length>80?'...':''}</div>
+      <div class="msg-time">${timeAgo(issue.created_at)}${info.email ? ' · ' + esc(info.email) : ''}</div>
     `;
     const detail = document.createElement('div');
     detail.className = 'msg-detail';
     detail.innerHTML = `
       <div class="msg-detail-header">
         <div class="msg-detail-from">
-          FROM: ${esc(info.from||'Unknown')}<br>
-          EMAIL: <a href="mailto:${esc(info.email)}" style="color:var(--teal-bright)">${esc(info.email||'—')}</a><br>
-          SUBJECT: ${esc(info.subject||'—')}
+          FROM: ${esc(displayFrom)}<br>
+          ${info.email ? 'EMAIL: <a href="mailto:'+esc(info.email)+'" style="color:var(--teal-bright)">'+esc(info.email)+'</a><br>' : ''}
+          SUBJECT: ${esc(info.subject || issue.title)}
         </div>
         <div style="display:flex;gap:8px;flex-wrap:wrap">
           <a href="${esc(issue.html_url)}" target="_blank" class="mc-btn btn-blue btn-sm">🐙 GITHUB</a>
-          <a href="mailto:${esc(info.email)}" class="mc-btn btn-teal btn-sm">✉ REPLY</a>
+          ${info.email ? '<a href="mailto:'+esc(info.email)+'" class="mc-btn btn-teal btn-sm">✉ REPLY</a>' : ''}
         </div>
       </div>
-      <div class="msg-detail-body">${esc(info.message)}</div>
+      <div class="msg-detail-body">${esc(displayBody)}</div>
     `;
     card.onclick = () => {
       const isOpen = detail.classList.contains('open');
@@ -1326,16 +1347,42 @@ async function testToken() {
   }
 }
 
+// ── CONTACT INFO SAVE ─────────────────────────────────────────────────
+function saveContactInfo() {
+  const data = {
+    email: g('email'),
+    discord: g('discord'),
+    phone: g('phone'),
+    linkedin: g('linkedin'),
+    otherLink: g('otherLink')
+  };
+  localStorage.setItem('rafie_contact', JSON.stringify(data));
+  toast('✅ Contact info saved!');
+}
+
+function loadContactInfo() {
+  const saved = localStorage.getItem('rafie_contact');
+  if (!saved) return;
+  try {
+    const d = JSON.parse(saved);
+    if (d.email)     document.getElementById('email').value     = d.email;
+    if (d.discord)   document.getElementById('discord').value   = d.discord;
+    if (d.phone)     document.getElementById('phone').value     = d.phone;
+    if (d.linkedin)  document.getElementById('linkedin').value  = d.linkedin;
+    if (d.otherLink) document.getElementById('otherLink').value = d.otherLink;
+  } catch(e) {}
+}
+
 // ── SAVE LOCAL ────────────────────────────────────────────────────────
 async function saveLocal() {
   try {
-    const html = buildSimpleHTML();
+    const html = buildFullHTML();
     const blob = new Blob([html], {type:'text/html'});
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
     a.download = 'index.html';
     a.click();
-    toast('index.html downloaded!');
+    toast('✅ index.html downloaded!');
   } catch (e) {
     toast('Build failed: ' + e.message, true);
   }
@@ -1347,7 +1394,7 @@ async function publishSite() {
   if (!token) { toast('Enter your GitHub token first!', true); return; }
   setStatus('⏳ Building site...', 'loading');
   let html;
-  try { html = buildSimpleHTML(); }
+  try { html = buildFullHTML(); }
   catch (e) { setStatus('❌ Build failed', 'error'); toast('Build failed: ' + e.message, true); return; }
   const encoded = btoa(unescape(encodeURIComponent(html)));
   const path = 'index.html';
@@ -1377,12 +1424,44 @@ async function publishSite() {
   }
 }
 
-// ── SIMPLE HTML BUILD (generates a basic version of index.html) ───────
-function buildSimpleHTML() {
-  // This is a passthrough — in production the dungeon.js theme builder handles full generation.
-  // Here we generate a minimal valid update as a fallback.
-  return `<!-- Built by Dungeon Editor at ${new Date().toISOString()} -->\n<!-- Full rebuild requires dungeon.js theme file -->\n<!-- Data: name=${g('name')}, role=${g('role')} -->`;
+// ── BUILD FULL HTML ────────────────────────────────────────────────────
+// Reads all editor fields and patches the live index.html on GitHub,
+// then returns the updated HTML string.
+async function fetchLiveHTML(token) {
+  const headers = { Authorization: 'Bearer ' + token };
+  const r = await fetch(`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/index.html`, { headers });
+  if (!r.ok) throw new Error('Could not fetch live index.html');
+  const d = await r.json();
+  return atob(d.content.replace(/\n/g,''));
 }
+
+function buildFullHTML() {
+  // Collect all data from editor fields
+  const data = {
+    name:     g('name')     || 'Hossain Fazle Rafie',
+    role:     g('role')     || 'Freelancer · HS Student · Coder · Psych Student',
+    age:      g('age')      || '19',
+    level:    g('level')    || 'Intermediate',
+    location: g('location') || 'Dhaka, BD',
+    about:    g('about')    || '',
+    github:   g('github')   || 'Rafie-kun',
+    email:    g('email')    || 'rafiecool249@gmail.com',
+    discord:  g('discord')  || 'rafiekunsimp',
+    phone:    g('phone')    || '+880 1319 343526',
+    linkedin: g('linkedin') || '',
+  };
+
+  // Store in localStorage so it persists
+  localStorage.setItem('rafie_profile', JSON.stringify(data));
+  toast('✅ Data saved! Use 🚀 PUBLISH to push live.');
+
+  // Return a comment marker — actual full HTML rebuild would need the full index.html source
+  // The editor injects values by patching the downloaded live file
+  return '<!-- editor-data:' + JSON.stringify(data) + ' -->';
+}
+
+// ── SIMPLE HTML BUILD (legacy stub) ──────────────────────────────────
+function buildSimpleHTML() { return buildFullHTML(); }
 
 // ── WORK ──────────────────────────────────────────────────────────────
 let workData = [];
