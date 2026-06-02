@@ -900,7 +900,7 @@ nav::after {
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
 
-<script src="js/themes/dungeon.js"></script>
+
 <script>
 // ── GITHUB CONFIG ─────────────────────────────────────────────────────
 const GH_OWNER = 'Rafie-kun';
@@ -1418,14 +1418,17 @@ function loadContactInfo() {
 
 // ── SAVE LOCAL ────────────────────────────────────────────────────────
 async function saveLocal() {
+  const token = getToken();
+  if(!token) { toast('Enter token first to save a copy!', true); return; }
   try {
-    const html = buildFullHTML();
+    const result = await buildFullHTML(token);
+    const html = result.html;
     const blob = new Blob([html], {type:'text/html'});
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
     a.download = 'index.html';
     a.click();
-    toast('✅ index.html downloaded!');
+    toast('✅ index.html downloaded! (patched copy)');
   } catch (e) {
     toast('Build failed: ' + e.message, true);
   }
@@ -1435,21 +1438,22 @@ async function saveLocal() {
 async function publishSite() {
   const token = getToken();
   if (!token) { toast('Enter your GitHub token first!', true); return; }
-  setStatus('⏳ Building site...', 'loading');
-  let html;
-  try { html = buildFullHTML(); }
-  catch (e) { setStatus('❌ Build failed', 'error'); toast('Build failed: ' + e.message, true); return; }
+  setStatus('⏳ Fetching live site...', 'loading');
+  let result;
+  try { result = await buildFullHTML(token); }
+  catch (e) { setStatus('❌ Build failed: ' + e.message, 'error'); toast('Build failed: ' + e.message, true); return; }
+  const { html, sha: existingSha } = result;
   const encoded = btoa(unescape(encodeURIComponent(html)));
   const path = 'index.html';
   const headers = { Authorization: 'Bearer '+token, 'Content-Type':'application/json' };
   try {
     setStatus('⏳ Checking existing file...', 'loading');
-    let sha = '';
+    let fileSha = '';
     const check = await fetch(`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${path}`, { headers });
-    if (check.ok) { const d = await check.json(); sha = d.sha; }
+    if (check.ok) { const d = await check.json(); fileSha = d.sha; }
     setStatus('⏳ Uploading to GitHub...', 'loading');
     const body = { message:'⚔ Update portfolio via Dungeon Editor', content: encoded };
-    if (sha) body.sha = sha;
+    if (existingSha) body.sha = existingSha; else if (fileSha) body.sha = fileSha;
     const put = await fetch(`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${path}`, {
       method:'PUT', headers, body: JSON.stringify(body)
     });
@@ -1467,44 +1471,153 @@ async function publishSite() {
   }
 }
 
-// ── BUILD FULL HTML ────────────────────────────────────────────────────
-// Reads all editor fields and patches the live index.html on GitHub,
-// then returns the updated HTML string.
-async function fetchLiveHTML(token) {
-  const headers = { Authorization: 'Bearer ' + token };
+
+// ── BUILD FULL HTML — patches the live index.html from GitHub ──────────
+// This reads all editor fields and injects them into the live site.
+async function buildFullHTML(token) {
+  // 1. Fetch live index.html from GitHub
+  const headers = { Authorization: 'Bearer ' + token, Accept: 'application/vnd.github.v3+json' };
   const r = await fetch(`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/index.html`, { headers });
-  if (!r.ok) throw new Error('Could not fetch live index.html');
+  if (!r.ok) throw new Error('Could not fetch live index.html (' + r.status + ')');
   const d = await r.json();
-  return atob(d.content.replace(/\n/g,''));
+  let html = decodeURIComponent(escape(atob(d.content.replace(/\n/g,''))));
+
+  // 2. Collect editor data
+  const name     = g('name')     || 'Hossain Fazle Rafie';
+  const role     = g('role')     || 'Freelancer · HS Student · Coder · Psych Student';
+  const age      = g('age')      || '19';
+  const level    = g('level')    || 'Intermediate';
+  const location = g('location') || 'Dhaka, BD';
+  const about    = g('about')    || '';
+  const github   = g('github')   || 'Rafie-kun';
+  const email    = g('email')    || 'rafiecool249@gmail.com';
+  const discord  = g('discord')  || 'rafiekunsimp';
+  const phone    = g('phone')    || '+880 1319 343526';
+  const linkedin = g('linkedin') || '';
+
+  // 3. Patch player-name
+  html = html.replace(/(<span class="player-name">)[^<]*(< \/span>|<\/span>)/g,
+    `$1${esc(name)}</span>`);
+
+  // 4. Patch player-class (role)
+  html = html.replace(/(<div class="player-class">)[^<]*(< \/div>|<\/div>)/g,
+    `<div class="player-class">⚡ ${esc(role)}</div>`);
+
+  // 5. Patch player-level (age, level, location)
+  html = html.replace(/(<div class="player-level">)[^<]*(<\/div>)/g,
+    `<div class="player-level">Level ${esc(age)} · ${esc(level)} · ${esc(location)}</div>`);
+
+  // 6. Patch HP age stat
+  html = html.replace(/(stat-c-val">)AGE \d+(<)/g, `$1AGE ${esc(age)}$2`);
+
+  // 7. Patch rank stat
+  html = html.replace(/(stat-c-val">)(INTERMEDIATE|BEGINNER|ADVANCED|EXPERT)(<)/g,
+    `$1${esc(level.toUpperCase())}$3`);
+
+  // 8. Patch location stat
+  html = html.replace(/(stat-c-val">DHAKA BD|stat-c-val">)[A-Z ,]+(<\/div>\s*<div class="stat-c-lab">Spawn Point)/g,
+    `<div class="stat-c-val">${esc(location.toUpperCase())}</div>$2`);
+
+  // 9. Patch about text (between the two <br><br> markers in about-text)
+  // Replace entire about-text paragraph content
+  html = html.replace(
+    /(<p class="about-text">)([\s\S]*?)(<\/p>)/,
+    `<p class="about-text">${about.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>')}</p>`
+  );
+
+  // 10. Patch email links
+  html = html.replace(/rafiecool249@gmail\.com/g, esc(email));
+
+  // 11. Patch discord
+  html = html.replace(/rafiekunsimp/g, esc(discord));
+
+  // 12. Patch phone
+  html = html.replace(/\+880 1319 343526/g, esc(phone));
+
+  // 13. Patch GitHub username/URL
+  html = html.replace(/Rafie-kun/g, esc(github));
+  html = html.replace(/github\.com\/Rafie-kun/g, 'github.com/' + esc(github));
+
+  // 14. Patch LinkedIn if set
+  if (linkedin) {
+    html = html.replace(
+      /(<div class="contact-val">Coming soon\.\.\.<\/div>\s*<\/div>\s*<\/div>\s*<\/div>\s*<div class="contact-card" style="opacity:\.4;cursor:not-allowed;">[\s\S]*?LINKEDIN[\s\S]*?<\/div>)/,
+      `<div class="contact-val">${esc(linkedin)}</div></div></div></div>`
+    );
+  }
+
+  // 15. Patch work experience
+  const workItems = workData.map((w, i) => {
+    const period = w.current ? (w.start + ' – Present') : (w.start + (w.end ? ' – ' + w.end : ''));
+    const badgeHTML = w.current
+      ? '<span class="badge badge-active">▶ CURRENT</span>'
+      : '<span class="badge badge-done">COMPLETED</span>';
+    const dotClass = w.current ? 'tl-dot active' : 'tl-dot';
+    const itemClass = w.current ? 'tl-item current' : 'tl-item';
+    return `<div class="${itemClass}"><div class="${dotClass}"></div>${badgeHTML}<div class="tl-title">${esc(w.title)}</div><div class="tl-company">📍 ${esc(w.company)} · ${period}</div><div class="tl-desc">${esc(w.desc)}</div></div>`;
+  }).join('\n');
+  html = html.replace(/<div class="timeline">([\s\S]*?)<\/div>\s*<\/section>\s*<div class="mc-divider" id="div3">/, `<div class="timeline">${workItems}</div></section><div class="mc-divider" id="div3">`);
+
+  // 16. Patch skills grid
+  const skillItems = skillsData.map(s => {
+    const rarityMap = { common:'COMMON', uncommon:'UNCOMMON', rare:'RARE', epic:'EPIC', legendary:'LEGENDARY' };
+    return `<div class="skill-c r-${s.rarity}"><span class="skill-emoji">${s.emoji}</span><span class="skill-name">${esc(s.name)}</span><div class="skill-tip">${rarityMap[s.rarity] || 'COMMON'}</div></div>`;
+  }).join('\n');
+  html = html.replace(
+    /(<div class="skill-grid"[^>]*>)([\s\S]*?)(<\/div>\s*<p style="margin-top:14px)/,
+    `$1\n${skillItems}\n$3`
+  );
+
+  // 17. Patch projects
+  const projItems = projectsData.map(p => {
+    const tagsHTML = (p.tags || '').split(',').map(t => {
+      const tc = t.trim();
+      const cls = ['Python','HTML','JS','CSS'].includes(tc) ? 'tag-green' : tc.includes('Finance')||tc.includes('CLI') ? 'tag-blue' : 'tag-teal';
+      return `<span class="tag ${cls}">${esc(tc)}</span>`;
+    }).join('');
+    if (p.coming) {
+      return `<div class="proj-card" style="position:relative;"><div class="proj-top">${p.emoji}</div><div class="proj-body"><div class="proj-title">${esc(p.name)}</div><div class="proj-desc">${esc(p.desc)}</div><div class="proj-tags"><span class="tag tag-teal">Soon™</span></div></div><div class="locked-overlay"><div style="font-size:36px;">🔒</div><div class="locked-text">CHEST LOCKED<br>COME BACK LATER</div></div></div>`;
+    }
+    return `<div class="proj-card"><div class="proj-top">${p.emoji}</div><div class="proj-body"><div class="proj-title">${esc(p.name)}</div><div class="proj-desc">${esc(p.desc)}</div><div class="proj-tags">${tagsHTML}</div>${p.link ? '<a href="'+esc(p.link)+'" target="_blank" class="mc-btn btn-green" style="font-size:8px;padding:8px 14px;">View on GitHub →</a>' : ''}</div></div>`;
+  }).join('\n');
+  html = html.replace(
+    /(<div class="proj-grid">)([\s\S]*?)(<\/div>\s*<\/section>\s*<div class="mc-divider" id="div5">)/,
+    `$1\n${projItems}\n</div></section><div class="mc-divider" id="div5">`
+  );
+
+  // 18. Patch achievements
+  const achItems = achievementsData.map(a => {
+    const cls = a.locked ? 'ach-item locked' : 'ach-item';
+    const badgeCls = a.locked ? 'badge-lock' : 'badge-done-g';
+    const badgeTxt = a.locked ? 'LOCKED' : 'UNLOCKED';
+    const titleStyle = a.locked ? 'color:var(--text-dim)' : '';
+    return `<div class="${cls}"><div class="ach-icon">${a.icon}</div><div class="ach-info"><div class="ach-title" style="${titleStyle}">${esc(a.title)}</div><div class="ach-desc">${esc(a.desc)}</div></div><div class="ach-badge ${badgeCls}">${badgeTxt}</div></div>`;
+  }).join('\n');
+  html = html.replace(
+    /(<div class="ach-list">)([\s\S]*?)(<\/div>\s*<\/section>\s*<div class="mc-divider" id="div6">)/,
+    `$1\n${achItems}\n</div></section><div class="mc-divider" id="div6">`
+  );
+
+  // 19. Patch profile image if set
+  if (pfpData) {
+    // inject into player-card as an img at the top
+    html = html.replace(
+      /(<div class="player-card">)/,
+      `$1<img src="${pfpData}" style="width:64px;height:64px;object-fit:cover;border:2px solid #000;margin-bottom:8px;display:block;margin-left:auto;margin-right:auto;" alt="Profile">`
+    );
+  }
+
+  // 20. Save locally for quick future access
+  localStorage.setItem('rafie_profile', JSON.stringify({name,role,age,level,location,about,github,email,discord,phone,linkedin}));
+
+  return { html, sha: d.sha };
 }
 
-function buildFullHTML() {
-  // Collect all data from editor fields
-  const data = {
-    name:     g('name')     || 'Hossain Fazle Rafie',
-    role:     g('role')     || 'Freelancer · HS Student · Coder · Psych Student',
-    age:      g('age')      || '19',
-    level:    g('level')    || 'Intermediate',
-    location: g('location') || 'Dhaka, BD',
-    about:    g('about')    || '',
-    github:   g('github')   || 'Rafie-kun',
-    email:    g('email')    || 'rafiecool249@gmail.com',
-    discord:  g('discord')  || 'rafiekunsimp',
-    phone:    g('phone')    || '+880 1319 343526',
-    linkedin: g('linkedin') || '',
-  };
-
-  // Store in localStorage so it persists
-  localStorage.setItem('rafie_profile', JSON.stringify(data));
-  toast('✅ Data saved! Use 🚀 PUBLISH to push live.');
-
-  // Return a comment marker — actual full HTML rebuild would need the full index.html source
-  // The editor injects values by patching the downloaded live file
-  return '<!-- editor-data:' + JSON.stringify(data) + ' -->';
+// ── SIMPLE HTML BUILD (legacy - local download only) ───────────────────
+function buildSimpleHTML() {
+  return '<!-- Use publish to get the full patched HTML -->';
 }
 
-// ── SIMPLE HTML BUILD (legacy stub) ──────────────────────────────────
-function buildSimpleHTML() { return buildFullHTML(); }
 
 // ── WORK ──────────────────────────────────────────────────────────────
 let workData = [];
@@ -1645,6 +1758,7 @@ document.addEventListener('click', e => {
     drawer.classList.remove('open');
   }
 });
+
 </script>
 </body>
 </html>
