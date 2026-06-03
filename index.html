@@ -1,171 +1,133 @@
-<!-- editor-data:{"name":"Hossain Fazle Rafie","role":"Freelancer · HS Student · Coder · Psych Student","age":"19","level":"Intermediate","location":"Dhaka, BD","about":"Hey, I'm Rafie — a 19-year-old self-taught coder, freelancer, and psychology student from Dhaka, Bangladesh. Like a Minecraft player who spawns in a dungeon with no gear, I started from zero and built my skill tree one block at a time. By day I write articles and pick up freelance gigs. By night I study the human mind through psychology. Two worlds, one character. The dungeon is dark but the glowstone lights the way. Still early game. Inventory growing. Not logging off. 🔥","github":"Rafie-kun","email":"rafiecool249@gmail.com","discord":"rafiekunsimp","phone":"+880 1319 343526","linkedin":""} --><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Rafie — Portfolio</title>
-<meta name="description" content="Hossain Fazle Rafie — Freelancer, coder, and psychology student from Dhaka, Bangladesh. Minecraft-themed portfolio.">
-<meta property="og:title" content="Rafie — Portfolio">
-<meta property="og:description" content="Freelancer · Coder · Psych Student from Dhaka, BD">
-<meta property="og:url" content="https://rafie-kun.github.io">
+<meta name="description" content="Hossain Fazle Rafie — Freelancer, coder, and psychology student from Dhaka, Bangladesh.">
 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
 <style>
-/* ── DAY THEME (6am–6pm local time) ── */
+/* ═══════════════════════════════════════
+   NIGHT THEME (default / :root)
+   DAY THEME via body.day-mode
+═══════════════════════════════════════ */
 :root {
-  --sky-top: #87ceeb;
-  --sky-mid: #b0e0ff;
-  --sky-bot: #d4f0ff;
-  --night-sky: #0e1a2b;
-  --night-mid: #152236;
-  --night-deep: #0a1020;
-  --stone: #3a3f4a;
-  --stone-light: #4e5566;
-  --stone-dark: #252830;
-  --mossy: #2d4a2a;
-  --mossy-light: #3a5e35;
-  --dirt: #5c3d1e;
-  --wood: #7a5c2e;
-  --campfire: #ff8c00;
-  --campfire-bright: #ffcc44;
-  --campfire-red: #e63000;
-  --glowstone: #ffd080;
-  --glowstone-dim: #c8982a;
-  --lantern: #ffaa33;
-  --blue-mist: #2a4a7a;
-  --blue-glow: #4a7aaa;
-  --teal: #2a8a7a;
-  --teal-bright: #44ccbb;
-  --gold: #d4a820;
-  --gold-bright: #f0cc44;
-  --text: #c8d8e8;
-  --text-bright: #e8f0f8;
-  --text-dim: #6a7a8a;
-  --border: #2a3a4a;
-  --border-light: #3a4a5a;
-  --panel: #111820;
-  --panel-light: #182030;
-  --green-torch: #44dd44;
-  --body-bg: #0a1020;
+  /* shared palette */
+  --green:#5aac44; --dark-green:#3d7a2e;
+  --dirt:#8B6340; --dark-dirt:#6b4c30;
+  --wood:#a0762a; --gold:#FFD700;
+  --diamond:#4de6e6; --redstone:#e03030;
+  --campfire:#ff8c00; --campfire-red:#e63000;
+  --glowstone:#ffd080; --glowstone-dim:#c8982a;
+  --lantern:#ffaa33; --teal:#44ccbb;
+
+  /* night-specific */
+  --bg:#0a1020;
+  --panel:#111820;
+  --panel2:#182030;
+  --text:#c8d8e8;
+  --text-dim:#6a7a8a;
+  --stone:#3a3f4a;
+  --stone-light:#4e5566;
+  --stone-dark:#252830;
+  --muted:#6a7a8a;
+  --border:#3a4a5a;
 }
 
-/* DAY overrides applied via body.day-mode */
+/* DAY overrides — panels stay DARK like the reference file */
 body.day-mode {
-  --body-bg: #e8f4ff;
-  --panel: #c8ddf0;
-  --panel-light: #d8ecff;
-  --text: #1a2a3a;
-  --text-bright: #0a1a2a;
-  --text-dim: #4a6a8a;
-  --stone: #8a9aaa;
-  --stone-light: #aabbc8;
-  --stone-dark: #6a7a88;
-  --border: #8aaac8;
-  --border-light: #aaccdd;
-  --glowstone: #c87820;
-  --glowstone-dim: #a05a10;
-  --teal-bright: #1a7a6a;
+  --bg:#1a1a2e;
+  --panel:#1e1e1e;
+  --panel2:#2a2a2a;
+  --text:#f0f0f0;
+  --text-dim:#aaa;
+  --stone:#3a3a3a;
+  --stone-light:#555;
+  --stone-dark:#111;
+  --muted:#aaa;
+  --border:#444;
+  --glowstone:#FFD700;
+  --glowstone-dim:#e6a800;
+  --teal:#4de6e6;
 }
 
-* { margin:0; padding:0; box-sizing:border-box; }
+*{margin:0;padding:0;box-sizing:border-box;}
 
 body {
-  background: var(--body-bg);
-  font-family: 'VT323', monospace;
-  color: var(--text);
-  font-size: 20px;
-  line-height: 1.7;
-  overflow-x: hidden;
-  transition: background 1s ease, color 0.5s ease;
+  background: var(--bg);
+  background-image:
+    repeating-linear-gradient(0deg,transparent,transparent 31px,rgba(255,255,255,.025) 31px,rgba(255,255,255,.025) 32px),
+    repeating-linear-gradient(90deg,transparent,transparent 31px,rgba(255,255,255,.025) 31px,rgba(255,255,255,.025) 32px);
+  background-size:32px 32px;
+  font-family:'VT323',monospace;
+  color:var(--text);
+  font-size:20px;
+  line-height:1.6;
+  overflow-x:hidden;
+  transition:background-color .8s, color .4s;
 }
 
-::-webkit-scrollbar { width: 10px; }
-::-webkit-scrollbar-track { background: var(--stone-dark); }
-::-webkit-scrollbar-thumb { background: var(--stone); border: 2px solid var(--stone-dark); image-rendering: pixelated; }
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar{width:12px}
+::-webkit-scrollbar-track{background:#111}
+::-webkit-scrollbar-thumb{background:var(--green);border:2px solid #000;}
 
-/* ── ANIMATIONS ── */
+/* ════════════════════════════════════
+   ANIMATIONS
+════════════════════════════════════ */
 @keyframes campfireFlicker {
-  0%,100% { opacity:1; transform:scaleY(1) scaleX(1); filter:brightness(1); }
-  20% { opacity:.85; transform:scaleY(.92) scaleX(1.05); filter:brightness(.9); }
-  40% { opacity:1; transform:scaleY(1.06) scaleX(.97); filter:brightness(1.15); }
-  60% { opacity:.9; transform:scaleY(.96) scaleX(1.02); filter:brightness(.95); }
-  80% { opacity:1; transform:scaleY(1.03) scaleX(.98); filter:brightness(1.08); }
+  0%,100%{opacity:1;transform:scaleY(1) scaleX(1);filter:brightness(1);}
+  20%{opacity:.85;transform:scaleY(.92) scaleX(1.05);filter:brightness(.9);}
+  40%{opacity:1;transform:scaleY(1.06) scaleX(.97);filter:brightness(1.15);}
+  60%{opacity:.9;transform:scaleY(.96) scaleX(1.02);filter:brightness(.95);}
+  80%{opacity:1;transform:scaleY(1.03) scaleX(.98);filter:brightness(1.08);}
 }
 @keyframes glowPulse {
-  0%,100% { box-shadow: 0 0 12px var(--glowstone), 0 0 24px rgba(255,208,128,.3); }
-  50% { box-shadow: 0 0 20px var(--glowstone), 0 0 40px rgba(255,208,128,.5); }
+  0%,100%{box-shadow:0 0 12px var(--glowstone),0 0 24px rgba(255,208,128,.3);}
+  50%{box-shadow:0 0 20px var(--glowstone),0 0 40px rgba(255,208,128,.5);}
 }
-@keyframes blueMistDrift {
-  0%,100% { opacity:.4; transform:translateX(0) scaleX(1); }
-  50% { opacity:.7; transform:translateX(8px) scaleX(1.02); }
+@keyframes sunPulse {
+  0%,100%{box-shadow:4px 4px 0 #000,inset 0 0 0 2px #ffe87a,0 0 20px #ffd70066;}
+  50%{box-shadow:4px 4px 0 #000,inset 0 0 0 2px #ffe87a,0 0 40px #ffd700aa;}
 }
-@keyframes particleRise {
-  0% { transform:translateY(0) rotate(0deg); opacity:1; }
-  100% { transform:translateY(-60px) rotate(180deg); opacity:0; }
+@keyframes cloudFloat{from{left:-200px}to{left:110%}}
+@keyframes creeperBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+@keyframes heartbeat{0%,90%,100%{transform:scale(1)}95%{transform:scale(1.2)}}
+@keyframes shimmer{0%{background-position:-200% center;}100%{background-position:200% center;}}
+@keyframes particleRise{0%{transform:translateY(0) rotate(0deg);opacity:1;}100%{transform:translateY(-60px) rotate(180deg);opacity:0;}}
+@keyframes lanternSwing{0%,100%{transform:rotate(-4deg);}50%{transform:rotate(4deg);}}
+@keyframes mistFloat{
+  0%{transform:translateX(-100px) translateY(0);opacity:0;}
+  10%{opacity:.5;}90%{opacity:.5;}
+  100%{transform:translateX(calc(100vw + 100px)) translateY(-20px);opacity:0;}
 }
-@keyframes shimmer {
-  0% { background-position:-200% center; }
-  100% { background-position:200% center; }
-}
-@keyframes blockReveal {
-  0% { opacity:0; transform:translateY(16px); }
-  100% { opacity:1; transform:translateY(0); }
-}
-@keyframes lanternSwing {
-  0%,100% { transform:rotate(-4deg); }
-  50% { transform:rotate(4deg); }
-}
-@keyframes starTwinkle {
-  0%,100% { opacity:.3; }
-  50% { opacity:1; }
-}
-@keyframes mistFloat {
-  0% { transform:translateX(-100px) translateY(0); opacity:0; }
-  10% { opacity:.5; }
-  90% { opacity:.5; }
-  100% { transform:translateX(calc(100vw + 100px)) translateY(-20px); opacity:0; }
-}
-@keyframes cloudDrift {
-  0% { transform:translateX(-200px); opacity:0; }
-  5% { opacity:.9; }
-  95% { opacity:.9; }
-  100% { transform:translateX(calc(100vw + 200px)); opacity:0; }
-}
-@keyframes sunBob {
-  0%,100% { transform:translateY(0); }
-  50% { transform:translateY(-6px); }
-}
-@keyframes musicBarDance {
-  0%,100% { height:4px; }
-  50% { height:16px; }
-}
-@keyframes musicPulse {
-  0%,100% { opacity:.7; transform:scale(1); }
-  50% { opacity:1; transform:scale(1.05); }
-}
-@keyframes slideUp {
-  from { transform:translateY(100%); opacity:0; }
-  to { transform:translateY(0); opacity:1; }
-}
+@keyframes musicBarDance{0%,100%{height:4px;}50%{height:16px;}}
+@keyframes musicPulse{0%,100%{opacity:.7;transform:scale(1);}50%{opacity:1;transform:scale(1.05);}}
+@keyframes spin{to{transform:rotate(360deg);}}
+@keyframes slideUp{from{transform:translateY(100%);opacity:0;}to{transform:translateY(0);opacity:1;}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+@keyframes starTwinkle{0%,100%{opacity:.2;}50%{opacity:1;}}
 
-/* ── NAV ── */
+/* ════════════════════════════════════
+   NAV
+════════════════════════════════════ */
 nav {
-  position: fixed;
-  top:0; left:0; right:0;
-  z-index: 1000;
-  background: var(--panel);
-  border-bottom: 4px solid var(--stone-dark);
-  box-shadow: 0 4px 0 #000, 0 0 30px rgba(0,0,0,.8);
-  padding: 0 20px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  height: 56px;
-  transition: background 0.5s;
+  background:#2d2d2d;
+  border-bottom:4px solid #000;
+  box-shadow:0 4px 0 #555;
+  padding:0 24px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  position:fixed;
+  top:0;left:0;right:0;
+  z-index:1000;
+  height:56px;
 }
 nav::after {
   content:'';
   position:absolute;
-  bottom:-6px; left:0; right:0;
+  bottom:-6px;left:0;right:0;
   height:2px;
   background:linear-gradient(90deg,transparent,var(--glowstone),var(--campfire),var(--glowstone),transparent);
   background-size:200% auto;
@@ -173,630 +135,390 @@ nav::after {
 }
 .nav-logo {
   font-family:'Press Start 2P',monospace;
-  font-size:11px;
-  color:var(--glowstone);
-  text-shadow:0 0 8px var(--glowstone), 2px 2px 0 #000;
-  letter-spacing:1px;
-  display:flex;
-  align-items:center;
-  gap:8px;
+  font-size:12px;
+  color:var(--green);
+  text-shadow:2px 2px 0 #000;
+  display:flex;align-items:center;gap:6px;
 }
-.nav-torch { font-size:16px; animation:campfireFlicker 2s ease-in-out infinite; filter:drop-shadow(0 0 4px var(--campfire)); }
-.nav-links { display:flex; gap:4px; list-style:none; }
+.nav-torch{font-size:15px;animation:campfireFlicker 2s ease-in-out infinite;filter:drop-shadow(0 0 4px var(--campfire));}
+.nav-links{display:flex;gap:6px;list-style:none;}
 .nav-links a {
   font-family:'Press Start 2P',monospace;
-  font-size:7px;
+  font-size:8px;
   color:var(--text);
   text-decoration:none;
-  background:var(--stone-dark);
-  border:2px solid var(--stone);
-  border-bottom:4px solid #000;
-  border-right:4px solid #000;
+  background:#3a3a3a;
+  border:2px solid #555;
   padding:6px 10px;
   display:block;
   transition:all .1s;
-  letter-spacing:.5px;
-}
-.nav-links a:hover {
-  background:var(--stone);
-  color:var(--glowstone);
-  border-color:var(--glowstone-dim);
-  transform:translate(-1px,-1px);
   box-shadow:2px 2px 0 #000;
-  text-shadow:0 0 6px var(--glowstone);
 }
-
-/* ── THEME TOGGLE ── */
-.theme-toggle-btn {
+.nav-links a:hover{background:var(--green);color:#000;transform:translateY(-2px);}
+.theme-btn {
   font-family:'Press Start 2P',monospace;
   font-size:7px;
   color:var(--text);
-  background:var(--stone-dark);
-  border:2px solid var(--stone);
+  background:#3a3a3a;
+  border:2px solid #555;
   border-bottom:3px solid #000;
-  border-right:3px solid #000;
-  padding:5px 8px;
+  padding:5px 9px;
   cursor:pointer;
   transition:all .1s;
   white-space:nowrap;
+  box-shadow:2px 2px 0 #000;
 }
-.theme-toggle-btn:hover { background:var(--stone); transform:translate(-1px,-1px); box-shadow:2px 2px 0 #000; }
+.theme-btn:hover{background:var(--green);color:#000;transform:translateY(-1px);}
 
-/* ── HERO ── */
+/* ════════════════════════════════════
+   HERO — SHARED SHELL
+════════════════════════════════════ */
 .hero {
   min-height:100vh;
-  position:relative;
-  overflow:hidden;
   display:flex;
+  flex-direction:column;
   align-items:center;
   justify-content:center;
+  position:relative;
+  overflow:hidden;
   padding:80px 20px 60px;
 }
 
-/* NIGHT SKY */
+/* ════════════════════════════════════
+   NIGHT HERO BG
+════════════════════════════════════ */
 .sky-night {
-  position:absolute;
-  inset:0;
-  background:linear-gradient(to bottom, #060c14 0%, #0b1525 20%, #0e1a2e 40%, #111e30 55%, #0d1820 65%, #090e14 80%, #050810 100%);
+  position:absolute;inset:0;
+  background:linear-gradient(to bottom,#060c14 0%,#0b1525 20%,#0e1a2e 40%,#111e30 55%,#0d1820 65%,#090e14 80%,#050810 100%);
   transition:opacity 1s ease;
 }
-/* DAY SKY */
 .sky-day {
-  position:absolute;
-  inset:0;
-  background:linear-gradient(to bottom, #4facde 0%, #87ceeb 30%, #b8e0f7 60%, #d6eeff 80%, #c8e8f8 100%);
+  position:absolute;inset:0;
+  background:linear-gradient(to bottom,#1a3a5c 0%,#2a5a8c 40%,#87CEEB 70%,#87CEEB 100%);
   opacity:0;
   transition:opacity 1s ease;
 }
-body.day-mode .sky-night { opacity:0; }
-body.day-mode .sky-day { opacity:1; }
+body.day-mode .sky-night{opacity:0;}
+body.day-mode .sky-day{opacity:1;}
 
-/* SUN */
-.sun {
-  position:absolute;
-  top:60px;
-  right:15%;
-  z-index:2;
-  font-size:48px;
-  animation:sunBob 4s ease-in-out infinite;
-  filter:drop-shadow(0 0 20px #fff7aa) drop-shadow(0 0 40px #ffd700);
-  display:none;
-}
-body.day-mode .sun { display:block; }
+/* STARS */
+.stars-layer{position:absolute;inset:0;z-index:1;pointer-events:none;transition:opacity 1s ease;}
+body.day-mode .stars-layer{opacity:0;}
 
-/* CLOUDS */
-.cloud {
-  position:absolute;
-  font-size:36px;
-  filter:drop-shadow(0 2px 4px rgba(0,0,0,.1));
-  animation:cloudDrift linear infinite;
-  z-index:2;
-  display:none;
-}
-body.day-mode .cloud { display:block; }
-
-/* STARS only at night */
-.stars-layer { position:absolute; inset:0; z-index:1; pointer-events:none; transition:opacity 1s ease; }
-body.day-mode .stars-layer { opacity:0; }
-
-/* MIST */
-.mist-layer { position:absolute; bottom:0; left:0; right:0; height:40%; z-index:2; pointer-events:none; }
-.mist-strip {
-  position:absolute;
-  height:60px;
+/* MIST (night only) */
+.mist-layer{position:absolute;bottom:0;left:0;right:0;height:40%;z-index:2;pointer-events:none;}
+.mist-strip{
+  position:absolute;height:60px;
   background:linear-gradient(90deg,transparent,rgba(42,74,122,.25),rgba(42,74,122,.15),transparent);
   border-radius:50%;
   animation:mistFloat linear infinite;
 }
-body.day-mode .mist-strip { background:linear-gradient(90deg,transparent,rgba(200,230,255,.3),rgba(180,220,255,.2),transparent); }
+body.day-mode .mist-strip{opacity:0;}
 
-/* TERRAIN */
-.terrain-layer { position:absolute; bottom:0; left:0; right:0; z-index:3; pointer-events:none; }
-.block-row { position:absolute; left:0; right:0; display:flex; }
-.pxblock { flex-shrink:0; border:2px solid rgba(0,0,0,.5); image-rendering:pixelated; }
-.pxblock-stone { width:48px;height:48px;background:var(--stone);border-top:3px solid var(--stone-light);border-left:3px solid #5a6070;border-bottom:3px solid #1a1e24;border-right:3px solid #1a1e24; }
-.pxblock-mossy { width:48px;height:48px;background:var(--mossy);border-top:3px solid var(--mossy-light);border-left:3px solid #3a5e35;border-bottom:3px solid #1a2a18;border-right:3px solid #1a2a18; }
-.pxblock-dirt { width:48px;height:48px;background:var(--dirt);border-top:3px solid #7a5a30;border-left:3px solid #6a4a20;border-bottom:3px solid #3a2010;border-right:3px solid #3a2010; }
-.pxblock-dark { width:48px;height:48px;background:var(--stone-dark);border-top:3px solid var(--stone);border-left:3px solid var(--stone);border-bottom:3px solid #000;border-right:3px solid #000; }
-.pxblock-grass { width:48px;height:48px;background:#4a7a2a;border-top:3px solid #5a9a3a;border-left:3px solid #5a8a30;border-bottom:3px solid #2a4a10;border-right:3px solid #2a4a10; }
+/* ── DAY ELEMENTS ── */
+/* Pixel sun */
+.day-sun {
+  position:absolute;top:70px;right:120px;
+  width:64px;height:64px;
+  background:#FFD700;
+  border:4px solid #000;
+  animation:sunPulse 3s ease-in-out infinite;
+  z-index:3;
+  display:none;
+}
+body.day-mode .day-sun{display:block;}
 
-.row-grass { bottom:192px; }
-.row-stone1 { bottom:144px; }
-.row-stone2 { bottom:96px; }
-.row-stone3 { bottom:48px; }
-.row-stone4 { bottom:0; }
-
-/* CAMPFIRE */
-.campfire-wrap {
+/* CSS clouds */
+.day-cloud {
   position:absolute;
-  bottom:200px;
-  left:50%;
-  transform:translateX(-50%);
-  z-index:8;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
+  background:#fff;
+  border:3px solid #ccc;
+  z-index:3;
+  animation:cloudFloat linear infinite;
+  display:none;
 }
-.campfire-base { width:32px;height:16px;background:var(--stone-dark);border:2px solid #000;border-top:3px solid var(--stone); }
-.campfire-logs { width:40px;height:8px;background:var(--wood);border:2px solid #000;margin-top:-2px; }
-.campfire-flame {
-  font-size:40px;
-  line-height:1;
-  margin-bottom:-8px;
-  animation:campfireFlicker 1.6s ease-in-out infinite;
-  filter:drop-shadow(0 0 12px var(--campfire)) drop-shadow(0 0 24px var(--campfire-red));
-}
-body.day-mode .campfire-flame { filter:drop-shadow(0 0 6px var(--campfire)); }
-.campfire-glow {
-  position:absolute;
-  bottom:-20px; left:50%;
-  transform:translateX(-50%);
-  width:200px; height:120px;
-  background:radial-gradient(ellipse,rgba(255,140,0,.25) 0%,rgba(230,48,0,.1) 40%,transparent 70%);
-  pointer-events:none;
-  animation:glowPulse 2s ease-in-out infinite;
-}
+.day-cloud::before{content:'';position:absolute;background:#fff;border:3px solid #ccc;}
+.cloud-a{width:80px;height:24px;top:90px;animation-duration:40s;}
+.cloud-a::before{width:40px;height:24px;top:-18px;left:12px;}
+.cloud-b{width:60px;height:20px;top:130px;animation-duration:55s;animation-delay:-20s;}
+.cloud-b::before{width:32px;height:20px;top:-14px;left:8px;}
+.cloud-c{width:96px;height:28px;top:60px;animation-duration:48s;animation-delay:-32s;}
+.cloud-c::before{width:50px;height:28px;top:-20px;left:16px;}
+body.day-mode .day-cloud{display:block;}
 
-/* LANTERNS */
-.lantern { position:absolute; z-index:7; display:flex; flex-direction:column; align-items:center; }
-.lantern-chain { width:2px;height:24px;background:#888; }
-.lantern-body {
-  font-size:18px;
-  animation:lanternSwing 3s ease-in-out infinite;
-  filter:drop-shadow(0 0 6px var(--lantern)) drop-shadow(0 0 12px rgba(255,170,51,.4));
-}
-.lantern-glow {
-  position:absolute;
-  top:20px; left:50%;
-  transform:translateX(-50%);
-  width:80px; height:80px;
-  background:radial-gradient(circle,rgba(255,170,51,.3) 0%,transparent 70%);
-  pointer-events:none;
-}
+/* Pixel TREES (day only) */
+.pixel-tree{position:absolute;bottom:179px;z-index:4;display:none;}
+body.day-mode .pixel-tree{display:block;}
+.tree-trunk{width:16px;height:48px;background:#a0762a;border:2px solid #000;margin:0 auto;}
+.tree-leaves{width:64px;height:64px;background:#2d7a1e;border:3px solid #000;position:absolute;top:-56px;left:-24px;}
+.tree-leaves::before{content:'';position:absolute;width:40px;height:40px;background:#3a9e28;border:2px solid #000;top:-28px;left:9px;}
+.tree-pos-1{left:5%;}
+.tree-pos-2{right:8%;}
+.tree-pos-3{left:20%;}
 
-/* HERO CARD */
-.hero-content { position:relative; z-index:10; text-align:center; margin-bottom:56px; }
+/* Pixel CREEPER (day only) */
+.creeper-wrap{position:absolute;bottom:179px;right:22%;z-index:4;display:none;animation:creeperBob 2s ease-in-out infinite;}
+body.day-mode .creeper-wrap{display:block;}
+.creeper-head{width:32px;height:32px;background:#4CAF50;border:3px solid #000;position:relative;margin:0 auto;}
+.creeper-head::before{content:'';position:absolute;width:8px;height:6px;background:#000;top:10px;left:4px;box-shadow:12px 0 0 #000,0 8px 0 4px #000;}
+.creeper-body{width:24px;height:28px;background:#388E3C;border:3px solid #000;margin:0 auto;}
+
+/* ── NIGHT ELEMENTS ── */
+/* Campfire */
+.campfire-wrap{
+  position:absolute;bottom:200px;left:50%;transform:translateX(-50%);
+  z-index:8;display:flex;flex-direction:column;align-items:center;
+}
+body.day-mode .campfire-wrap{display:none;}
+.campfire-base{width:32px;height:16px;background:var(--stone-dark);border:2px solid #000;border-top:3px solid var(--stone);}
+.campfire-logs{width:40px;height:8px;background:#7a5c2e;border:2px solid #000;margin-top:-2px;}
+.campfire-flame{font-size:40px;line-height:1;margin-bottom:-8px;animation:campfireFlicker 1.6s ease-in-out infinite;filter:drop-shadow(0 0 12px var(--campfire)) drop-shadow(0 0 24px var(--campfire-red));}
+.campfire-glow{position:absolute;bottom:-20px;left:50%;transform:translateX(-50%);width:200px;height:120px;background:radial-gradient(ellipse,rgba(255,140,0,.25) 0%,rgba(230,48,0,.1) 40%,transparent 70%);pointer-events:none;animation:glowPulse 2s ease-in-out infinite;}
+
+/* Lanterns */
+.lantern{position:absolute;z-index:7;display:flex;flex-direction:column;align-items:center;}
+body.day-mode .lantern{display:none;}
+.lantern-chain{width:2px;height:24px;background:#888;}
+.lantern-body{font-size:18px;animation:lanternSwing 3s ease-in-out infinite;filter:drop-shadow(0 0 6px var(--lantern)) drop-shadow(0 0 12px rgba(255,170,51,.4));}
+.lantern-glow{position:absolute;top:20px;left:50%;transform:translateX(-50%);width:80px;height:80px;background:radial-gradient(circle,rgba(255,170,51,.3) 0%,transparent 70%);pointer-events:none;}
+
+/* ── TERRAIN (shared, different block types per theme) ── */
+.terrain-layer{position:absolute;bottom:0;left:0;right:0;z-index:3;pointer-events:none;}
+.block-row{position:absolute;left:0;right:0;display:flex;}
+.pxblock{flex-shrink:0;border:2px solid rgba(0,0,0,.4);image-rendering:pixelated;}
+
+/* Night blocks */
+.pxblock-stone{width:48px;height:48px;background:#3a3f4a;border-top:3px solid #4e5566;border-left:3px solid #5a6070;border-bottom:3px solid #1a1e24;border-right:3px solid #1a1e24;}
+.pxblock-mossy{width:48px;height:48px;background:#2d4a2a;border-top:3px solid #3a5e35;border-left:3px solid #3a5e35;border-bottom:3px solid #1a2a18;border-right:3px solid #1a2a18;}
+.pxblock-dark{width:48px;height:48px;background:#252830;border-top:3px solid #3a3f4a;border-left:3px solid #3a3f4a;border-bottom:3px solid #000;border-right:3px solid #000;}
+
+/* Day blocks (grass/dirt/stone — exact match to reference) */
+.pxblock-grass{width:48px;height:48px;background:linear-gradient(to bottom,#5aac44 0%,#5aac44 30%,#8B6340 30%);border-top:3px solid #3d7a2e;border-left:3px solid #6abf4a;border-bottom:3px solid #5a3820;border-right:3px solid #5a3820;}
+.pxblock-dirt{width:48px;height:48px;background:#8B6340;border-top:3px solid #9e7040;border-left:3px solid #7a5535;border-bottom:3px solid #4a2e10;border-right:3px solid #4a2e10;}
+.pxblock-stone2{width:48px;height:48px;background:#888;border-top:3px solid #aaa;border-left:3px solid #666;border-bottom:3px solid #444;border-right:3px solid #444;}
+
+.row-top{bottom:192px;}
+.row-2{bottom:144px;}
+.row-3{bottom:96px;}
+.row-4{bottom:48px;}
+.row-5{bottom:0;}
+
+/* ════════════════════════════════════
+   HERO CARD
+════════════════════════════════════ */
+.hero-content{position:relative;z-index:10;text-align:center;margin-bottom:56px;}
 .player-card {
+  background:rgba(0,0,0,.85);
+  border:4px solid #555;
+  box-shadow:6px 6px 0 #000,inset 0 0 0 2px rgba(255,255,255,.08);
+  padding:28px 48px 24px;
   display:inline-block;
-  background:var(--panel);
-  border:4px solid var(--stone);
-  border-right:4px solid #000;
-  border-bottom:4px solid #000;
-  box-shadow:6px 6px 0 #000, inset 0 0 0 2px rgba(255,255,255,.06);
-  padding:28px 44px 24px;
   position:relative;
-  margin-bottom:24px;
-  transition:background 0.5s;
+  margin-bottom:20px;
 }
+body.day-mode .player-card{background:rgba(0,0,0,.85);}
 .player-card::before {
-  content:'▶ PLAYER INFO ◀';
-  position:absolute;
-  top:-16px; left:50%;
-  transform:translateX(-50%);
-  background:var(--stone);
-  color:var(--glowstone);
-  font-family:'Press Start 2P',monospace;
-  font-size:7px;
-  padding:4px 12px;
-  border:2px solid var(--stone-light);
-  border-bottom:none;
-  white-space:nowrap;
-  text-shadow:0 0 6px var(--glowstone);
-  letter-spacing:1px;
+  content:'▶ PLAYER CARD ◀';
+  position:absolute;top:-14px;left:50%;transform:translateX(-50%);
+  background:var(--green);color:#000;
+  font-family:'Press Start 2P',monospace;font-size:8px;
+  padding:4px 10px;border:2px solid #000;white-space:nowrap;
 }
-.player-name {
-  font-family:'Press Start 2P',monospace;
-  font-size:clamp(16px,3vw,26px);
-  color:var(--glowstone);
-  text-shadow:0 0 10px var(--glowstone-dim), 3px 3px 0 #000;
-  letter-spacing:2px;
-  line-height:1.4;
-  margin-bottom:10px;
-  display:block;
-}
-.player-class { font-size:22px; color:var(--teal-bright); text-shadow:0 0 6px var(--teal); margin-bottom:8px; }
-.player-level { font-size:18px; color:var(--text-dim); }
-.hp-row { margin:14px 0 6px; display:flex; align-items:center; gap:10px; }
-.hp-label { font-family:'Press Start 2P',monospace; font-size:7px; color:#dd3333; text-shadow:0 0 4px #dd3333; white-space:nowrap; }
-.hp-bar { flex:1; height:14px; background:#111; border:2px solid var(--stone); overflow:hidden; position:relative; }
-.hp-fill { height:100%; width:90%; background:linear-gradient(90deg,#881111,#dd2222,#ff4444,#dd2222); background-size:200% 100%; animation:shimmer 1.5s linear infinite; }
-.hp-fill::after { content:''; position:absolute; top:2px; left:4px; right:4px; height:3px; background:rgba(255,255,255,.25); }
-.hearts { display:flex; gap:3px; justify-content:center; margin-top:10px; }
-.heart { font-size:16px; }
+.player-name{font-family:'Press Start 2P',monospace;font-size:clamp(16px,3vw,26px);color:#FFD700;text-shadow:3px 3px 0 #000,-1px -1px 0 #000;letter-spacing:2px;line-height:1.4;margin-bottom:10px;display:block;}
+.player-class{font-size:22px;color:#4de6e6;text-shadow:1px 1px 0 #000;margin-bottom:8px;}
+.player-level{font-size:18px;color:#aaa;}
+.hp-row{margin:14px 0 6px;display:flex;align-items:center;gap:10px;}
+.hp-label{font-family:'Press Start 2P',monospace;font-size:7px;color:#dd3333;white-space:nowrap;}
+.hp-bar{flex:1;height:14px;background:#111;border:2px solid #555;overflow:hidden;position:relative;}
+.hp-fill{height:100%;width:90%;background:linear-gradient(90deg,#881111,#dd2222,#ff4444,#dd2222);background-size:200% 100%;animation:shimmer 1.5s linear infinite;}
+.hearts{display:flex;gap:3px;justify-content:center;margin-top:10px;}
+.heart{font-size:18px;animation:heartbeat 1.5s ease-in-out infinite;}
 
-/* HERO BUTTONS */
-.hero-btns { display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-top:16px; }
-.mc-btn {
-  font-family:'Press Start 2P',monospace;
-  font-size:9px;
-  padding:10px 18px;
-  text-decoration:none;
-  display:inline-block;
-  border:3px solid #000;
-  border-right:4px solid #000;
-  border-bottom:4px solid #000;
-  cursor:pointer;
-  transition:all .1s;
-  letter-spacing:.5px;
-  image-rendering:pixelated;
-}
-.mc-btn:hover { transform:translate(-1px,-1px); box-shadow:3px 3px 0 #000; }
-.mc-btn:active { transform:translate(2px,2px); box-shadow:none; }
-.btn-green { background:#4a8a3a; color:#ccffcc; border-top-color:#6aaa5a; border-left-color:#6aaa5a; }
-.btn-green:hover { background:#5aaa4a; }
-.btn-blue { background:#2a4a8a; color:#aaccff; border-top-color:#4a6aaa; border-left-color:#4a6aaa; }
-.btn-blue:hover { background:#3a5aaa; }
-.btn-dark { background:var(--stone-dark); color:var(--text); border-top-color:var(--stone); border-left-color:var(--stone); }
-.btn-dark:hover { background:var(--stone); }
+.cta-buttons{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:20px;}
+.mc-btn{font-family:'Press Start 2P',monospace;font-size:10px;padding:12px 20px;cursor:pointer;text-decoration:none;display:inline-block;transition:all .1s;border:3px solid #000;box-shadow:4px 4px 0 #000;letter-spacing:1px;}
+.mc-btn:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 #000;}
+.mc-btn:active{transform:translate(1px,1px);box-shadow:2px 2px 0 #000;}
+.btn-green{background:var(--green);color:#000;}
+.btn-blue{background:#4a90d9;color:#fff;}
+.btn-dark{background:#2a2a2a;color:var(--text);border-color:#555;}
 
-/* DIVIDER */
-.mc-divider { height:48px; overflow:hidden; display:flex; border-top:3px solid #000; border-bottom:3px solid #000; }
-.div-block { flex:1; height:48px; border-right:2px solid rgba(0,0,0,.4); }
+/* ════════════════════════════════════
+   DIVIDERS
+════════════════════════════════════ */
+.pixel-divider{height:8px;background:repeating-linear-gradient(90deg,var(--green) 0px,var(--green) 32px,var(--dark-green) 32px,var(--dark-green) 64px,var(--dirt) 64px,var(--dirt) 96px,var(--dark-dirt) 96px,var(--dark-dirt) 128px);border-top:3px solid #000;border-bottom:3px solid #000;}
 
-/* SECTIONS */
-section { max-width:920px; margin:0 auto; padding:56px 24px; }
-.sec-head { display:flex; align-items:center; gap:14px; margin-bottom:32px; }
-.sec-icon-block {
-  width:48px; height:48px;
-  border:3px solid #000;
-  border-right:4px solid #000;
-  border-bottom:4px solid #000;
-  box-shadow:inset 0 0 0 2px rgba(255,255,255,.1);
-  display:flex; align-items:center; justify-content:center;
-  font-size:24px; flex-shrink:0;
-}
-.icon-glowstone { background:var(--glowstone); animation:glowPulse 2.5s ease-in-out infinite; }
-.icon-stone { background:var(--stone); }
-.icon-mossy { background:var(--mossy); }
-.icon-teal { background:var(--teal); }
-.icon-dark { background:var(--stone-dark); }
-.icon-blue { background:var(--blue-mist); }
-.sec-title { font-family:'Press Start 2P',monospace; font-size:clamp(11px,2vw,16px); color:var(--glowstone); text-shadow:2px 2px 0 #000, 0 0 8px var(--glowstone-dim); letter-spacing:1px; }
-.sec-line { flex:1; height:3px; background:linear-gradient(90deg,var(--stone),transparent); border-top:1px solid var(--stone-light); }
+/* ════════════════════════════════════
+   SECTIONS
+════════════════════════════════════ */
+section{max-width:900px;margin:0 auto;padding:60px 24px;}
+
+.section-header{display:flex;align-items:center;gap:16px;margin-bottom:36px;}
+.section-icon{width:48px;height:48px;border:3px solid #000;box-shadow:3px 3px 0 #000;flex-shrink:0;}
+.icon-diamond{background:linear-gradient(135deg,#4de6e6,#00bcd4,#4de6e6);}
+.icon-gold{background:linear-gradient(135deg,#ffd700,#e6a800,#ffd700);}
+.icon-redstone{background:linear-gradient(135deg,#e03030,#a00,#e03030);}
+.icon-emerald{background:linear-gradient(135deg,#50c878,#2a8a4a,#50c878);}
+.icon-iron{background:linear-gradient(135deg,#d4d4d4,#aaa,#d4d4d4);}
+.icon-wood{background:linear-gradient(135deg,#c89a4a,#a0762a,#c89a4a);}
+.icon-glowstone{background:#ffd080;animation:glowPulse 2.5s ease-in-out infinite;}
+.section-title{font-family:'Press Start 2P',monospace;font-size:clamp(11px,2vw,17px);color:#FFD700;text-shadow:2px 2px 0 #000;}
 
 /* ABOUT */
-.about-panel {
-  background:var(--panel);
-  border:3px solid var(--stone);
-  border-right:4px solid #000;
-  border-bottom:4px solid #000;
-  box-shadow:inset 0 0 0 2px rgba(255,255,255,.04);
-  padding:28px;
-  position:relative;
-  transition:background 0.5s;
-}
-.about-panel::before {
-  content:'';
-  position:absolute;
-  top:0; left:0; right:0;
-  height:4px;
-  background:repeating-linear-gradient(90deg, var(--mossy) 0,var(--mossy) 16px, var(--mossy-light) 16px,var(--mossy-light) 32px, var(--stone) 32px,var(--stone) 48px);
-}
-.about-text { font-size:21px; color:var(--text); line-height:1.8; }
-.hi-gold { color:var(--glowstone); text-shadow:0 0 6px var(--glowstone-dim); }
-.hi-teal { color:var(--teal-bright); }
-.hi-green { color:#88dd88; }
+.about-panel{background:var(--panel);border:4px solid #555;box-shadow:6px 6px 0 #000;padding:28px;position:relative;}
+.about-panel::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:repeating-linear-gradient(90deg,var(--green) 0px,var(--green) 16px,var(--dark-green) 16px,var(--dark-green) 32px);}
+.about-text{font-size:22px;color:#ddd;line-height:1.8;}
+.hi-gold{color:#FFD700;}
+.hi-teal{color:#4de6e6;}
+.hi-green{color:var(--green);}
 
-/* STAT CARDS */
-.stat-row { display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:10px; margin-top:22px; }
-.stat-c {
-  background:var(--panel-light);
-  border:3px solid var(--stone);
-  border-right:4px solid #000;
-  border-bottom:4px solid #000;
-  padding:12px; text-align:center;
-  transition:all .1s;
-}
-.stat-c:hover { transform:translate(-1px,-1px); box-shadow:2px 2px 0 #000; border-color:var(--glowstone-dim); }
-.stat-c-icon { font-size:26px; margin-bottom:6px; display:block; }
-.stat-c-val { font-family:'Press Start 2P',monospace; font-size:9px; color:var(--glowstone); margin-bottom:4px; }
-.stat-c-lab { font-size:16px; color:var(--text-dim); }
+.stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-top:24px;}
+.stat-card{background:var(--panel2);border:3px solid #444;box-shadow:3px 3px 0 #000;padding:14px;text-align:center;transition:all .1s;}
+.stat-card:hover{transform:translate(-1px,-1px);box-shadow:4px 4px 0 #000;border-color:#FFD700;}
+.stat-icon{font-size:28px;margin-bottom:6px;}
+.stat-value{font-family:'Press Start 2P',monospace;font-size:10px;color:#FFD700;margin-bottom:4px;}
+.stat-label{font-size:16px;color:#aaa;}
 
-/* TIMELINE */
-.timeline { padding-left:28px; position:relative; }
-.timeline::before { content:''; position:absolute; left:4px; top:0; bottom:0; width:4px; background:linear-gradient(to bottom,var(--stone-light),var(--stone),transparent); border-right:2px solid #000; }
-.tl-item {
-  background:var(--panel);
-  border:3px solid var(--stone);
-  border-right:4px solid #000;
-  border-bottom:4px solid #000;
-  padding:18px 20px;
-  margin-bottom:14px;
-  position:relative;
-  transition:all .15s;
-}
-.tl-item:hover { border-color:var(--glowstone-dim); transform:translate(-1px,-1px); box-shadow:2px 2px 0 #000; }
-.tl-item.current { border-left:4px solid var(--teal-bright); }
-.tl-dot { position:absolute; left:-32px; top:20px; width:16px; height:16px; background:var(--stone); border:3px solid #000; transform:rotate(45deg); }
-.tl-dot.active { background:var(--campfire); animation:glowPulse 2s ease-in-out infinite; }
-.badge { font-family:'Press Start 2P',monospace; font-size:7px; padding:3px 8px; border:2px solid; display:inline-block; margin-bottom:8px; }
-.badge-active { color:var(--teal-bright); border-color:var(--teal); background:rgba(42,138,122,.2); }
-.badge-done { color:var(--text-dim); border-color:var(--stone); background:transparent; }
-.tl-title { font-family:'Press Start 2P',monospace; font-size:10px; color:var(--glowstone); margin-bottom:5px; line-height:1.4; }
-.tl-company { font-size:18px; color:var(--teal-bright); margin-bottom:6px; }
-.tl-desc { font-size:17px; color:var(--text-dim); }
+/* WORK */
+.work-item{background:var(--panel);border:3px solid #444;box-shadow:4px 4px 0 #000;padding:20px;margin-bottom:14px;position:relative;transition:all .1s;}
+.work-item:hover{transform:translate(-1px,-1px);box-shadow:5px 5px 0 #000;border-color:#FFD700;}
+.work-item.current{border-left:4px solid var(--green);}
+.work-item::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;}
+.work-item.current::before{background:var(--green);}
+.work-item.past::before{background:#555;}
+.badge-current{font-family:'Press Start 2P',monospace;font-size:7px;background:#1a3a1a;color:var(--green);border:2px solid var(--green);padding:3px 8px;display:inline-block;margin-bottom:8px;}
+.badge-past{font-family:'Press Start 2P',monospace;font-size:7px;background:#2a2a2a;color:#888;border:2px solid #555;padding:3px 8px;display:inline-block;margin-bottom:8px;}
+.work-title{font-family:'Press Start 2P',monospace;font-size:10px;color:#FFD700;margin-bottom:6px;line-height:1.5;}
+.work-company{font-size:18px;color:#4de6e6;margin-bottom:8px;}
+.work-desc{font-size:18px;color:#bbb;}
 
 /* SKILLS */
-.skill-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(86px,1fr)); gap:10px; }
-.skill-c {
-  background:var(--panel);
-  border:3px solid var(--stone);
-  border-right:4px solid #000;
-  border-bottom:4px solid #000;
-  padding:12px 8px;
-  text-align:center;
-  cursor:default;
-  position:relative;
-  transition:all .1s;
-}
-.skill-c:hover { transform:translate(-1px,-2px); box-shadow:2px 3px 0 #000; }
-.skill-c:hover .skill-tip { opacity:1; }
-.skill-emoji { font-size:26px; display:block; margin-bottom:5px; }
-.skill-name { font-family:'Press Start 2P',monospace; font-size:6px; color:var(--text-dim); line-height:1.4; }
-.skill-tip { position:absolute; bottom:calc(100% + 6px); left:50%; transform:translateX(-50%); background:var(--stone-dark); color:var(--glowstone); font-family:'Press Start 2P',monospace; font-size:6px; padding:4px 8px; border:2px solid var(--stone); white-space:nowrap; opacity:0; transition:opacity .15s; pointer-events:none; z-index:20; letter-spacing:.5px; }
-.r-common { border-color:var(--stone); }
-.r-uncommon { border-top-color:#4a8a3a; border-left-color:#4a8a3a; }
-.r-uncommon:hover { border-color:#6aaa5a; }
-.r-rare { border-top-color:var(--blue-mist); border-left-color:var(--blue-mist); }
-.r-rare:hover { border-color:var(--blue-glow); }
-.r-epic { border-top-color:#5a2a8a; border-left-color:#5a2a8a; }
-.r-epic:hover { border-color:#8a4acc; }
-.r-legendary { border-top-color:var(--glowstone-dim); border-left-color:var(--glowstone-dim); }
-.r-legendary:hover { border-color:var(--glowstone); box-shadow:0 0 10px rgba(212,168,32,.3); }
+.skills-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(82px,1fr));gap:10px;}
+.skill-item{background:var(--panel);border:3px solid #444;box-shadow:3px 3px 0 #000;padding:12px 8px;text-align:center;cursor:default;transition:all .1s;position:relative;}
+.skill-item:hover{transform:translateY(-3px);box-shadow:3px 6px 0 #000;}
+.skill-item:hover .skill-tooltip{opacity:1;}
+.skill-emoji{font-size:28px;display:block;margin-bottom:4px;}
+.skill-name{font-family:'Press Start 2P',monospace;font-size:6px;color:#ccc;line-height:1.4;}
+.skill-tooltip{position:absolute;bottom:100%;left:50%;transform:translateX(-50%);background:#000;color:#FFD700;font-family:'Press Start 2P',monospace;font-size:7px;padding:4px 8px;border:2px solid #FFD700;white-space:nowrap;opacity:0;transition:opacity .2s;pointer-events:none;z-index:20;margin-bottom:4px;}
+.r-common{border-color:#888;}
+.r-uncommon{border-color:var(--green);}
+.r-rare{border-color:#4a90d9;}
+.r-epic{border-color:#9b59b6;}
+.r-legendary{border-color:#FFD700;}
 
 /* PROJECTS */
-.proj-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(268px,1fr)); gap:16px; }
-.proj-card {
-  background:var(--panel);
-  border:3px solid var(--stone);
-  border-right:4px solid #000;
-  border-bottom:4px solid #000;
-  position:relative;
-  transition:all .15s;
-  overflow:hidden;
-}
-.proj-card:hover { transform:translate(-2px,-2px); box-shadow:4px 4px 0 #000; border-color:var(--glowstone-dim); }
-.proj-top { height:84px; background:var(--panel-light); border-bottom:3px solid var(--stone); display:flex; align-items:center; justify-content:center; font-size:42px; }
-.proj-body { padding:18px; }
-.proj-title { font-family:'Press Start 2P',monospace; font-size:9px; color:var(--glowstone); margin-bottom:8px; line-height:1.5; }
-.proj-desc { font-size:18px; color:var(--text-dim); margin-bottom:12px; line-height:1.6; }
-.proj-tags { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:12px; }
-.tag { font-family:'Press Start 2P',monospace; font-size:6px; padding:3px 7px; border:2px solid; }
-.tag-green { border-color:#3a6a2a; color:#88cc88; background:rgba(58,106,42,.2); }
-.tag-blue { border-color:var(--blue-mist); color:var(--blue-glow); background:rgba(42,74,122,.2); }
-.tag-teal { border-color:var(--teal); color:var(--teal-bright); background:rgba(42,138,122,.15); }
-.locked-overlay { position:absolute; inset:0; background:rgba(10,16,32,.85); display:flex; align-items:center; justify-content:center; flex-direction:column; gap:10px; }
-.locked-text { font-family:'Press Start 2P',monospace; font-size:10px; color:var(--glowstone-dim); text-align:center; line-height:2; animation:campfireFlicker 2s ease-in-out infinite; }
+.projects-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;}
+.project-card{background:var(--panel);border:4px solid #444;box-shadow:5px 5px 0 #000;padding:20px;position:relative;transition:all .1s;}
+.project-card:hover{transform:translate(-2px,-2px);box-shadow:7px 7px 0 #000;border-color:#4de6e6;}
+.project-card-top{width:100%;height:80px;margin-bottom:14px;border:3px solid #333;display:flex;align-items:center;justify-content:center;font-size:40px;background:var(--panel2);}
+.project-title{font-family:'Press Start 2P',monospace;font-size:10px;color:#FFD700;margin-bottom:8px;line-height:1.5;}
+.project-desc{font-size:18px;color:#bbb;margin-bottom:14px;}
+.project-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px;}
+.tag{font-family:'Press Start 2P',monospace;font-size:6px;padding:4px 8px;border:2px solid;}
+.tag-green{background:#1a3a1a;border-color:var(--green);color:var(--green);}
+.tag-blue{background:#1a2a3a;border-color:#4a90d9;color:#4a90d9;}
+.tag-teal{background:#0a2a2a;border-color:#4de6e6;color:#4de6e6;}
+.coming-soon-overlay{position:absolute;inset:0;background:rgba(0,0,0,.8);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px;border:4px solid #444;}
+.coming-soon-text{font-family:'Press Start 2P',monospace;font-size:11px;color:#FFD700;text-align:center;animation:blink 1.2s step-end infinite;}
 
 /* ACHIEVEMENTS */
-.ach-list { display:flex; flex-direction:column; gap:10px; }
-.ach-item {
-  background:var(--panel);
-  border:3px solid var(--stone);
-  border-right:4px solid #000;
-  border-bottom:4px solid #000;
-  padding:16px 20px;
-  display:flex; align-items:center; gap:14px;
-  transition:all .15s;
-  position:relative;
-}
-.ach-item:hover { border-color:var(--glowstone-dim); transform:translate(-1px,-1px); box-shadow:2px 2px 0 #000; }
-.ach-item.locked { opacity:.4; filter:grayscale(.8); }
-.ach-item::before { content:''; position:absolute; left:0; top:0; bottom:0; width:4px; background:var(--glowstone); }
-.ach-item.locked::before { background:var(--stone); }
-.ach-icon { font-size:28px; flex-shrink:0; width:40px; text-align:center; }
-.ach-info { flex:1; }
-.ach-title { font-family:'Press Start 2P',monospace; font-size:8px; color:var(--glowstone); margin-bottom:4px; line-height:1.4; }
-.ach-item.locked .ach-title { color:var(--text-dim); }
-.ach-desc { font-size:17px; color:var(--text-dim); }
-.ach-badge { font-family:'Press Start 2P',monospace; font-size:7px; padding:4px 8px; border:2px solid; flex-shrink:0; }
-.badge-done-g { color:var(--glowstone); border-color:var(--glowstone-dim); background:rgba(212,168,32,.1); }
-.badge-lock { color:var(--stone-light); border-color:var(--stone); background:transparent; }
+.achievements-list{display:flex;flex-direction:column;gap:12px;}
+.achievement{background:var(--panel);border:3px solid #444;box-shadow:4px 4px 0 #000;padding:16px 20px;display:flex;align-items:center;gap:16px;position:relative;overflow:hidden;transition:all .1s;}
+.achievement:hover{transform:translate(-1px,-1px);box-shadow:5px 5px 0 #000;border-color:#FFD700;}
+.achievement.locked{filter:grayscale(1);opacity:.5;}
+.achievement::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:#FFD700;}
+.achievement.locked::before{background:#555;}
+.ach-icon{font-size:32px;flex-shrink:0;width:48px;text-align:center;}
+.ach-info{flex:1;}
+.ach-title{font-family:'Press Start 2P',monospace;font-size:9px;color:#FFD700;margin-bottom:4px;line-height:1.4;}
+.achievement.locked .ach-title{color:#888;}
+.ach-desc{font-size:17px;color:#aaa;}
+.ach-badge{font-family:'Press Start 2P',monospace;font-size:7px;padding:4px 8px;border:2px solid;flex-shrink:0;}
+.badge-gold{background:#2a2000;border-color:#FFD700;color:#FFD700;}
+.badge-locked{background:#1a1a1a;border-color:#555;color:#555;}
 
 /* GITHUB */
-.github-panel {
-  background:var(--panel);
-  border:3px solid var(--stone);
-  border-right:4px solid #000;
-  border-bottom:4px solid #000;
-  padding:36px; text-align:center; position:relative;
-}
-.github-panel::before { content:'── CODE VAULT ──'; position:absolute; top:-1px; left:50%; transform:translateX(-50%); font-family:'Press Start 2P',monospace; font-size:7px; color:var(--glowstone-dim); background:var(--panel); padding:0 12px; white-space:nowrap; letter-spacing:2px; }
-.github-icon { font-size:56px; display:block; margin-bottom:14px; }
-.github-name { font-family:'Press Start 2P',monospace; font-size:16px; color:var(--glowstone); margin-bottom:8px; text-shadow:0 0 8px var(--glowstone-dim); }
-.github-sub { font-size:19px; color:var(--text-dim); margin-bottom:22px; font-style:italic; }
+.github-panel{background:var(--panel);border:4px solid #555;box-shadow:6px 6px 0 #000;padding:28px;text-align:center;}
+.github-icon-big{font-size:64px;margin-bottom:12px;display:block;}
+.github-username{font-family:'Press Start 2P',monospace;font-size:14px;color:#4de6e6;margin-bottom:8px;}
+.github-desc{font-size:20px;color:#aaa;margin-bottom:20px;}
 
 /* CONTACT */
-.contact-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:10px; margin-bottom:20px; }
-.contact-card {
-  background:var(--panel);
-  border:3px solid var(--stone);
-  border-right:4px solid #000;
-  border-bottom:4px solid #000;
-  padding:16px 18px;
-  display:flex; align-items:center; gap:12px;
-  text-decoration:none;
-  transition:all .15s;
-}
-.contact-card:hover { border-color:var(--glowstone-dim); transform:translate(-1px,-1px); box-shadow:2px 2px 0 #000; }
-.contact-icon { font-size:28px; flex-shrink:0; }
-.contact-label { font-family:'Press Start 2P',monospace; font-size:7px; color:var(--text-dim); margin-bottom:3px; letter-spacing:.5px; }
-.contact-val { font-size:18px; color:var(--text); word-break:break-all; }
+.contact-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin-bottom:16px;}
+.contact-card{background:var(--panel);border:3px solid #444;box-shadow:4px 4px 0 #000;padding:18px;display:flex;align-items:center;gap:14px;text-decoration:none;transition:all .1s;}
+.contact-card:hover{border-color:var(--green);transform:translate(-2px,-2px);box-shadow:6px 6px 0 #000;}
+.contact-icon{font-size:32px;flex-shrink:0;}
+.contact-label{font-family:'Press Start 2P',monospace;font-size:8px;color:#aaa;margin-bottom:4px;}
+.contact-value{font-size:18px;color:var(--text);word-break:break-all;}
 
 /* CONTACT FORM */
-.contact-form {
-  background:var(--panel);
-  border:3px solid var(--stone);
-  border-right:4px solid #000;
-  border-bottom:4px solid #000;
-  padding:28px; margin-top:8px; position:relative;
-}
-.contact-form::before {
-  content:'▶ SEND A MESSAGE ◀';
-  position:absolute;
-  top:-14px; left:50%;
-  transform:translateX(-50%);
-  background:var(--stone);
-  color:var(--glowstone);
-  font-family:'Press Start 2P',monospace;
-  font-size:7px;
-  padding:4px 12px;
-  border:2px solid var(--stone-light);
-  white-space:nowrap;
-}
-.form-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:12px; }
-.form-field { margin-bottom:12px; }
-.form-field label { display:block; font-family:'Press Start 2P',monospace; font-size:7px; color:var(--glowstone-dim); margin-bottom:6px; letter-spacing:.5px; }
+.contact-form{background:var(--panel);border:4px solid #555;box-shadow:5px 5px 0 #000;padding:28px;margin-top:8px;position:relative;}
+.contact-form::before{content:'▶ SEND A MESSAGE ◀';position:absolute;top:-14px;left:50%;transform:translateX(-50%);background:var(--green);color:#000;font-family:'Press Start 2P',monospace;font-size:7px;padding:4px 12px;border:2px solid #000;white-space:nowrap;}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;}
+.form-field{margin-bottom:12px;}
+.form-field label{display:block;font-family:'Press Start 2P',monospace;font-size:7px;color:#aaa;margin-bottom:6px;}
 .form-field input,
-.form-field textarea {
-  width:100%;
-  background:#0a1018;
-  border:3px solid var(--stone);
-  border-right:4px solid #000;
-  border-bottom:4px solid #000;
-  color:var(--text);
-  font-family:'VT323',monospace;
-  font-size:20px;
-  padding:10px 12px;
-  outline:none;
-  transition:border-color .15s;
-}
-.form-field input:focus, .form-field textarea:focus { border-color:var(--glowstone-dim); }
-.form-field textarea { resize:vertical; min-height:90px; }
-.form-submit {
-  width:100%;
-  font-family:'Press Start 2P',monospace;
-  font-size:10px;
-  background:#2a5a2a;
-  color:#aaffaa;
-  border:3px solid #3a7a3a;
-  border-right:4px solid #000;
-  border-bottom:4px solid #000;
-  padding:12px;
-  cursor:pointer;
-  letter-spacing:1px;
-  transition:all .1s;
-}
-.form-submit:hover { background:#3a7a3a; transform:translate(-1px,-1px); box-shadow:2px 2px 0 #000; }
-.form-submit:active { transform:translate(1px,1px); box-shadow:none; }
-.form-submit:disabled { opacity:.6; cursor:not-allowed; }
-.form-notice { font-size:15px; color:var(--text-dim); margin-top:10px; text-align:center; }
-.form-success { display:none; font-family:'Press Start 2P',monospace; font-size:9px; color:var(--teal-bright); text-align:center; padding:16px; border:2px solid var(--teal); background:rgba(42,138,122,.15); margin-top:10px; line-height:1.8; }
-.form-error { display:none; font-family:'Press Start 2P',monospace; font-size:9px; color:#ff5555; text-align:center; padding:16px; border:2px solid #aa2222; background:rgba(170,34,34,.15); margin-top:10px; line-height:1.8; }
+.form-field textarea{width:100%;background:#0a0e14;border:3px solid #444;border-right:4px solid #000;border-bottom:4px solid #000;color:var(--text);font-family:'VT323',monospace;font-size:20px;padding:10px 12px;outline:none;transition:border-color .15s;}
+.form-field input:focus,.form-field textarea:focus{border-color:#FFD700;}
+.form-field textarea{resize:vertical;min-height:90px;}
+.form-submit{width:100%;font-family:'Press Start 2P',monospace;font-size:10px;background:#1a5a1a;color:#aaffaa;border:3px solid var(--green);border-right:4px solid #000;border-bottom:4px solid #000;padding:12px;cursor:pointer;letter-spacing:1px;transition:all .1s;}
+.form-submit:hover{background:#2a7a2a;transform:translate(-1px,-1px);box-shadow:2px 2px 0 #000;}
+.form-submit:active{transform:translate(1px,1px);}
+.form-submit:disabled{opacity:.6;cursor:not-allowed;transform:none;}
+.form-notice{font-size:15px;color:#666;margin-top:10px;text-align:center;}
+.form-success{display:none;font-family:'Press Start 2P',monospace;font-size:9px;color:#4de6e6;text-align:center;padding:16px;border:2px solid #4de6e6;background:rgba(77,230,230,.1);margin-top:10px;line-height:1.8;}
+.form-error{display:none;font-family:'Press Start 2P',monospace;font-size:9px;color:#ff5555;text-align:center;padding:16px;border:2px solid #aa2222;background:rgba(170,34,34,.15);margin-top:10px;line-height:1.8;}
 
-/* ── MUSIC PLAYER ── */
-.music-bar {
-  position:fixed;
-  bottom:0; left:0; right:0;
-  z-index:999;
-  background:var(--panel);
-  border-top:4px solid var(--stone-dark);
-  box-shadow:0 -4px 0 #000, 0 -8px 20px rgba(0,0,0,.6);
-  padding:0 20px;
-  height:54px;
-  display:flex;
-  align-items:center;
-  gap:14px;
+/* ════════════════════════════════════
+   MUSIC PLAYER BAR
+════════════════════════════════════ */
+.music-bar{
+  position:fixed;bottom:0;left:0;right:0;z-index:999;
+  background:#1a1a1a;
+  border-top:4px solid #000;
+  box-shadow:0 -3px 0 #555;
+  padding:0 20px;height:54px;
+  display:flex;align-items:center;gap:14px;
   animation:slideUp .5s ease;
-  transition:background 0.5s;
 }
-.music-bar::before {
-  content:'';
-  position:absolute;
-  top:0; left:0; right:0;
-  height:2px;
-  background:linear-gradient(90deg,transparent,var(--teal-bright),var(--campfire),var(--teal-bright),transparent);
-  background-size:200% auto;
-  animation:shimmer 3s linear infinite;
-}
-.music-disc {
-  font-size:24px;
-  animation:musicPulse 2s ease-in-out infinite;
-  cursor:pointer;
-  flex-shrink:0;
-}
-.music-disc.playing { animation:spin 3s linear infinite; }
-@keyframes spin { to { transform:rotate(360deg); } }
-.music-track-info { flex:1; min-width:0; }
-.music-track-name { font-family:'Press Start 2P',monospace; font-size:7px; color:var(--glowstone); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-.music-track-artist { font-size:14px; color:var(--text-dim); margin-top:2px; }
-.music-controls { display:flex; align-items:center; gap:6px; }
-.music-btn {
-  font-family:'Press Start 2P',monospace;
-  font-size:8px;
-  background:var(--stone-dark);
-  color:var(--text);
-  border:2px solid var(--stone);
-  border-bottom:3px solid #000;
-  border-right:3px solid #000;
-  padding:5px 8px;
-  cursor:pointer;
-  transition:all .1s;
-  white-space:nowrap;
-}
-.music-btn:hover { background:var(--stone); transform:translate(-1px,-1px); box-shadow:2px 2px 0 #000; }
-.music-btn.active { background:var(--teal); color:#fff; border-color:var(--teal-bright); }
-.music-viz {
-  display:flex;
-  align-items:flex-end;
-  gap:2px;
-  height:20px;
-}
-.music-viz-bar {
-  width:3px;
-  background:var(--teal-bright);
-  border-radius:0;
-  animation:musicBarDance ease-in-out infinite;
-  opacity:0.3;
-}
-.music-viz.playing .music-viz-bar { opacity:1; }
-.music-vol {
-  display:flex;
-  align-items:center;
-  gap:6px;
-  font-family:'Press Start 2P',monospace;
-  font-size:6px;
-  color:var(--text-dim);
-}
-.music-vol input[type=range] {
-  width:60px;
-  accent-color:var(--teal-bright);
-  cursor:pointer;
-}
-.music-hidden { display:none; }
+.music-bar::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:repeating-linear-gradient(90deg,var(--green) 0,var(--green) 32px,var(--dark-green) 32px,var(--dark-green) 64px);opacity:.6;}
+.music-disc{font-size:22px;cursor:pointer;flex-shrink:0;}
+.music-disc.playing{animation:spin 3s linear infinite;}
+.music-disc:not(.playing){animation:musicPulse 2s ease-in-out infinite;}
+.music-track-info{flex:1;min-width:0;}
+.music-track-name{font-family:'Press Start 2P',monospace;font-size:7px;color:#FFD700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.music-track-sub{font-size:14px;color:#666;margin-top:2px;}
+.music-controls{display:flex;align-items:center;gap:6px;}
+.music-btn{font-family:'Press Start 2P',monospace;font-size:8px;background:#2a2a2a;color:#ccc;border:2px solid #555;border-bottom:3px solid #000;padding:5px 8px;cursor:pointer;transition:all .1s;white-space:nowrap;}
+.music-btn:hover{background:var(--green);color:#000;transform:translateY(-1px);}
+.music-btn.active{background:var(--green);color:#000;border-color:var(--dark-green);}
+.music-viz{display:flex;align-items:flex-end;gap:2px;height:20px;}
+.music-viz-bar{width:3px;background:var(--green);animation:musicBarDance ease-in-out infinite;opacity:.3;}
+.music-viz.playing .music-viz-bar{opacity:1;}
+.music-vol{display:flex;align-items:center;gap:6px;font-family:'Press Start 2P',monospace;font-size:6px;color:#666;}
+.music-vol input[type=range]{width:60px;accent-color:var(--green);cursor:pointer;}
+.music-hidden{display:none;}
 
-/* FOOTER */
-footer {
-  background:var(--night-deep);
-  border-top:4px solid var(--stone-dark);
-  box-shadow:0 -3px 0 #000;
-  padding:24px 24px 80px;
-  text-align:center;
-}
-.footer-text { font-family:'Press Start 2P',monospace; font-size:7px; color:var(--text-dim); line-height:2.4; letter-spacing:.5px; }
-.footer-text span { color:var(--glowstone-dim); }
+/* ── FOOTER ── */
+footer{background:#111;border-top:4px solid #333;padding:24px 24px 80px;text-align:center;}
+.footer-text{font-family:'Press Start 2P',monospace;font-size:8px;color:#555;line-height:2;}
+.footer-text span{color:var(--green);}
 
-/* EMBERS */
-.ember { position:fixed; width:4px; height:4px; border-radius:50%; pointer-events:none; animation:particleRise linear infinite; z-index:0; }
+/* ── SCROLL REVEAL ── */
+.reveal{opacity:0;transform:translateY(20px);transition:opacity .5s ease,transform .5s ease;}
+.reveal.visible{opacity:1;transform:translateY(0);}
 
-/* REVEAL */
-.reveal { opacity:0; transform:translateY(20px); transition:opacity .5s ease,transform .5s ease; }
-.reveal.visible { opacity:1; transform:translateY(0); }
-
-@media(max-width:620px) {
-  .nav-links { display:none; }
-  .player-card { padding:20px 20px 18px; }
-  .player-name { font-size:14px; }
-  .form-grid { grid-template-columns:1fr; }
-  .music-vol { display:none; }
-  .music-viz { display:none; }
+/* ── RESPONSIVE ── */
+@media(max-width:620px){
+  .nav-links{display:none;}
+  .player-card{padding:20px 20px 18px;}
+  .player-name{font-size:14px;}
+  .form-grid{grid-template-columns:1fr;}
+  .music-vol{display:none;}
+  .music-viz{display:none;}
 }
 </style>
 </head>
 <body>
-
-<!-- WEB3FORMS hidden access key -->
-<input type="hidden" id="w3f_key" value="6415f871-a4b7-430b-ab24-db5d9dfc5111">
 
 <!-- NAV -->
 <nav>
@@ -814,33 +536,60 @@ footer {
     <li><a href="#github">GITHUB</a></li>
     <li><a href="#contact">CONTACT</a></li>
   </ul>
-  <button class="theme-toggle-btn" id="themeBtn" onclick="manualToggleTheme()">🌙 NIGHT</button>
+  <button class="theme-btn" id="themeBtn" onclick="manualToggle()">☀️ DAY</button>
 </nav>
 
 <!-- HERO -->
 <div class="hero">
+  <!-- Sky layers -->
   <div class="sky-night"></div>
   <div class="sky-day"></div>
-  <div class="sun">☀️</div>
-  <!-- clouds injected by JS -->
+
+  <!-- Night: stars -->
   <canvas id="starsCanvas" class="stars-layer"></canvas>
+
+  <!-- Night: mist -->
   <div class="mist-layer" id="mistLayer"></div>
-  <div class="terrain-layer">
-    <div class="block-row row-grass" id="rowGrass"></div>
-    <div class="block-row row-stone1" id="rowS1"></div>
-    <div class="block-row row-stone2" id="rowS2"></div>
-    <div class="block-row row-stone3" id="rowS3"></div>
-    <div class="block-row row-stone4" id="rowS4"></div>
-  </div>
+
+  <!-- Night: campfire -->
   <div class="campfire-wrap">
     <div class="campfire-glow"></div>
     <div class="campfire-flame">🔥</div>
     <div class="campfire-logs"></div>
     <div class="campfire-base"></div>
   </div>
+
+  <!-- Night: lanterns -->
   <div class="lantern" style="left:15%;bottom:210px;"><div class="lantern-chain"></div><div class="lantern-body">🏮</div><div class="lantern-glow"></div></div>
   <div class="lantern" style="right:18%;bottom:220px;animation-delay:.5s"><div class="lantern-chain"></div><div class="lantern-body">🏮</div><div class="lantern-glow"></div></div>
-  <div class="lantern" style="left:30%;bottom:205px;animation-delay:1s"><div class="lantern-chain"></div><div class="lantern-body">🏮</div><div class="lantern-glow"></div></div>
+  <div class="lantern" style="left:32%;bottom:205px;animation-delay:1s"><div class="lantern-chain"></div><div class="lantern-body">🏮</div><div class="lantern-glow"></div></div>
+
+  <!-- Day: sun -->
+  <div class="day-sun"></div>
+
+  <!-- Day: clouds -->
+  <div class="day-cloud cloud-a"></div>
+  <div class="day-cloud cloud-b"></div>
+  <div class="day-cloud cloud-c"></div>
+
+  <!-- Day: trees -->
+  <div class="pixel-tree tree-pos-1"><div class="tree-leaves"></div><div class="tree-trunk"></div></div>
+  <div class="pixel-tree tree-pos-2"><div class="tree-leaves"></div><div class="tree-trunk"></div></div>
+  <div class="pixel-tree tree-pos-3"><div class="tree-leaves"></div><div class="tree-trunk"></div></div>
+
+  <!-- Day: creeper -->
+  <div class="creeper-wrap"><div class="creeper-head"></div><div class="creeper-body"></div></div>
+
+  <!-- Terrain (JS fills blocks based on day/night) -->
+  <div class="terrain-layer">
+    <div class="block-row row-top" id="rowTop"></div>
+    <div class="block-row row-2"   id="row2"></div>
+    <div class="block-row row-3"   id="row3"></div>
+    <div class="block-row row-4"   id="row4"></div>
+    <div class="block-row row-5"   id="row5"></div>
+  </div>
+
+  <!-- Hero card -->
   <div class="hero-content">
     <div class="player-card">
       <span class="player-name">Hossain Fazle Rafie</span>
@@ -853,7 +602,7 @@ footer {
       </div>
       <div class="hearts">❤️❤️❤️❤️❤️❤️❤️❤️❤️🖤</div>
     </div>
-    <div class="hero-btns">
+    <div class="cta-buttons">
       <a href="#projects" class="mc-btn btn-green">🗂 PROJECTS</a>
       <a href="https://github.com/Rafie-kun" target="_blank" class="mc-btn btn-blue">🐙 GITHUB</a>
       <a href="#contact" class="mc-btn btn-dark">📬 CONTACT</a>
@@ -861,128 +610,144 @@ footer {
   </div>
 </div>
 
-<div class="mc-divider" id="div1"></div>
+<div class="pixel-divider"></div>
 
 <!-- ABOUT -->
 <section id="about" class="reveal">
-  <div class="sec-head">
-    <div class="sec-icon-block icon-glowstone">📜</div>
-    <span class="sec-title">// About Me</span>
-    <div class="sec-line"></div>
-  </div>
+  <div class="section-header"><div class="section-icon icon-glowstone">📜</div><div class="section-title">// About Me</div></div>
   <div class="about-panel">
-    <p class="about-text">Hey, I'm Rafie — a 19-year-old self-taught coder, freelancer, and psychology student from Dhaka, Bangladesh. Like a Minecraft player who spawns in a dungeon with no gear, I started from zero and built my skill tree one block at a time. By day I write articles and pick up freelance gigs. By night I study the human mind through psychology. Two worlds, one character. The dungeon is dark but the glowstone lights the way. Still early game. Inventory growing. Not logging off. 🔥</p>
-    <div class="stat-row">
-      <div class="stat-c"><span class="stat-c-icon">🎂</span><div class="stat-c-val">AGE 19</div><div class="stat-c-lab">Years Played</div></div>
-      <div class="stat-c"><span class="stat-c-icon">💻</span><div class="stat-c-val">INTERMEDIATE</div><div class="stat-c-lab">Coder Rank</div></div>
-      <div class="stat-c"><span class="stat-c-icon">🧠</span><div class="stat-c-val">STUDENT</div><div class="stat-c-lab">Psychology</div></div>
-      <div class="stat-c"><span class="stat-c-icon">🗺</span><div class="<div class="stat-c-val">DHAKA, BD</div></div><div class="stat-c-lab">Spawn Point</div></div>
+    <p class="about-text">
+      Hey, I'm <span class="hi-gold">Rafie</span> — a <span class="hi-teal">19-year-old</span> self-taught coder, freelancer, and psychology student from <span class="hi-gold">Dhaka, Bangladesh</span>. Like a Minecraft player who spawns in a dungeon with no gear, I started from zero and built my skill tree one block at a time.<br><br>
+      By day I write articles and pick up freelance gigs. By night I study the human mind through psychology. Two worlds, one character. The dungeon is dark but the <span class="hi-green">glowstone lights the way</span>.<br><br>
+      Still early game. Inventory growing. Not logging off. 🔥
+    </p>
+    <div class="stats-row">
+      <div class="stat-card"><div class="stat-icon">🎂</div><div class="stat-value">AGE 19</div><div class="stat-label">Years Played</div></div>
+      <div class="stat-card"><div class="stat-icon">💻</div><div class="stat-value">INTERMEDIATE</div><div class="stat-label">Coder Rank</div></div>
+      <div class="stat-card"><div class="stat-icon">🧠</div><div class="stat-value">STUDENT</div><div class="stat-label">Psychology</div></div>
+      <div class="stat-card"><div class="stat-icon">🗺</div><div class="stat-value">DHAKA BD</div><div class="stat-label">Spawn Point</div></div>
     </div>
   </div>
 </section>
 
-<div class="mc-divider" id="div2"></div>
+<div class="pixel-divider"></div>
 
 <!-- WORK -->
 <section id="work" class="reveal">
-  <div class="sec-head">
-    <div class="sec-icon-block icon-stone">⚒</div>
-    <span class="sec-title">// Work Experience</span>
-    <div class="sec-line"></div>
+  <div class="section-header"><div class="section-icon icon-gold">⚒</div><div class="section-title">// Work Experience</div></div>
+  <div class="work-item current">
+    <div class="badge-current">▶ CURRENT</div>
+    <div class="work-title">Article Writer</div>
+    <div class="work-company">📍 Dynamic Teen Collection · 2026 – Present</div>
+    <div class="work-desc">Writing articles and content for a teen-focused publication brand.</div>
   </div>
-  <div class="timeline"><div class="tl-item current"><div class="tl-dot active"></div><span class="badge badge-active">▶ CURRENT</span><div class="tl-title">Article Writer</div><div class="tl-company">📍 Dynamic Teen Collection · 2026 – Present</div><div class="tl-desc">Writing articles and content for a teen-focused publication brand.</div></div>
-<div class="tl-item current"><div class="tl-dot active"></div><span class="badge badge-active">▶ CURRENT</span><div class="tl-title">Freelancer</div><div class="tl-company">📍 Self-Employed · 2023 – Present</div><div class="tl-desc">Solo runs. Took on contracts, built things, survived without a guild.</div></div>
-<div class="tl-item"><div class="tl-dot"></div><span class="badge badge-done">COMPLETED</span><div class="tl-title">Instagram Shop Manager</div><div class="tl-company">📍 Various Clients · 2023 – 2025</div><div class="tl-desc">Managed and operated Instagram storefronts. Shops got taken down eventually.</div></div></div></section><div class="mc-divider" id="div3"></div>
+  <div class="work-item current">
+    <div class="badge-current">▶ CURRENT</div>
+    <div class="work-title">Freelancer</div>
+    <div class="work-company">📍 Self-Employed · 2023 – Present</div>
+    <div class="work-desc">Solo runs. Took on contracts, built things, survived without a guild.</div>
+  </div>
+  <div class="work-item past">
+    <div class="badge-past">COMPLETED</div>
+    <div class="work-title">Instagram Shop Manager</div>
+    <div class="work-company">📍 Various Clients · 2023 – 2025</div>
+    <div class="work-desc">Managed and operated Instagram storefronts. Shops got taken down eventually.</div>
+  </div>
+</section>
+
+<div class="pixel-divider"></div>
 
 <!-- SKILLS -->
 <section id="skills" class="reveal">
-  <div class="sec-head">
-    <div class="sec-icon-block icon-mossy">🎒</div>
-    <span class="sec-title">// Skills / Inventory</span>
-    <div class="sec-line"></div>
+  <div class="section-header"><div class="section-icon icon-emerald">🎒</div><div class="section-title">// Skills / Inventory</div></div>
+  <div class="skills-grid">
+    <div class="skill-item r-rare"><span class="skill-emoji">🐍</span><span class="skill-name">Python</span><div class="skill-tooltip">RARE · Intermediate</div></div>
+    <div class="skill-item r-uncommon"><span class="skill-emoji">🌐</span><span class="skill-name">HTML/CSS</span><div class="skill-tooltip">UNCOMMON · Solid</div></div>
+    <div class="skill-item r-rare"><span class="skill-emoji">⚡</span><span class="skill-name">JavaScript</span><div class="skill-tooltip">RARE · Learning</div></div>
+    <div class="skill-item r-epic"><span class="skill-emoji">🧠</span><span class="skill-name">Psychology</span><div class="skill-tooltip">EPIC · Studying</div></div>
+    <div class="skill-item r-uncommon"><span class="skill-emoji">🐙</span><span class="skill-name">Git/GitHub</span><div class="skill-tooltip">UNCOMMON · Regular</div></div>
+    <div class="skill-item r-legendary"><span class="skill-emoji">💬</span><span class="skill-name">Freelancing</span><div class="skill-tooltip">LEGENDARY · Active</div></div>
+    <div class="skill-item r-common"><span class="skill-emoji">🔍</span><span class="skill-name">Problem Solving</span><div class="skill-tooltip">COMMON</div></div>
+    <div class="skill-item r-rare"><span class="skill-emoji">🎨</span><span class="skill-name">UI Design</span><div class="skill-tooltip">RARE · Exploring</div></div>
+    <div class="skill-item r-uncommon"><span class="skill-emoji">📝</span><span class="skill-name">Content Writing</span><div class="skill-tooltip">UNCOMMON · Active</div></div>
+    <div class="skill-item r-epic"><span class="skill-emoji">🎮</span><span class="skill-name">Minecraft</span><div class="skill-tooltip">EPIC · Obviously</div></div>
+    <div class="skill-item r-legendary"><span class="skill-emoji">☕</span><span class="skill-name">Caffeine</span><div class="skill-tooltip">LEGENDARY · Max Lv</div></div>
+    <div class="skill-item r-common"><span class="skill-emoji">☁️</span><span class="skill-name">Cloud Basics</span><div class="skill-tooltip">COMMON · Basics</div></div>
   </div>
-  <div class="skill-grid" id="skillGrid">
-<div class="skill-c r-rare"><span class="skill-emoji">🐍</span><span class="skill-name">Python</span><div class="skill-tip">RARE</div></div>
-<div class="skill-c r-uncommon"><span class="skill-emoji">🌐</span><span class="skill-name">HTML/CSS</span><div class="skill-tip">UNCOMMON</div></div>
-<div class="skill-c r-rare"><span class="skill-emoji">⚡</span><span class="skill-name">JavaScript</span><div class="skill-tip">RARE</div></div>
-<div class="skill-c r-epic"><span class="skill-emoji">🧠</span><span class="skill-name">Psychology</span><div class="skill-tip">EPIC</div></div>
-<div class="skill-c r-uncommon"><span class="skill-emoji">🐙</span><span class="skill-name">Git/GitHub</span><div class="skill-tip">UNCOMMON</div></div>
-<div class="skill-c r-legendary"><span class="skill-emoji">💬</span><span class="skill-name">Freelancing</span><div class="skill-tip">LEGENDARY</div></div>
-<div class="skill-c r-common"><span class="skill-emoji">🔍</span><span class="skill-name">Problem Solving</span><div class="skill-tip">COMMON</div></div>
-<div class="skill-c r-rare"><span class="skill-emoji">🎨</span><span class="skill-name">UI Design</span><div class="skill-tip">RARE</div></div>
-<div class="skill-c r-uncommon"><span class="skill-emoji">📝</span><span class="skill-name">Content Writing</span><div class="skill-tip">UNCOMMON</div></div>
-<div class="skill-c r-epic"><span class="skill-emoji">🎮</span><span class="skill-name">Minecraft</span><div class="skill-tip">EPIC</div></div>
-<div class="skill-c r-legendary"><span class="skill-emoji">☕</span><span class="skill-name">Caffeine</span><div class="skill-tip">LEGENDARY</div></div>
-<div class="skill-c r-common"><span class="skill-emoji">☁️</span><span class="skill-name">Cloud Basics</span><div class="skill-tip">COMMON</div></div>
-</div>
-  <p style="margin-top:14px;font-family:'Press Start 2P',monospace;font-size:7px;color:var(--text-dim);">HOVER TO SEE RARITY · COMMON → UNCOMMON → RARE → EPIC → LEGENDARY</p>
+  <p style="margin-top:14px;font-family:'Press Start 2P',monospace;font-size:7px;color:#555;">HOVER TO SEE RARITY · COMMON → UNCOMMON → RARE → EPIC → LEGENDARY</p>
 </section>
 
-<div class="mc-divider" id="div4"></div>
+<div class="pixel-divider"></div>
 
 <!-- PROJECTS -->
 <section id="projects" class="reveal">
-  <div class="sec-head">
-    <div class="sec-icon-block icon-teal">💰</div>
-    <span class="sec-title">// Projects / Builds</span>
-    <div class="sec-line"></div>
-  </div>
-  <div class="proj-grid">
-<div class="proj-card"><div class="proj-top">💰</div><div class="proj-body"><div class="proj-title">CraftEconomy</div><div class="proj-desc">A budget tracking app for real-world money management. No magic — just maths.</div><div class="proj-tags"><span class="tag tag-green">Python</span><span class="tag tag-blue">Finance</span><span class="tag tag-blue">CLI</span></div><a href="https://github.com/Rafie-kun/CraftEconomy" target="_blank" class="mc-btn btn-green" style="font-size:8px;padding:8px 14px;">View on GitHub →</a></div></div>
-<div class="proj-card"><div class="proj-top">🌐</div><div class="proj-body"><div class="proj-title">Dungeon Portfolio</div><div class="proj-desc">This very site. Minecraft dungeon-themed personal portfolio. Pure HTML/CSS/JS.</div><div class="proj-tags"><span class="tag tag-green">HTML</span><span class="tag tag-green">CSS</span><span class="tag tag-green">JS</span></div><a href="https://github.com/Rafie-kun/Rafie-kun.github.io" target="_blank" class="mc-btn btn-green" style="font-size:8px;padding:8px 14px;">View on GitHub →</a></div></div>
-<div class="proj-card" style="position:relative;"><div class="proj-top">🔮</div><div class="proj-body"><div class="proj-title">Next Build...</div><div class="proj-desc">Something is being forged. Check back soon.</div><div class="proj-tags"><span class="tag tag-teal">Soon™</span></div></div><div class="locked-overlay"><div style="font-size:36px;">🔒</div><div class="locked-text">CHEST LOCKED<br>COME BACK LATER</div></div></div>
-</div></section><div class="mc-divider" id="div5"></div>
-
-<!-- ACHIEVEMENTS -->
-<section id="achievements" class="reveal">
-  <div class="sec-head">
-    <div class="sec-icon-block icon-blue">🏆</div>
-    <span class="sec-title">// Achievements</span>
-    <div class="sec-line"></div>
-  </div>
-  <div class="ach-list">
-<div class="ach-item"><div class="ach-icon">🎓</div><div class="ach-info"><div class="ach-title" style="">Taking the First Step</div><div class="ach-desc">Enrolled in Psychology — studying human behaviour &amp; the mind</div></div><div class="ach-badge badge-done-g">UNLOCKED</div></div>
-<div class="ach-item"><div class="ach-icon">💼</div><div class="ach-info"><div class="ach-title" style="">Freelancer Mode: ON</div><div class="ach-desc">Started taking on real freelance work as a student</div></div><div class="ach-badge badge-done-g">UNLOCKED</div></div>
-<div class="ach-item"><div class="ach-icon">🌐</div><div class="ach-info"><div class="ach-title" style="">First Deploy</div><div class="ach-desc">Launched a live website — rafie-kun.github.io</div></div><div class="ach-badge badge-done-g">UNLOCKED</div></div>
-<div class="ach-item"><div class="ach-icon">📝</div><div class="ach-info"><div class="ach-title" style="">The Quill is Mightier</div><div class="ach-desc">Writing articles for Dynamic Teen Collection</div></div><div class="ach-badge badge-done-g">UNLOCKED</div></div>
-<div class="ach-item locked"><div class="ach-icon">💎</div><div class="ach-info"><div class="ach-title" style="color:var(--text-dim)">Diamond Tier Coder</div><div class="ach-desc">Reach advanced level in software development</div></div><div class="ach-badge badge-lock">LOCKED</div></div>
-<div class="ach-item locked"><div class="ach-icon">🐉</div><div class="ach-info"><div class="ach-title" style="color:var(--text-dim)">??? Hidden Achievement</div><div class="ach-desc">Keep grinding.</div></div><div class="ach-badge badge-lock">LOCKED</div></div>
-</div></section><div class="mc-divider" id="div6"></div>
-
-<!-- GITHUB -->
-<section id="github" class="reveal">
-  <div class="sec-head">
-    <div class="sec-icon-block icon-dark">🐙</div>
-    <span class="sec-title">// GitHub</span>
-    <div class="sec-line"></div>
-  </div>
-  <div class="github-panel">
-    <span class="github-icon">🐙</span>
-    <div class="github-name">@Rafie-kun</div>
-    <div class="github-sub">All code, experiments, and builds live here.</div>
-    <a href="https://github.com/Rafie-kun" target="_blank" class="mc-btn btn-blue">Open GitHub →</a>
+  <div class="section-header"><div class="section-icon icon-diamond">💰</div><div class="section-title">// Projects / Builds</div></div>
+  <div class="projects-grid">
+    <div class="project-card">
+      <div class="project-card-top">💰</div>
+      <div class="project-title">CraftEconomy</div>
+      <div class="project-desc">A budget tracking app for real-world money management. No magic — just maths.</div>
+      <div class="project-tags"><span class="tag tag-green">Python</span><span class="tag tag-blue">Finance</span><span class="tag tag-teal">CLI</span></div>
+      <a href="https://github.com/Rafie-kun/CraftEconomy" target="_blank" class="mc-btn btn-green" style="font-size:8px;padding:8px 14px;">View on GitHub →</a>
+    </div>
+    <div class="project-card">
+      <div class="project-card-top">🌐</div>
+      <div class="project-title">Dungeon Portfolio</div>
+      <div class="project-desc">This very site. Minecraft dungeon-themed personal portfolio. Pure HTML/CSS/JS.</div>
+      <div class="project-tags"><span class="tag tag-green">HTML</span><span class="tag tag-green">CSS</span><span class="tag tag-green">JS</span></div>
+      <a href="https://github.com/Rafie-kun/Rafie-kun.github.io" target="_blank" class="mc-btn btn-green" style="font-size:8px;padding:8px 14px;">View on GitHub →</a>
+    </div>
+    <div class="project-card" style="position:relative;">
+      <div class="project-card-top">🔮</div>
+      <div class="project-title">Next Build...</div>
+      <div class="project-desc">Something is being forged. Check back soon.</div>
+      <div class="project-tags"><span class="tag tag-teal">Soon™</span></div>
+      <div class="coming-soon-overlay"><div style="font-size:36px;">🔒</div><div class="coming-soon-text">CHEST LOCKED<br>COME BACK LATER</div></div>
+    </div>
   </div>
 </section>
 
-<div class="mc-divider" id="div7"></div>
+<div class="pixel-divider"></div>
+
+<!-- ACHIEVEMENTS -->
+<section id="achievements" class="reveal">
+  <div class="section-header"><div class="section-icon icon-redstone">🏆</div><div class="section-title">// Achievements</div></div>
+  <div class="achievements-list">
+    <div class="achievement"><div class="ach-icon">🎓</div><div class="ach-info"><div class="ach-title">Taking the First Step</div><div class="ach-desc">Enrolled in Psychology — studying human behaviour &amp; the mind</div></div><div class="ach-badge badge-gold">UNLOCKED</div></div>
+    <div class="achievement"><div class="ach-icon">💼</div><div class="ach-info"><div class="ach-title">Freelancer Mode: ON</div><div class="ach-desc">Started taking on real freelance work as a student</div></div><div class="ach-badge badge-gold">UNLOCKED</div></div>
+    <div class="achievement"><div class="ach-icon">🌐</div><div class="ach-info"><div class="ach-title">First Deploy</div><div class="ach-desc">Launched a live website — rafie-kun.github.io</div></div><div class="ach-badge badge-gold">UNLOCKED</div></div>
+    <div class="achievement"><div class="ach-icon">📝</div><div class="ach-info"><div class="ach-title">The Quill is Mightier</div><div class="ach-desc">Writing articles for Dynamic Teen Collection</div></div><div class="ach-badge badge-gold">UNLOCKED</div></div>
+    <div class="achievement locked"><div class="ach-icon">💎</div><div class="ach-info"><div class="ach-title">Diamond Tier Coder</div><div class="ach-desc">Reach advanced level in software development</div></div><div class="ach-badge badge-locked">LOCKED</div></div>
+    <div class="achievement locked"><div class="ach-icon">🐉</div><div class="ach-info"><div class="ach-title">??? Hidden Achievement</div><div class="ach-desc">Keep grinding.</div></div><div class="ach-badge badge-locked">LOCKED</div></div>
+  </div>
+</section>
+
+<div class="pixel-divider"></div>
+
+<!-- GITHUB -->
+<section id="github" class="reveal">
+  <div class="section-header"><div class="section-icon icon-iron">🐙</div><div class="section-title">// GitHub / Code Vault</div></div>
+  <div class="github-panel">
+    <span class="github-icon-big">🐙</span>
+    <div class="github-username">@Rafie-kun</div>
+    <div class="github-desc">All my code, experiments, and builds live here.</div>
+    <a href="https://github.com/Rafie-kun" target="_blank" class="mc-btn btn-blue">Open GitHub Profile →</a>
+  </div>
+</section>
+
+<div class="pixel-divider"></div>
 
 <!-- CONTACT -->
 <section id="contact" class="reveal">
-  <div class="sec-head">
-    <div class="sec-icon-block icon-glowstone">📬</div>
-    <span class="sec-title">// Contact Me</span>
-    <div class="sec-line"></div>
-  </div>
+  <div class="section-header"><div class="section-icon icon-diamond">📬</div><div class="section-title">// Contact Me</div></div>
   <div class="contact-grid">
-    <a href="mailto:rafiecool249@gmail.com" class="contact-card"><div class="contact-icon">📧</div><div><div class="contact-label">EMAIL</div><div class="contact-val">rafiecool249@gmail.com</div></div></a>
-    <a href="https://discord.com/users/rafiekunsimp" target="_blank" class="contact-card"><div class="contact-icon">💬</div><div><div class="contact-label">DISCORD</div><div class="contact-val">rafiekunsimp</div></div></a>
-    <a href="tel:+8801319343526" class="contact-card"><div class="contact-icon">📱</div><div><div class="contact-label">PHONE / WHATSAPP</div><div class="contact-val">+880 1319 343526</div></div></a>
-    <a href="https://github.com/Rafie-kun" target="_blank" class="contact-card"><div class="contact-icon">🐙</div><div><div class="contact-label">GITHUB</div><div class="contact-val">github.com/Rafie-kun</div></div></a>
-    <div class="contact-card" style="opacity:.4;cursor:not-allowed;"><div class="contact-icon">🔗</div><div><div class="contact-label">LINKEDIN</div><div class="contact-val">Coming soon...</div></div></div>
-    <div class="contact-card" style="opacity:.4;cursor:not-allowed;"><div class="contact-icon">🐦</div><div><div class="contact-label">TWITTER / X</div><div class="contact-val">Coming soon...</div></div></div>
+    <a href="mailto:rafiecool249@gmail.com" class="contact-card"><div class="contact-icon">📧</div><div><div class="contact-label">EMAIL</div><div class="contact-value">rafiecool249@gmail.com</div></div></a>
+    <a href="https://discord.com/users/rafiekunsimp" target="_blank" class="contact-card"><div class="contact-icon">💬</div><div><div class="contact-label">DISCORD</div><div class="contact-value">rafiekunsimp</div></div></a>
+    <a href="tel:+8801319343526" class="contact-card"><div class="contact-icon">📱</div><div><div class="contact-label">PHONE / WHATSAPP</div><div class="contact-value">+880 1319 343526</div></div></a>
+    <a href="https://github.com/Rafie-kun" target="_blank" class="contact-card"><div class="contact-icon">🐙</div><div><div class="contact-label">GITHUB</div><div class="contact-value">github.com/Rafie-kun</div></div></a>
+    <div class="contact-card" style="opacity:.4;cursor:not-allowed;"><div class="contact-icon">🔗</div><div><div class="contact-label">LINKEDIN</div><div class="contact-value">Coming soon...</div></div></div>
+    <div class="contact-card" style="opacity:.4;cursor:not-allowed;"><div class="contact-icon">🐦</div><div><div class="contact-label">TWITTER / X</div><div class="contact-value">Coming soon...</div></div></div>
   </div>
-
-  <!-- CONTACT FORM — Web3Forms -->
   <div class="contact-form">
     <div class="form-grid">
       <div class="form-field"><label>YOUR NAME</label><input type="text" id="fname" placeholder="Steve..."></div>
@@ -992,7 +757,7 @@ footer {
     <div class="form-field"><label>MESSAGE</label><textarea id="fmessage" placeholder="Write your message here..."></textarea></div>
     <button class="form-submit" id="formSubmitBtn" onclick="submitForm()">⚔ SEND MESSAGE</button>
     <div class="form-success" id="formSuccess">✅ MESSAGE SENT!<br>I'll get back to you soon. 🔥</div>
-    <div class="form-error" id="formError">❌ SEND FAILED<br>Try emailing me directly at rafiecool249@gmail.com</div>
+    <div class="form-error"   id="formError">❌ SEND FAILED<br>Try emailing me directly at rafiecool249@gmail.com</div>
     <p class="form-notice">Messages sent directly to my inbox via Web3Forms.</p>
   </div>
 </section>
@@ -1006,11 +771,11 @@ footer {
 </footer>
 
 <!-- MUSIC PLAYER BAR -->
-<div class="music-bar" id="musicBar">
+<div class="music-bar">
   <div class="music-disc" id="musicDisc" onclick="togglePlay()" title="Play/Pause">🎵</div>
   <div class="music-track-info">
     <div class="music-track-name" id="trackName">Living Mice — C418</div>
-    <div class="music-track-artist">🎮 Minecraft OST · Auto-playing</div>
+    <div class="music-track-sub" id="trackSub">🎮 Minecraft OST · Click ▶ PLAY to start</div>
   </div>
   <div class="music-viz" id="musicViz">
     <div class="music-viz-bar" style="animation-duration:.4s;animation-delay:0s"></div>
@@ -1029,42 +794,15 @@ footer {
   </div>
 </div>
 
-<!-- Hidden YouTube iframe for audio -->
+<!-- YouTube IFrame (hidden audio engine) — NO API KEY NEEDED -->
 <iframe id="ytIframe" class="music-hidden" allow="autoplay" allowfullscreen></iframe>
 
 <script>
-// ─────────────────────────────────────────────────────────────────────────
-// ALL FUNCTIONS DEFINED FIRST, then executed at the bottom
-// This prevents "Cannot access before initialization" errors
-// ─────────────────────────────────────────────────────────────────────────
-
-// ── STARS (defined early so applyTheme can call it) ──────────────────────
-let starsCanvas = null;
-let starsCtx = null;
-let _isDayMode = false;
-
-function drawStars() {
-  if (!starsCanvas) starsCanvas = document.getElementById('starsCanvas');
-  if (!starsCtx && starsCanvas) starsCtx = starsCanvas.getContext('2d');
-  if (!starsCanvas || !starsCtx) return;
-  starsCanvas.width = window.innerWidth;
-  starsCanvas.height = window.innerHeight;
-  starsCtx.clearRect(0, 0, starsCanvas.width, starsCanvas.height);
-  if (_isDayMode) return;
-  for (let i = 0; i < 200; i++) {
-    const x = Math.random() * starsCanvas.width;
-    const y = Math.random() * starsCanvas.height * 0.65;
-    const r = Math.random() * 1.6 + 0.2;
-    const a = Math.random() * 0.8 + 0.2;
-    starsCtx.beginPath();
-    starsCtx.arc(x, y, r, 0, Math.PI * 2);
-    starsCtx.fillStyle = `rgba(200,220,255,${a})`;
-    starsCtx.fill();
-  }
-}
-
-// ── THEME ────────────────────────────────────────────────────────────────
-let manualOverride = false;
+// ═══════════════════════════════════════════════════════
+// DAY / NIGHT
+// ═══════════════════════════════════════════════════════
+let _isDay = false;
+let _manualOverride = false;
 
 function getIsDay() {
   const h = new Date().getHours();
@@ -1072,306 +810,293 @@ function getIsDay() {
 }
 
 function applyTheme(day) {
-  _isDayMode = day;
+  _isDay = day;
   document.body.classList.toggle('day-mode', day);
   const btn = document.getElementById('themeBtn');
   if (btn) btn.textContent = day ? '🌙 NIGHT' : '☀️ DAY';
+  rebuildTerrain();
   drawStars();
 }
 
-function manualToggleTheme() {
-  manualOverride = true;
-  applyTheme(!_isDayMode);
+function manualToggle() {
+  _manualOverride = true;
+  applyTheme(!_isDay);
 }
 
-// ── DIVIDERS ─────────────────────────────────────────────────────────────
-function fillDivider(id) {
-  const d = document.getElementById(id);
-  if (!d) return;
-  const colors = ['#3a3f4a','#2d4a2a','#3a3f4a','#252830','#4e5566','#2d4a2a','#3a3f4a'];
-  const count = Math.ceil(window.innerWidth / 80) + 4;
-  for (let i = 0; i < count; i++) {
-    const b = document.createElement('div');
-    b.className = 'div-block';
-    b.style.background = colors[i % colors.length];
-    d.appendChild(b);
+// ═══════════════════════════════════════════════════════
+// STARS
+// ═══════════════════════════════════════════════════════
+function drawStars() {
+  const c = document.getElementById('starsCanvas');
+  if (!c) return;
+  const ctx = c.getContext('2d');
+  c.width  = window.innerWidth;
+  c.height = window.innerHeight;
+  ctx.clearRect(0, 0, c.width, c.height);
+  if (_isDay) return;
+  for (let i = 0; i < 200; i++) {
+    const x = Math.random() * c.width;
+    const y = Math.random() * c.height * 0.65;
+    const r = Math.random() * 1.6 + 0.2;
+    const a = Math.random() * 0.8 + 0.2;
+    ctx.beginPath();
+    ctx.arc(x, y, r, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(200,220,255,${a})`;
+    ctx.fill();
   }
 }
 
-// ── TERRAIN ──────────────────────────────────────────────────────────────
-function fillRow(id, types) {
-  const row = document.getElementById(id);
-  if (!row) return;
-  const count = Math.ceil(window.innerWidth / 48) + 6;
-  for (let i = 0; i < count; i++) {
-    const b = document.createElement('div');
-    b.className = 'pxblock ' + types[i % types.length];
-    row.appendChild(b);
+// ═══════════════════════════════════════════════════════
+// TERRAIN — day uses grass/dirt/stone, night uses stone/mossy/dark
+// ═══════════════════════════════════════════════════════
+function rebuildTerrain() {
+  const rows = [
+    { id:'rowTop', day:['pxblock-grass','pxblock-grass','pxblock-grass'],          night:['pxblock-mossy','pxblock-stone','pxblock-mossy'] },
+    { id:'row2',   day:['pxblock-dirt','pxblock-dirt','pxblock-grass'],            night:['pxblock-stone','pxblock-dark','pxblock-stone']  },
+    { id:'row3',   day:['pxblock-dirt','pxblock-stone2','pxblock-dirt'],           night:['pxblock-dark','pxblock-stone','pxblock-dark']   },
+    { id:'row4',   day:['pxblock-stone2','pxblock-dirt','pxblock-stone2'],         night:['pxblock-stone','pxblock-dark','pxblock-dark']   },
+    { id:'row5',   day:['pxblock-stone2','pxblock-stone2','pxblock-stone2'],       night:['pxblock-dark','pxblock-dark','pxblock-stone']   },
+  ];
+  rows.forEach(({id, day, night}) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.innerHTML = '';
+    const types = _isDay ? day : night;
+    const count = Math.ceil(window.innerWidth / 48) + 6;
+    for (let i = 0; i < count; i++) {
+      const b = document.createElement('div');
+      b.className = 'pxblock ' + types[i % types.length];
+      el.appendChild(b);
+    }
+  });
+}
+
+// ═══════════════════════════════════════════════════════
+// MIST (night only)
+// ═══════════════════════════════════════════════════════
+function buildMist() {
+  const layer = document.getElementById('mistLayer');
+  if (!layer) return;
+  for (let i = 0; i < 6; i++) {
+    const m = document.createElement('div');
+    m.className = 'mist-strip';
+    m.style.cssText = [
+      `width:${200+Math.random()*300}px`,
+      `bottom:${Math.random()*55}%`,
+      `animation-duration:${22+Math.random()*28}s`,
+      `animation-delay:${-Math.random()*30}s`,
+      `opacity:${0.12+Math.random()*0.22}`,
+      `height:${30+Math.random()*40}px`
+    ].join(';');
+    layer.appendChild(m);
   }
 }
 
-// ── CONTACT FORM (Web3Forms) ──────────────────────────────────────────────
-// ⚠ Replace with your real key from https://web3forms.com
-const W3F_ACCESS_KEY = '2b0e6a45-f92e-4a5b-8b8c-b9d2e1f3a4c5';
+// ═══════════════════════════════════════════════════════
+// EMBERS (night campfire particles)
+// ═══════════════════════════════════════════════════════
+function buildEmbers() {
+  const ec = ['#ff8c00','#ffcc44','#ff4500','#ffa500'];
+  for (let i = 0; i < 10; i++) {
+    const e = document.createElement('div');
+    e.style.cssText = [
+      'position:fixed','border-radius:50%','pointer-events:none','z-index:0',
+      `left:calc(50% + ${(Math.random()-.5)*44}px)`,
+      `bottom:${200+Math.random()*40}px`,
+      `background:${ec[Math.floor(Math.random()*ec.length)]}`,
+      `width:${2+Math.random()*4}px`,
+      `height:${2+Math.random()*4}px`,
+      `animation:particleRise ${2+Math.random()*3}s linear ${Math.random()*5}s infinite`
+    ].join(';');
+    document.body.appendChild(e);
+  }
+}
 
+// ═══════════════════════════════════════════════════════
+// MUSIC — YouTube IFrame API (NO API KEY needed, totally free)
+// Just needs to run on rafie-kun.github.io, not a local file://
+// ═══════════════════════════════════════════════════════
+const TRACKS = [
+  { name:'Living Mice',         artist:'C418', id:'K-PX1zxgxfA' },
+  { name:'Mice on Venus',       artist:'C418', id:'NBsHGSMuQoQ' },
+  { name:'Sweden',              artist:'C418', id:'gHvCBJEMvCA' },
+  { name:'Wet Hands',           artist:'C418', id:'bGI8BaL4sH0' },
+  { name:'Subwoofer Lullaby',   artist:'C418', id:'W_uMFHf84aU' },
+  { name:'Intro',               artist:'C418', id:'2hPHMGYKPoU' },
+  { name:'Minecraft Vol Alpha', artist:'C418', id:'1S50ZVtMfz4' },
+  { name:'Clark',               artist:'C418', id:'Lh8RQPD-BrQ' },
+];
+let trackIdx    = 0;
+let playing     = false;
+let ytReady     = false;
+let ytPlayer    = null;
+
+window.onYouTubeIframeAPIReady = function () {
+  ytReady  = true;
+  ytPlayer = new YT.Player('ytIframe', {
+    height:'1', width:'1',
+    videoId: TRACKS[trackIdx].id,
+    playerVars:{ autoplay:0, controls:0, disablekb:1, fs:0, iv_load_policy:3, modestbranding:1, rel:0, origin: location.origin || 'https://rafie-kun.github.io' },
+    events:{
+      onReady(e){ e.target.setVolume(parseInt(document.getElementById('volSlider').value)); try{ e.target.playVideo(); }catch(_){} },
+      onStateChange(e){
+        const S = YT.PlayerState;
+        if (e.data===S.PLAYING) setUI(true);
+        if (e.data===S.PAUSED)  setUI(false);
+        if (e.data===S.ENDED)   nextTrack();
+      },
+      onError(){ nextTrack(); }
+    }
+  });
+};
+
+function loadYTApi() {
+  if (document.getElementById('yt-script')) return;
+  const s = document.createElement('script');
+  s.id  = 'yt-script';
+  s.src = 'https://www.youtube.com/iframe_api';
+  document.head.appendChild(s);
+}
+
+function setUI(isPlaying) {
+  playing = isPlaying;
+  const disc = document.getElementById('musicDisc');
+  const btn  = document.getElementById('playPauseBtn');
+  const viz  = document.getElementById('musicViz');
+  const sub  = document.getElementById('trackSub');
+  disc.classList.toggle('playing', isPlaying);
+  btn.textContent = isPlaying ? '⏸ PAUSE' : '▶ PLAY';
+  btn.classList.toggle('active', isPlaying);
+  if (viz) viz.classList.toggle('playing', isPlaying);
+  if (sub) sub.textContent = isPlaying ? '🎮 Minecraft OST · Now playing' : '🎮 Minecraft OST · Paused';
+}
+
+function updateName() {
+  const t = TRACKS[trackIdx];
+  const el = document.getElementById('trackName');
+  if (el) el.textContent = t.name + ' — ' + t.artist;
+}
+
+function togglePlay() {
+  if (!ytReady || !ytPlayer) { loadYTApi(); return; }
+  playing ? ytPlayer.pauseVideo() : ytPlayer.playVideo();
+}
+
+function nextTrack() {
+  trackIdx = (trackIdx+1) % TRACKS.length;
+  updateName();
+  if (ytReady && ytPlayer?.loadVideoById) ytPlayer.loadVideoById(TRACKS[trackIdx].id);
+}
+
+function prevTrack() {
+  trackIdx = (trackIdx-1+TRACKS.length) % TRACKS.length;
+  updateName();
+  if (ytReady && ytPlayer?.loadVideoById) ytPlayer.loadVideoById(TRACKS[trackIdx].id);
+}
+
+function setVolume(v) {
+  if (ytReady && ytPlayer?.setVolume) ytPlayer.setVolume(parseInt(v));
+}
+
+// ═══════════════════════════════════════════════════════
+// WEB3FORMS
+// ═══════════════════════════════════════════════════════
 async function submitForm() {
   const name    = document.getElementById('fname').value.trim();
   const email   = document.getElementById('femail').value.trim();
   const subject = document.getElementById('fsubject').value.trim();
   const message = document.getElementById('fmessage').value.trim();
-  if (!name || !email || !message) { alert('Please fill in name, email, and message!'); return; }
+  if (!name||!email||!message){ alert('Please fill in name, email, and message!'); return; }
   const btn = document.getElementById('formSubmitBtn');
-  btn.disabled = true;
-  btn.textContent = '⏳ SENDING...';
+  btn.disabled=true; btn.textContent='⏳ SENDING...';
+  document.getElementById('formSuccess').style.display='none';
+  document.getElementById('formError').style.display='none';
   try {
-    const res = await fetch('https://api.web3forms.com/submit', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-      body: JSON.stringify({ access_key: W3F_ACCESS_KEY, name, email,
-        subject: subject || 'Portfolio message from ' + name, message,
-        from_name: 'Rafie Portfolio', redirect: 'false' })
+    const res  = await fetch('https://api.web3forms.com/submit',{
+      method:'POST',
+      headers:{'Content-Type':'application/json',Accept:'application/json'},
+      body:JSON.stringify({ access_key:'6415f871-a4b7-430b-ab24-db5d9dfc5111', name, email,
+        subject: subject||'Portfolio message from '+name, message, from_name:'Rafie Portfolio', redirect:'false' })
     });
     const data = await res.json();
-    if (data.success) {
-      document.getElementById('formSuccess').style.display = 'block';
-      document.getElementById('formError').style.display   = 'none';
-      ['fname','femail','fsubject','fmessage'].forEach(id => document.getElementById(id).value = '');
-      btn.textContent = '✅ SENT!';
-    } else { throw new Error(data.message || 'Failed'); }
+    if(data.success){
+      document.getElementById('formSuccess').style.display='block';
+      ['fname','femail','fsubject','fmessage'].forEach(id=>{ document.getElementById(id).value=''; });
+      btn.textContent='✅ SENT!';
+      setTimeout(()=>{ btn.disabled=false; btn.textContent='⚔ SEND MESSAGE'; },5000);
+    } else throw new Error(data.message||'Failed');
   } catch(err) {
-    document.getElementById('formError').style.display   = 'block';
-    document.getElementById('formSuccess').style.display = 'none';
-    btn.disabled = false;
-    btn.textContent = '⚔ SEND MESSAGE';
+    document.getElementById('formError').style.display='block';
+    btn.disabled=false; btn.textContent='⚔ SEND MESSAGE';
   }
 }
 
-// ── MUSIC PLAYER ─────────────────────────────────────────────────────────
-const C418_TRACKS = [
-  { name: 'Living Mice',         artist: 'C418', id: 'K-PX1zxgxfA' },
-  { name: 'Mice on Venus',       artist: 'C418', id: 'NBsHGSMuQoQ' },
-  { name: 'Sweden',              artist: 'C418', id: 'gHvCBJEMvCA' },
-  { name: 'Wet Hands',           artist: 'C418', id: 'bGI8BaL4sH0' },
-  { name: 'Subwoofer Lullaby',   artist: 'C418', id: 'W_uMFHf84aU' },
-  { name: 'Intro',               artist: 'C418', id: '2hPHMGYKPoU' },
-  { name: 'Minecraft (Volume Alpha)', artist: 'C418', id: '1S50ZVtMfz4' },
-  { name: 'Clark',               artist: 'C418', id: 'Lh8RQPD-BrQ' },
-];
-
-let currentTrack  = 0;
-let musicPlaying  = false;
-let ytPlayer      = null;
-let ytApiReady    = false;
-let pendingPlay   = false;  // user clicked play before API loaded
-
-// This is called by YouTube API automatically when it loads
-window.onYouTubeIframeAPIReady = function() {
-  ytApiReady = true;
-  ytPlayer = new YT.Player('ytIframe', {
-    height: '1', width: '1',
-    videoId: C418_TRACKS[currentTrack].id,
-    playerVars: {
-      autoplay: 0, controls: 0, disablekb: 1,
-      fs: 0, iv_load_policy: 3, modestbranding: 1, rel: 0, origin: window.location.origin
-    },
-    events: {
-      onReady: function(e) {
-        e.target.setVolume(50);
-        // Try autoplay — browsers usually block this until user interacts
-        // We'll attempt it silently; if blocked, user clicks PLAY
-        try { e.target.playVideo(); } catch(ex) {}
-      },
-      onStateChange: function(e) {
-        const S = YT.PlayerState;
-        if (e.data === S.PLAYING)  { setMusicUI(true); }
-        if (e.data === S.PAUSED)   { setMusicUI(false); }
-        if (e.data === S.ENDED)    { nextTrack(); }
-        if (e.data === S.BUFFERING){ /* keep UI as-is */ }
-      },
-      onError: function() { nextTrack(); }  // skip broken tracks
-    }
-  });
-};
-
-function loadYouTubeAPI() {
-  if (document.getElementById('yt-api-script')) return;
-  const s = document.createElement('script');
-  s.id  = 'yt-api-script';
-  s.src = 'https://www.youtube.com/iframe_api';
-  document.head.appendChild(s);
+// ═══════════════════════════════════════════════════════
+// SCROLL REVEAL
+// ═══════════════════════════════════════════════════════
+function initReveal() {
+  const obs = new IntersectionObserver(entries=>{
+    entries.forEach(en=>{ if(en.isIntersecting) en.target.classList.add('visible'); });
+  },{threshold:0.06});
+  document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
 }
 
-function setMusicUI(playing) {
-  musicPlaying = playing;
-  const disc = document.getElementById('musicDisc');
-  const btn  = document.getElementById('playPauseBtn');
-  const viz  = document.getElementById('musicViz');
-  if (playing) {
-    disc.classList.add('playing');
-    btn.textContent = '⏸ PAUSE';
-    btn.classList.add('active');
-    if (viz) viz.classList.add('playing');
-  } else {
-    disc.classList.remove('playing');
-    btn.textContent = '▶ PLAY';
-    btn.classList.remove('active');
-    if (viz) viz.classList.remove('playing');
-  }
-}
-
-function updateTrackName() {
-  const el = document.getElementById('trackName');
-  if (el) el.textContent = C418_TRACKS[currentTrack].name + ' — ' + C418_TRACKS[currentTrack].artist;
-}
-
-function togglePlay() {
-  if (!ytApiReady || !ytPlayer) {
-    // API not ready yet — load it now (user interaction unlocks autoplay)
-    pendingPlay = true;
-    loadYouTubeAPI();
-    return;
-  }
-  if (musicPlaying) { ytPlayer.pauseVideo(); }
-  else              { ytPlayer.playVideo(); }
-}
-
-function nextTrack() {
-  currentTrack = (currentTrack + 1) % C418_TRACKS.length;
-  updateTrackName();
-  if (ytApiReady && ytPlayer && ytPlayer.loadVideoById) {
-    ytPlayer.loadVideoById(C418_TRACKS[currentTrack].id);
-  }
-}
-
-function prevTrack() {
-  currentTrack = (currentTrack - 1 + C418_TRACKS.length) % C418_TRACKS.length;
-  updateTrackName();
-  if (ytApiReady && ytPlayer && ytPlayer.loadVideoById) {
-    ytPlayer.loadVideoById(C418_TRACKS[currentTrack].id);
-  }
-}
-
-function setVolume(v) {
-  if (ytApiReady && ytPlayer && ytPlayer.setVolume) ytPlayer.setVolume(parseInt(v));
-}
-
-// ── SCROLL REVEAL ─────────────────────────────────────────────────────────
-function initScrollReveal() {
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(en => { if (en.isIntersecting) en.target.classList.add('visible'); });
-  }, { threshold: 0.06 });
-  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-}
-
-// ── CLICK SPARKS ─────────────────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════
+// CLICK SPARKS
+// ═══════════════════════════════════════════════════════
 function initSparks() {
-  document.addEventListener('click', e => {
-    if (e.target.closest('a,button,input,textarea,select')) return;
-    const colors = ['#ffd080','#ff8c00','#ffcc44','#44ccbb','#ff4500'];
-    for (let i = 0; i < 5; i++) {
-      const p = document.createElement('div');
-      p.style.cssText = [
-        'position:fixed', 'width:6px', 'height:6px', 'pointer-events:none',
-        'z-index:9999', `left:${e.clientX + (Math.random()-.5)*24}px`,
-        `top:${e.clientY + (Math.random()-.5)*24}px`,
+  const colors=['#5aac44','#FFD700','#4de6e6','#e03030','#ff8c00'];
+  document.addEventListener('click',e=>{
+    if(e.target.closest('a,button,input,textarea,select')) return;
+    for(let i=0;i<5;i++){
+      const p=document.createElement('div');
+      p.style.cssText=[
+        'position:fixed','width:7px','height:7px','border:1px solid #000','pointer-events:none','z-index:9999',
+        `left:${e.clientX+(Math.random()-.5)*28}px`,
+        `top:${e.clientY+(Math.random()-.5)*28}px`,
         `background:${colors[Math.floor(Math.random()*colors.length)]}`,
-        'border:1px solid #000',
         `animation:particleRise ${0.5+Math.random()*0.5}s ease-out forwards`
       ].join(';');
       document.body.appendChild(p);
-      setTimeout(() => p.remove(), 1000);
+      setTimeout(()=>p.remove(),1000);
     }
   });
 }
 
-// ── SMOOTH NAV SCROLL ─────────────────────────────────────────────────────
-function initNavScroll() {
-  document.querySelectorAll('a[href^="#"]').forEach(a => {
-    a.addEventListener('click', e => {
-      const target = document.querySelector(a.getAttribute('href'));
-      if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth' }); }
+// ═══════════════════════════════════════════════════════
+// SMOOTH NAV
+// ═══════════════════════════════════════════════════════
+function initNav() {
+  document.querySelectorAll('a[href^="#"]').forEach(a=>{
+    a.addEventListener('click',e=>{
+      const t=document.querySelector(a.getAttribute('href'));
+      if(t){ e.preventDefault(); t.scrollIntoView({behavior:'smooth'}); }
     });
   });
 }
 
-// ─────────────────────────────────────────────────────────────────────────
-// INIT — runs after all functions are defined
-// ─────────────────────────────────────────────────────────────────────────
-(function init() {
-  // 1. Apply day/night theme (drawStars is already defined above)
+// ═══════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════
+(function init(){
+  // 1 — Detect local time and apply theme
   applyTheme(getIsDay());
-  setInterval(() => { if (!manualOverride) applyTheme(getIsDay()); }, 60000);
-  window.addEventListener('resize', drawStars);
+  setInterval(()=>{ if(!_manualOverride) applyTheme(getIsDay()); }, 60000);
+  window.addEventListener('resize', ()=>{ drawStars(); rebuildTerrain(); });
 
-  // 2. Fill dividers
-  ['div1','div2','div3','div4','div5','div6','div7'].forEach(fillDivider);
+  // 2 — Mist + embers
+  buildMist();
+  buildEmbers();
 
-  // 3. Fill terrain rows  
-  fillRow('rowGrass', ['pxblock-mossy','pxblock-grass','pxblock-mossy','pxblock-grass','pxblock-stone']);
-  fillRow('rowS1',    ['pxblock-stone','pxblock-dark','pxblock-stone','pxblock-stone','pxblock-mossy']);
-  fillRow('rowS2',    ['pxblock-dark','pxblock-stone','pxblock-dark','pxblock-stone','pxblock-dark']);
-  fillRow('rowS3',    ['pxblock-stone','pxblock-dark','pxblock-dark','pxblock-stone','pxblock-dark']);
-  fillRow('rowS4',    ['pxblock-dark','pxblock-dark','pxblock-stone','pxblock-dark','pxblock-dark']);
-
-  // 4. Add clouds
-  const cloudEmojis = ['☁️','⛅','🌤️','☁️','⛅'];
-  cloudEmojis.forEach((emoji, i) => {
-    const c = document.createElement('div');
-    c.className = 'cloud';
-    c.textContent = emoji;
-    c.style.cssText = [
-      `top:${30 + i * 22}px`,
-      `animation-duration:${38 + i * 9}s`,
-      `animation-delay:${-i * 11}s`,
-      `font-size:${26 + i * 4}px`
-    ].join(';');
-    const hero = document.querySelector('.hero');
-    if (hero) hero.appendChild(c);
-  });
-
-  // 5. Mist strips
-  const mistLayer = document.getElementById('mistLayer');
-  if (mistLayer) {
-    for (let i = 0; i < 6; i++) {
-      const m = document.createElement('div');
-      m.className = 'mist-strip';
-      m.style.cssText = [
-        `width:${200 + Math.random()*300}px`,
-        `bottom:${Math.random()*55}%`,
-        `animation-duration:${22 + Math.random()*28}s`,
-        `animation-delay:${-Math.random()*30}s`,
-        `opacity:${0.12 + Math.random()*0.22}`,
-        `height:${30 + Math.random()*40}px`
-      ].join(';');
-      mistLayer.appendChild(m);
-    }
-  }
-
-  // 6. Embers
-  for (let i = 0; i < 10; i++) {
-    const e = document.createElement('div');
-    e.className = 'ember';
-    const emberColors = ['#ff8c00','#ffcc44','#ff4500','#ffa500'];
-    e.style.cssText = [
-      `left:calc(50% + ${(Math.random()-.5)*44}px)`,
-      `bottom:${200 + Math.random()*40}px`,
-      `background:${emberColors[Math.floor(Math.random()*emberColors.length)]}`,
-      `width:${2 + Math.random()*4}px`,
-      `height:${2 + Math.random()*4}px`,
-      `animation-duration:${2 + Math.random()*3}s`,
-      `animation-delay:${Math.random()*5}s`
-    ].join(';');
-    document.body.appendChild(e);
-  }
-
-  // 7. Scroll reveal, sparks, nav scroll
-  initScrollReveal();
+  // 3 — Helpers
+  initReveal();
   initSparks();
-  initNavScroll();
+  initNav();
 
-  // 8. Load YouTube API (loads in background, won't autoplay until user click due to browser policy)
-  loadYouTubeAPI();
-
+  // 4 — Load YouTube API (free, no key needed)
+  //     Music plays automatically once page loads on rafie-kun.github.io
+  //     If browser blocks autoplay (common), user just clicks ▶ PLAY once
+  loadYTApi();
 })();
 </script>
 </body>
