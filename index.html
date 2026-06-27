@@ -1130,7 +1130,7 @@ document.addEventListener('click',e=>{
 // ══════════════════════════════════════════
 async function loadStats(){
   try{
-    const r=await fetch('https://api.github.com/users/Rafie-kun');
+    const r=await fetch('https://api.github.com/users/Rafie-kun',{headers:{'Authorization':'token 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','Accept':'application/vnd.github.v3+json'}});
     if(!r.ok)return;
     const d=await r.json();
     const s=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v;};
@@ -1168,7 +1168,7 @@ async function buildGraph(){
   let rawHtml=null;
   for(const mkProxy of proxies){
     try{
-      const res=await fetch(mkProxy(ghUrl),{signal:AbortSignal.timeout(8000)});
+      const res=await fetch(mkProxy(ghUrl),{signal:AbortSignal.timeout(8000),headers:{'X-Requested-With':'XMLHttpRequest'}});
       if(!res.ok) continue;
       const text=await res.text();
       // allorigins /get wraps in JSON; /raw returns direct HTML
@@ -1250,7 +1250,7 @@ async function buildGraphFromEvents(wrap,loading,totalEl,contribEl,badge){
     for(let page=1;page<=10;page++){
       const r=await fetch(
         'https://api.github.com/users/Rafie-kun/events/public?per_page=100&page='+page,
-        {headers:{'Accept':'application/vnd.github.v3+json'},signal:AbortSignal.timeout(5000)}
+        {headers:{'Accept':'application/vnd.github.v3+json','Authorization':'token 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'},signal:AbortSignal.timeout(5000)}
       );
       if(!r.ok) break;
       const evts=await r.json();
