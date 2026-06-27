@@ -886,22 +886,22 @@ footer{
   <div class="projects-grid">
     <div class="proj-card">
       <div class="proj-icon-box">💰</div>
-      <div class="proj-title">CraftEconomy</div>
-      <div class="proj-desc">A budget tracking app for real-world money management. No magic — just maths.</div>
+      <div class="proj-title" id="proj1-title">CraftEconomy</div>
+      <div class="proj-desc" id="proj1-desc">A budget tracking app for real-world money management. No magic — just maths.</div>
       <div class="tags"><span class="tag tag-g">Python</span><span class="tag tag-b">Finance</span><span class="tag tag-t">CLI</span></div>
-      <a href="https://github.com/Rafie-kun/CraftEconomy" target="_blank" class="mc-btn btn-green" style="font-size:8px;padding:8px 14px;">View on GitHub →</a>
+      <a id="proj1-link" href="https://github.com/Rafie-kun/CraftEconomy" target="_blank" class="mc-btn btn-green" style="font-size:8px;padding:8px 14px;">View on GitHub →</a>
     </div>
     <div class="proj-card">
       <div class="proj-icon-box">🌐</div>
-      <div class="proj-title">Dungeon Portfolio</div>
-      <div class="proj-desc">This very site. Minecraft dungeon-themed personal portfolio. Pure HTML/CSS/JS.</div>
+      <div class="proj-title" id="proj2-title">Dungeon Portfolio</div>
+      <div class="proj-desc" id="proj2-desc">This very site. Minecraft dungeon-themed personal portfolio. Pure HTML/CSS/JS.</div>
       <div class="tags"><span class="tag tag-g">HTML</span><span class="tag tag-g">CSS</span><span class="tag tag-g">JS</span></div>
-      <a href="https://github.com/Rafie-kun/Rafie-kun.github.io" target="_blank" class="mc-btn btn-green" style="font-size:8px;padding:8px 14px;">View on GitHub →</a>
+      <a id="proj2-link" href="https://github.com/Rafie-kun/Rafie-kun.github.io" target="_blank" class="mc-btn btn-green" style="font-size:8px;padding:8px 14px;">View on GitHub →</a>
     </div>
     <div class="proj-card">
       <div class="proj-icon-box">🔮</div>
-      <div class="proj-title">Next Build...</div>
-      <div class="proj-desc">Something is being forged. Check back soon.</div>
+      <div class="proj-title" id="proj3-title">Next Build...</div>
+      <div class="proj-desc" id="proj3-desc">Something is being forged. Check back soon.</div>
       <div class="tags"><span class="tag tag-t">Soon™</span></div>
       <div class="locked-overlay"><div style="font-size:36px">🔒</div><div class="locked-text">CHEST LOCKED<br>COME BACK LATER</div></div>
     </div>
@@ -986,8 +986,8 @@ footer{
     <a href="https://discord.com/users/rafiekunsimp" target="_blank" class="contact-card"><div class="contact-ico">💬</div><div><div class="contact-lbl">DISCORD</div><div class="contact-val" id="contact-discord">rafiekunsimp</div></div></a>
     <a href="tel:+8801319343526" class="contact-card"><div class="contact-ico">📱</div><div><div class="contact-lbl">PHONE / WHATSAPP</div><div class="contact-val" id="contact-phone">+880 1319 343526</div></div></a>
     <a href="https://github.com/Rafie-kun" target="_blank" class="contact-card"><div class="contact-ico">🐙</div><div><div class="contact-lbl">GITHUB</div><div class="contact-val" id="contact-github">github.com/Rafie-kun</div></div></a>
-    <a id="linkedin-card" href="#" target="_blank" class="contact-card coming"><div class="contact-ico">🔗</div><div><div class="contact-lbl">LINKEDIN</div><div class="contact-val" id="contact-linkedin">Coming soon...</div></div></a>
-    <div class="contact-card coming"><div class="contact-ico">🐦</div><div><div class="contact-lbl">TWITTER / X</div><div class="contact-val">Coming soon...</div></div></div>
+    <a id="linkedin-card" href="#" target="_blank" class="contact-card coming" style="display:none"><div class="contact-ico">🔗</div><div><div class="contact-lbl">LINKEDIN</div><div class="contact-val" id="contact-linkedin">Coming soon...</div></div></a>
+    <a id="twitter-card" href="#" target="_blank" class="contact-card coming" style="display:none"><div class="contact-ico">🐦</div><div><div class="contact-lbl">TWITTER / X</div><div class="contact-val" id="contact-twitter">Coming soon...</div></div></a>
   </div>
   <div class="contact-form">
     <div class="form-grid">
@@ -1132,155 +1132,163 @@ async function buildGraph(){
   const totalEl=document.getElementById('ghTotal');
   const contribEl=document.getElementById('ghContribs');
   const badge=document.getElementById('ghBadge');
-  const tip=document.getElementById('pgTip');
-  const tipMain=document.getElementById('pgTipMain');
-  const tipDate=document.getElementById('pgTipDate');
 
-  // Strategy: fetch GitHub's contribution SVG via their API
-  // We use the GitHub events API to get real activity,
-  // then build a 52-week grid from known contribution data
-  // For the interactive graph we use the GitHub contributions page via allorigins
-  try{
-    const url='https://github.com/users/Rafie-kun/contributions';
-    const proxy=`https://api.allorigins.win/get?url=${encodeURIComponent(url)}&timestamp=${Date.now()}`;
-    const res=await fetch(proxy,{signal:AbortSignal.timeout(8000)});
-    const json=await res.json();
-    const html=json.contents;
-    renderGraph(html,wrap,loading,totalEl,contribEl,badge,tip,tipMain,tipDate);
-  }catch(err){
-    // Fallback to static image
-    useFallbackImage(wrap,loading,totalEl,contribEl,badge);
+  // Try multiple CORS proxies in order
+  const ghUrl='https://github.com/users/Rafie-kun/contributions';
+  const proxies=[
+    'https://api.allorigins.win/get?url='+encodeURIComponent(ghUrl),
+    'https://corsproxy.io/?'+encodeURIComponent(ghUrl),
+    'https://api.codetabs.com/v1/proxy?quest='+encodeURIComponent(ghUrl),
+  ];
+
+  let html=null;
+  for(const proxy of proxies){
+    try{
+      const res=await fetch(proxy,{signal:AbortSignal.timeout(7000)});
+      if(!res.ok)continue;
+      const text=await res.text();
+      try{const j=JSON.parse(text);if(j.contents){html=j.contents;break;}}
+      catch(e){html=text;break;}
+    }catch(e){continue;}
   }
-}
 
-function renderGraph(html,wrap,loading,totalEl,contribEl,badge,tip,tipMain,tipDate){
-  const parser=new DOMParser();
-  const doc=parser.parseFromString(html,'text/html');
-  // Try to find rect elements with data-date
-  const rects=[...doc.querySelectorAll('rect[data-date]')];
-  if(!rects.length){useFallbackImage(wrap,loading,totalEl,contribEl,badge);return;}
+  if(!html){useFallbackImage(wrap,loading,totalEl,contribEl,badge);return;}
 
-  // Build data map
-  let total=0;
-  const days=rects.map(r=>{
-    const date=r.getAttribute('data-date')||'';
-    const level=parseInt(r.getAttribute('data-level')||'0');
-    // GitHub encodes count differently — try data-count, tooltip, or infer from level
-    let count=parseInt(r.getAttribute('data-count')||'0');
-    if(!count && level>0) count=level; // minimal fallback
-    total+=count;
-    return{date,level,count};
-  });
+  try{
+    const parser=new DOMParser();
+    const doc=parser.parseFromString(html,'text/html');
+    const rects=[...doc.querySelectorAll('rect[data-date]')];
+    if(!rects.length)throw new Error('no rects');
 
-  // Update counters
-  const display=total||126;
-  if(totalEl) totalEl.textContent=`${display} contributions · last year`;
-  if(contribEl) contribEl.textContent=display;
-  if(badge) badge.textContent=`⭐ ${display} CONTRIBUTIONS`;
-
-  // Group into weeks
-  const weeks=[];
-  for(let i=0;i<days.length;i+=7) weeks.push(days.slice(i,i+7));
-
-  // Render
-  loading.style.display='none';
-  const container=document.createElement('div');
-
-  // Month label row
-  const mRow=document.createElement('div');
-  mRow.className='pg-month-row';
-  let lastM=-1;
-  weeks.forEach(w=>{
-    const lbl=document.createElement('div');
-    lbl.className='pg-month-lbl';
-    if(w[0]){
-      const m=new Date(w[0].date+'T12:00:00').getMonth();
-      if(m!==lastM){lbl.textContent=MONTHS[m];lastM=m;}
-    }
-    mRow.appendChild(lbl);
-  });
-  container.appendChild(mRow);
-
-  // Main row: day labels + cols
-  const main=document.createElement('div');
-  main.className='pg-main';
-
-  // Day labels (Mon/Wed/Fri only)
-  const dayLbls=document.createElement('div');
-  dayLbls.className='pg-day-lbls';
-  ['','Mon','','Wed','','Fri',''].forEach(d=>{
-    const dl=document.createElement('div');
-    dl.className='pg-day-lbl';
-    dl.textContent=d;
-    dayLbls.appendChild(dl);
-  });
-  main.appendChild(dayLbls);
-
-  // Columns
-  const cols=document.createElement('div');
-  cols.className='pg-cols';
-  weeks.forEach(week=>{
-    const col=document.createElement('div');
-    col.className='pg-col';
-    week.forEach(day=>{
-      const cell=document.createElement('div');
-      cell.className=`pg-cell lv${day.level}`;
-
-      // Tooltip events
-      cell.addEventListener('mouseenter',e=>{
-        const d=new Date(day.date+'T12:00:00');
-        const ds=d.toLocaleDateString('en-US',{weekday:'short',month:'long',day:'numeric',year:'numeric'});
-        tipMain.textContent=day.count===0?'No contributions':day.count===1?'1 contribution':`${day.count} contributions`;
-        tipDate.textContent=ds;
-        tip.classList.add('show');
-        moveTip(e);
-      });
-      cell.addEventListener('mousemove',moveTip);
-      cell.addEventListener('mouseleave',()=>{tip.classList.remove('show');cell.classList.remove('sel');});
-      cell.addEventListener('click',()=>{
-        document.querySelectorAll('.pg-cell.sel').forEach(c=>c.classList.remove('sel'));
-        cell.classList.add('sel');
-      });
-      col.appendChild(cell);
+    let total=0;
+    const days=rects.map(r=>{
+      const date=r.getAttribute('data-date')||'';
+      const level=parseInt(r.getAttribute('data-level')||'0');
+      // Try data-count attr first
+      let count=parseInt(r.getAttribute('data-count')||'0');
+      // Try matching <tool-tip> element by rect id
+      if(!count&&r.id){
+        const tt=doc.querySelector('tool-tip[for="'+r.id+'"]');
+        if(tt){const m=tt.textContent.match(/(\d+)\s+contribution/);if(m)count=parseInt(m[1]);}
+      }
+      // Try aria-label on the td containing this rect
+      if(!count){
+        const label=r.getAttribute('aria-label')||'';
+        const m=label.match(/(\d+)\s+contribution/);if(m)count=parseInt(m[1]);
+      }
+      // Last resort: infer from level (rough estimate)
+      if(!count&&level>0)count=[0,1,3,7,12][level]||level;
+      total+=count;
+      return{date,level,count};
     });
-    cols.appendChild(col);
-  });
-  main.appendChild(cols);
-  container.appendChild(main);
-  wrap.innerHTML='';
-  wrap.appendChild(container);
+
+    const display=total||126;
+    if(totalEl)totalEl.textContent=display+' contributions · last year';
+    if(contribEl)contribEl.textContent=display;
+    if(badge)badge.textContent='⭐ '+display+' CONTRIBUTIONS';
+
+    // Group into 7-day weeks (columns)
+    const weeks=[];
+    for(let i=0;i<days.length;i+=7)weeks.push(days.slice(i,i+7));
+
+    loading.style.display='none';
+    const container=document.createElement('div');
+
+    // Month label row
+    const MONTHS=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    const mRow=document.createElement('div');mRow.className='pg-month-row';
+    let lastM=-1;
+    weeks.forEach(w=>{
+      const lbl=document.createElement('div');lbl.className='pg-month-lbl';
+      if(w[0]){try{const m=new Date(w[0].date+'T12:00:00').getMonth();if(m!==lastM){lbl.textContent=MONTHS[m];lastM=m;}}catch(e){}}
+      mRow.appendChild(lbl);
+    });
+    container.appendChild(mRow);
+
+    const main=document.createElement('div');main.className='pg-main';
+
+    // Day labels
+    const dayLbls=document.createElement('div');dayLbls.className='pg-day-lbls';
+    ['','Mon','','Wed','','Fri',''].forEach(d=>{
+      const dl=document.createElement('div');dl.className='pg-day-lbl';dl.textContent=d;dayLbls.appendChild(dl);
+    });
+    main.appendChild(dayLbls);
+
+    // Tooltip elements
+    const tip=document.getElementById('pgTip');
+    const tipMain=document.getElementById('pgTipMain');
+    const tipDate=document.getElementById('pgTipDate');
+
+    // Week columns
+    const cols=document.createElement('div');cols.className='pg-cols';
+    weeks.forEach(week=>{
+      const col=document.createElement('div');col.className='pg-col';
+      week.forEach(day=>{
+        const cell=document.createElement('div');
+        cell.className='pg-cell lv'+Math.min(day.level,4);
+        cell.addEventListener('mouseenter',e=>{
+          try{
+            const d=new Date(day.date+'T12:00:00');
+            tipDate.textContent=d.toLocaleDateString('en-US',{weekday:'short',month:'long',day:'numeric',year:'numeric'});
+          }catch(ex){tipDate.textContent=day.date;}
+          tipMain.textContent=day.count===0?'No contributions':day.count===1?'1 contribution':day.count+' contributions';
+          tip.classList.add('show');moveTip(e);
+        });
+        cell.addEventListener('mousemove',moveTip);
+        cell.addEventListener('mouseleave',()=>{tip.classList.remove('show');cell.classList.remove('sel');});
+        cell.addEventListener('click',()=>{
+          document.querySelectorAll('.pg-cell.sel').forEach(c=>c.classList.remove('sel'));
+          cell.classList.add('sel');
+        });
+        col.appendChild(cell);
+      });
+      cols.appendChild(col);
+    });
+    main.appendChild(cols);
+    container.appendChild(main);
+    wrap.innerHTML='';
+    wrap.appendChild(container);
+  }catch(e){useFallbackImage(wrap,loading,totalEl,contribEl,badge);}
 }
 
 function moveTip(e){
   const t=document.getElementById('pgTip');if(!t)return;
   let x=e.clientX+16,y=e.clientY-10;
-  if(x+200>window.innerWidth)x=e.clientX-210;
-  if(y+60>window.innerHeight)y=e.clientY-65;
+  if(x+220>window.innerWidth)x=e.clientX-225;
+  if(y+70>window.innerHeight)y=e.clientY-70;
   t.style.left=x+'px';t.style.top=y+'px';
 }
 
 function useFallbackImage(wrap,loading,totalEl,contribEl,badge){
-  loading.style.display='none';
-  wrap.innerHTML=`<img src="https://ghchart.rshah.org/5aac44/Rafie-kun" style="width:100%;display:block;image-rendering:pixelated;" alt="GitHub contributions" onerror="this.parentElement.innerHTML='<p style=font-family:Press Start 2P,monospace;font-size:7px;color:#334;text-align:center;padding:20px>⚠ Graph visible on live site</p>'">`;
+  if(loading)loading.style.display='none';
+  wrap.innerHTML='<img src="https://ghchart.rshah.org/5aac44/Rafie-kun" style="width:100%;display:block;image-rendering:pixelated;" alt="GitHub contributions">';
   if(totalEl)totalEl.textContent='126 contributions · last year';
   if(contribEl)contribEl.textContent='126';
   if(badge)badge.textContent='⭐ 126 CONTRIBUTIONS';
 }
 
 // ══════════════════════════════════════════
-// LINKEDIN CARD UPDATER
-// reads contact-linkedin id and updates the link
+// SOCIAL CARD UPDATER
 // ══════════════════════════════════════════
-function updateLinkedIn(){
-  const val=document.getElementById('contact-linkedin');
-  const card=document.getElementById('linkedin-card');
-  if(!val||!card)return;
-  const txt=val.textContent.trim();
-  if(txt&&txt!=='Coming soon...'){
-    const url=txt.startsWith('http')?txt:`https://linkedin.com/in/${txt}`;
-    card.href=url;
-    card.classList.remove('coming');
-    card.style.opacity='1';
+function updateLinkedIn(){updateSocialCards();}
+function updateSocialCards(){
+  const liVal=document.getElementById('contact-linkedin');
+  const liCard=document.getElementById('linkedin-card');
+  if(liVal&&liCard){
+    const txt=liVal.textContent.trim();
+    if(txt&&txt!=='Coming soon...'){
+      liCard.href=txt.startsWith('http')?txt:'https://linkedin.com/in/'+txt;
+      liCard.style.display='flex';liCard.classList.remove('coming');
+    }else{liCard.style.display='none';}
+  }
+  const twVal=document.getElementById('contact-twitter');
+  const twCard=document.getElementById('twitter-card');
+  if(twVal&&twCard){
+    const txt=twVal.textContent.trim();
+    if(txt&&txt!=='Coming soon...'){
+      twCard.href='https://twitter.com/'+txt.replace('@','');
+      twCard.style.display='flex';twCard.classList.remove('coming');
+    }else{twCard.style.display='none';}
   }
 }
 
