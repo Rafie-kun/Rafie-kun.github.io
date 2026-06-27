@@ -1130,7 +1130,7 @@ document.addEventListener('click',e=>{
 // ══════════════════════════════════════════
 async function loadStats(){
   try{
-    const r=await fetch('https://api.github.com/users/Rafie-kun',{headers:{'Authorization':'token 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','Accept':'application/vnd.github.v3+json'}});
+    const r=await fetch('https://api.github.com/users/Rafie-kun',{headers:{'Authorization':'token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','Accept':'application/vnd.github.v3+json'}});
     if(!r.ok)return;
     const d=await r.json();
     const s=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v;};
