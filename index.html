@@ -1130,7 +1130,7 @@ document.addEventListener('click',e=>{
 // ══════════════════════════════════════════
 async function loadStats(){
   try{
-    const r=await fetch('https://api.github.com/users/Rafie-kun',{headers:{'Authorization':'token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','Accept':'application/vnd.github.v3+json'}});
+    const r=await fetch('https://api.github.com/users/Rafie-kun',{headers:{'Authorization':'token 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','Accept':'application/vnd.github.v3+json'}});
     if(!r.ok)return;
     const d=await r.json();
     const s=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v;};
@@ -1148,93 +1148,77 @@ async function loadStats(){
 const MONTHS=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 
 async function buildGraph(){
+  const TOKEN='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';
   const wrap=document.getElementById('pgWrap');
   const loading=document.getElementById('pgLoading');
   const totalEl=document.getElementById('ghTotal');
   const contribEl=document.getElementById('ghContribs');
   const badge=document.getElementById('ghBadge');
 
-  // Strategy: Use GitHub's contribution SVG endpoint via multiple CORS proxies.
-  // The SVG contains <rect data-date data-level> for every day.
-  // We also try to extract the tooltip count from aria-label or tool-tip elements.
-  const ghUrl='https://github.com/users/Rafie-kun/contributions';
-
-  const proxies=[
-    u=>'https://api.allorigins.win/raw?url='+encodeURIComponent(u),
-    u=>'https://corsproxy.io/?'+encodeURIComponent(u),
-    u=>'https://api.allorigins.win/get?url='+encodeURIComponent(u),
-  ];
-
-  let rawHtml=null;
-  for(const mkProxy of proxies){
-    try{
-      const res=await fetch(mkProxy(ghUrl),{signal:AbortSignal.timeout(8000),headers:{'X-Requested-With':'XMLHttpRequest'}});
-      if(!res.ok) continue;
-      const text=await res.text();
-      // allorigins /get wraps in JSON; /raw returns direct HTML
-      if(text.trim().startsWith('{')){
-        try{ const j=JSON.parse(text); rawHtml=j.contents||j.data; }catch(e){ rawHtml=text; }
-      } else { rawHtml=text; }
-      if(rawHtml && rawHtml.includes('data-date')) break;
-      rawHtml=null;
-    }catch(e){ continue; }
-  }
-
-  if(!rawHtml){
-    // Last resort: build from GitHub Events API (only ~90 days back but real data)
-    await buildGraphFromEvents(wrap,loading,totalEl,contribEl,badge);
-    return;
-  }
-
-  try{
-    const parser=new DOMParser();
-    const doc=parser.parseFromString(rawHtml,'text/html');
-    const rects=[...doc.querySelectorAll('rect[data-date]')];
-    if(!rects.length) throw new Error('no rects');
-
-    let total=0;
-    const days=rects.map(r=>{
-      const date=r.getAttribute('data-date')||'';
-      const level=parseInt(r.getAttribute('data-level')||'0');
-      // Try every possible place GitHub puts the count
-      let count=0;
-      // 1. data-count attribute
-      const dc=r.getAttribute('data-count');
-      if(dc) count=parseInt(dc)||0;
-      // 2. aria-label on the rect itself: "3 contributions on June 2nd"
-      if(!count){
-        const al=r.getAttribute('aria-label')||'';
-        const m=al.match(/^(\d+)\s+contribution/i);
-        if(m) count=parseInt(m[1]);
-      }
-      // 3. tool-tip sibling with matching for= attribute
-      if(!count && r.id){
-        const tt=doc.querySelector('tool-tip[for="'+r.id+'"]')||
-                 doc.querySelector('[data-target="'+r.id+'"]');
-        if(tt){
-          const m=(tt.textContent||tt.getAttribute('aria-label')||'').match(/(\d+)\s+contribution/i);
-          if(m) count=parseInt(m[1]);
+  // Use GitHub GraphQL API — returns exact contribution calendar, no scraping needed
+  const query=`query{
+    user(login:"Rafie-kun"){
+      contributionsCollection{
+        contributionCalendar{
+          totalContributions
+          weeks{
+            contributionDays{
+              date
+              contributionCount
+              contributionLevel
+            }
+          }
         }
       }
-      // 4. Infer from level (rough but better than 0)
-      if(!count && level>0) count=[0,1,4,7,12][level]||level;
-      total+=count;
-      return{date,level,count};
+    }
+  }`;
+
+  try{
+    const res=await fetch('https://api.github.com/graphql',{
+      method:'POST',
+      headers:{
+        'Authorization':'bearer '+TOKEN,
+        'Content-Type':'application/json',
+        'Accept':'application/json'
+      },
+      body:JSON.stringify({query}),
+      signal:AbortSignal.timeout(10000)
     });
 
-    const display=total||126;
-    if(totalEl) totalEl.textContent=display+' contributions · last year';
-    if(contribEl) contribEl.textContent=display;
-    if(badge) badge.textContent='⭐ '+display+' CONTRIBUTIONS';
+    if(!res.ok) throw new Error('GraphQL HTTP '+res.status);
+    const json=await res.json();
+    if(json.errors) throw new Error(json.errors[0].message);
+
+    const cal=json.data.user.contributionsCollection.contributionCalendar;
+    const total=cal.totalContributions;
+
+    // Flatten weeks -> days
+    const days=[];
+    cal.weeks.forEach(w=>w.contributionDays.forEach(d=>{
+      // Map GitHub's level strings to 0-4
+      const lvlMap={
+        'NONE':0,'FIRST_QUARTILE':1,'SECOND_QUARTILE':2,'THIRD_QUARTILE':3,'FOURTH_QUARTILE':4
+      };
+      days.push({
+        date:d.date,
+        count:d.contributionCount,
+        level:lvlMap[d.contributionLevel]??0
+      });
+    }));
+
+    if(totalEl) totalEl.textContent=total+' contributions · last year';
+    if(contribEl) contribEl.textContent=total;
+    if(badge) badge.textContent='⭐ '+total+' CONTRIBUTIONS';
+
     renderPixelGraph(days,wrap,loading);
   }catch(e){
-    await buildGraphFromEvents(wrap,loading,totalEl,contribEl,badge);
+    console.warn('GraphQL failed:',e.message,'. Trying REST fallback...');
+    await buildGraphFromEvents(wrap,loading,totalEl,contribEl,badge,TOKEN);
   }
 }
 
-// Fallback: GitHub public events API — covers last ~90 days accurately
-async function buildGraphFromEvents(wrap,loading,totalEl,contribEl,badge){
-  // Build empty 52-week grid
+// REST fallback — covers last ~90 days from events
+async function buildGraphFromEvents(wrap,loading,totalEl,contribEl,badge,TOKEN){
   const today=new Date();
   const gridDays=[];
   const start=new Date(today);
@@ -1246,11 +1230,10 @@ async function buildGraphFromEvents(wrap,loading,totalEl,contribEl,badge){
   gridDays.forEach((g,i)=>dateMap[g.date]=i);
 
   try{
-    // Fetch up to 10 pages of events
     for(let page=1;page<=10;page++){
       const r=await fetch(
         'https://api.github.com/users/Rafie-kun/events/public?per_page=100&page='+page,
-        {headers:{'Accept':'application/vnd.github.v3+json','Authorization':'token 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'},signal:AbortSignal.timeout(5000)}
+        {headers:{'Accept':'application/vnd.github.v3+json','Authorization':'token '+TOKEN},signal:AbortSignal.timeout(5000)}
       );
       if(!r.ok) break;
       const evts=await r.json();
@@ -1263,11 +1246,10 @@ async function buildGraphFromEvents(wrap,loading,totalEl,contribEl,badge){
         gridDays[dateMap[date]].count+=n;
       });
       const oldest=evts[evts.length-1]?.created_at?.slice(0,10)||'';
-      if(oldest && oldest<gridDays[0].date) break;
+      if(oldest&&oldest<gridDays[0].date) break;
     }
   }catch(e){}
 
-  // Assign levels
   let total=0;
   gridDays.forEach(g=>{
     total+=g.count;
