@@ -19,9 +19,9 @@
   --border:#2a3a4a;
 }
 body.day-mode{
-  --bg:#87CEEB;--panel:#c8e8f8;--panel2:#b0d8f0;
-  --text:#1a2a1a;--text-dim:#4a6a4a;--muted:#6a8a6a;
-  --border:#5a8a5a;--stone:#888;--dark-stone:#666;
+  --bg:#5a9fd4;--panel:#1a2a1a;--panel2:#223322;
+  --text:#e8f8e8;--text-dim:#8aaa8a;--muted:#6a8a6a;
+  --border:#3a5a3a;--stone:#7a7a7a;--dark-stone:#555;
 }
 *{margin:0;padding:0;box-sizing:border-box;}
 html{scroll-behavior:smooth;}
@@ -203,7 +203,7 @@ nav::after{
 /* Sky layers */
 .sky{position:absolute;inset:0;transition:opacity 1.2s;}
 .sky-night{background:radial-gradient(ellipse at 50% 0%,#0a1a30 0%,#050c1a 60%,#020609 100%);}
-.sky-day{background:linear-gradient(to bottom,#1a6abf 0%,#2a8ae0 30%,#5aaeff 60%,#8fd8ff 90%,#b8e8ff 100%);opacity:0;}
+.sky-day{background:linear-gradient(to bottom,#4a7fb5 0%,#5a90c8 25%,#6aa8d8 50%,#7abce8 75%,#8acff0 100%);opacity:0;}
 body.day-mode .sky-night{opacity:0;}
 body.day-mode .sky-day{opacity:1;}
 /* Stars canvas */
@@ -300,18 +300,32 @@ body.day-mode .tree{display:block;}
 .creeper{position:absolute;bottom:193px;z-index:7;display:none;animation:bob 2s ease-in-out infinite;}
 body.day-mode .creeper{display:block;}
 .cr-head{
-  width:32px;height:32px;margin:0 auto;
-  background:linear-gradient(135deg,#3aaa3a,#4acc4a,#2a8a2a);
-  border-left:3px solid #5acc5a;border-top:3px solid #5acc5a;
+  width:48px;height:48px;margin:0 auto;
+  background:#5aac44;
+  border-left:3px solid #6acc50;border-top:3px solid #6acc50;
   border-right:3px solid #1a5a1a;border-bottom:3px solid #1a5a1a;
-  position:relative;
+  position:relative;image-rendering:pixelated;
 }
-.cr-head::before{content:'⊟';position:absolute;top:8px;left:4px;font-size:14px;color:#000;font-style:normal;}
+/* Creeper pixel face using box-shadows */
+.cr-head::before{
+  content:'';position:absolute;
+  width:8px;height:8px;background:#000;
+  top:14px;left:8px;
+  box-shadow:
+    16px 0 0 #000,
+    0 8px 0 #000,
+    4px 8px 0 #000,
+    8px 8px 0 #000,
+    16px 8px 0 #000,
+    20px 8px 0 #000,
+    8px 16px 0 #000,
+    12px 16px 0 #000;
+}
 .cr-body{
-  width:22px;height:24px;margin:0 auto;
-  background:linear-gradient(135deg,#2a8a2a,#3aaa3a);
-  border-left:2px solid #4aaa4a;border-top:2px solid #4aaa4a;
-  border-right:2px solid #0a4a0a;border-bottom:2px solid #0a4a0a;
+  width:32px;height:32px;margin:0 auto;
+  background:#4a9a3a;
+  border-left:2px solid #5acc44;border-top:2px solid #5acc44;
+  border-right:2px solid #1a4a1a;border-bottom:2px solid #1a4a1a;
 }
 
 /* ── HERO CARD ─────────────────────────────── */
@@ -1133,122 +1147,142 @@ async function buildGraph(){
   const contribEl=document.getElementById('ghContribs');
   const badge=document.getElementById('ghBadge');
 
-  // Try multiple CORS proxies in order
-  const ghUrl='https://github.com/users/Rafie-kun/contributions';
-  const proxies=[
-    'https://api.allorigins.win/get?url='+encodeURIComponent(ghUrl),
-    'https://corsproxy.io/?'+encodeURIComponent(ghUrl),
-    'https://api.codetabs.com/v1/proxy?quest='+encodeURIComponent(ghUrl),
-  ];
+  // Build a 52-week grid seeded with zeros
+  const today=new Date();
+  const gridDays=[];
+  // Start from ~53 weeks ago on a Sunday
+  const start=new Date(today);
+  start.setDate(start.getDate()-364-start.getDay());
 
-  let html=null;
-  for(const proxy of proxies){
-    try{
-      const res=await fetch(proxy,{signal:AbortSignal.timeout(7000)});
-      if(!res.ok)continue;
-      const text=await res.text();
-      try{const j=JSON.parse(text);if(j.contents){html=j.contents;break;}}
-      catch(e){html=text;break;}
-    }catch(e){continue;}
+  for(let d=new Date(start);d<=today;d.setDate(d.getDate()+1)){
+    gridDays.push({
+      date:d.toISOString().slice(0,10),
+      count:0,
+      level:0
+    });
   }
 
-  if(!html){useFallbackImage(wrap,loading,totalEl,contribEl,badge);return;}
+  // Map date->index for fast lookup
+  const dateMap={};
+  gridDays.forEach((g,i)=>dateMap[g.date]=i);
 
+  // Fetch up to 10 pages of public events (GitHub returns max 300 events, ~30/page)
+  // This gives us push/create/pr events to count contributions per day
   try{
-    const parser=new DOMParser();
-    const doc=parser.parseFromString(html,'text/html');
-    const rects=[...doc.querySelectorAll('rect[data-date]')];
-    if(!rects.length)throw new Error('no rects');
-
     let total=0;
-    const days=rects.map(r=>{
-      const date=r.getAttribute('data-date')||'';
-      const level=parseInt(r.getAttribute('data-level')||'0');
-      // Try data-count attr first
-      let count=parseInt(r.getAttribute('data-count')||'0');
-      // Try matching <tool-tip> element by rect id
-      if(!count&&r.id){
-        const tt=doc.querySelector('tool-tip[for="'+r.id+'"]');
-        if(tt){const m=tt.textContent.match(/(\d+)\s+contribution/);if(m)count=parseInt(m[1]);}
-      }
-      // Try aria-label on the td containing this rect
-      if(!count){
-        const label=r.getAttribute('aria-label')||'';
-        const m=label.match(/(\d+)\s+contribution/);if(m)count=parseInt(m[1]);
-      }
-      // Last resort: infer from level (rough estimate)
-      if(!count&&level>0)count=[0,1,3,7,12][level]||level;
-      total+=count;
-      return{date,level,count};
+    const pages=[1,2,3,4,5,6,7,8,9,10];
+    for(const page of pages){
+      const r=await fetch(
+        'https://api.github.com/users/Rafie-kun/events/public?per_page=100&page='+page,
+        {headers:{'Accept':'application/vnd.github.v3+json'}}
+      );
+      if(!r.ok)break;
+      const events=await r.json();
+      if(!events.length)break;
+
+      events.forEach(ev=>{
+        // Count PushEvent, CreateEvent, PullRequestEvent, IssuesEvent
+        const counted=['PushEvent','CreateEvent','PullRequestEvent','IssuesEvent','PullRequestReviewEvent','CommitCommentEvent'];
+        if(!counted.includes(ev.type))return;
+        const date=ev.created_at.slice(0,10);
+        if(dateMap[date]!==undefined){
+          // PushEvent: count commits in the push
+          let n=1;
+          if(ev.type==='PushEvent'&&ev.payload&&ev.payload.commits){
+            n=ev.payload.commits.length||1;
+          }
+          gridDays[dateMap[date]].count+=n;
+          total+=n;
+        }
+      });
+
+      // GitHub only stores ~300 public events, stop early if old
+      const oldest=events[events.length-1];
+      if(oldest&&oldest.created_at.slice(0,10)<gridDays[0].date)break;
+    }
+
+    // Assign levels based on count
+    gridDays.forEach(g=>{
+      if(g.count===0)g.level=0;
+      else if(g.count<=1)g.level=1;
+      else if(g.count<=3)g.level=2;
+      else if(g.count<=6)g.level=3;
+      else g.level=4;
     });
 
-    const display=total||126;
+    // Show 126 minimum since that's the known real count (API only returns recent public events)
+    const display=Math.max(total,126);
     if(totalEl)totalEl.textContent=display+' contributions · last year';
     if(contribEl)contribEl.textContent=display;
     if(badge)badge.textContent='⭐ '+display+' CONTRIBUTIONS';
 
-    // Group into 7-day weeks (columns)
-    const weeks=[];
-    for(let i=0;i<days.length;i+=7)weeks.push(days.slice(i,i+7));
+    renderPixelGraph(gridDays,wrap,loading);
+  }catch(e){
+    useFallbackImage(wrap,loading,totalEl,contribEl,badge);
+  }
+}
 
-    loading.style.display='none';
-    const container=document.createElement('div');
+function renderPixelGraph(gridDays,wrap,loading){
+  const weeks=[];
+  for(let i=0;i<gridDays.length;i+=7)weeks.push(gridDays.slice(i,i+7));
 
-    // Month label row
-    const MONTHS=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-    const mRow=document.createElement('div');mRow.className='pg-month-row';
-    let lastM=-1;
-    weeks.forEach(w=>{
-      const lbl=document.createElement('div');lbl.className='pg-month-lbl';
-      if(w[0]){try{const m=new Date(w[0].date+'T12:00:00').getMonth();if(m!==lastM){lbl.textContent=MONTHS[m];lastM=m;}}catch(e){}}
-      mRow.appendChild(lbl);
-    });
-    container.appendChild(mRow);
+  loading.style.display='none';
+  const container=document.createElement('div');
 
-    const main=document.createElement('div');main.className='pg-main';
+  const MONTHS=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const mRow=document.createElement('div');mRow.className='pg-month-row';
+  let lastM=-1;
+  weeks.forEach(w=>{
+    const lbl=document.createElement('div');lbl.className='pg-month-lbl';
+    if(w[0]){
+      try{
+        const m=new Date(w[0].date+'T12:00:00').getMonth();
+        if(m!==lastM){lbl.textContent=MONTHS[m];lastM=m;}
+      }catch(e){}
+    }
+    mRow.appendChild(lbl);
+  });
+  container.appendChild(mRow);
 
-    // Day labels
-    const dayLbls=document.createElement('div');dayLbls.className='pg-day-lbls';
-    ['','Mon','','Wed','','Fri',''].forEach(d=>{
-      const dl=document.createElement('div');dl.className='pg-day-lbl';dl.textContent=d;dayLbls.appendChild(dl);
-    });
-    main.appendChild(dayLbls);
+  const main=document.createElement('div');main.className='pg-main';
+  const dayLbls=document.createElement('div');dayLbls.className='pg-day-lbls';
+  ['','Mon','','Wed','','Fri',''].forEach(d=>{
+    const dl=document.createElement('div');dl.className='pg-day-lbl';dl.textContent=d;dayLbls.appendChild(dl);
+  });
+  main.appendChild(dayLbls);
 
-    // Tooltip elements
-    const tip=document.getElementById('pgTip');
-    const tipMain=document.getElementById('pgTipMain');
-    const tipDate=document.getElementById('pgTipDate');
+  const tip=document.getElementById('pgTip');
+  const tipMain=document.getElementById('pgTipMain');
+  const tipDate=document.getElementById('pgTipDate');
 
-    // Week columns
-    const cols=document.createElement('div');cols.className='pg-cols';
-    weeks.forEach(week=>{
-      const col=document.createElement('div');col.className='pg-col';
-      week.forEach(day=>{
-        const cell=document.createElement('div');
-        cell.className='pg-cell lv'+Math.min(day.level,4);
-        cell.addEventListener('mouseenter',e=>{
-          try{
-            const d=new Date(day.date+'T12:00:00');
-            tipDate.textContent=d.toLocaleDateString('en-US',{weekday:'short',month:'long',day:'numeric',year:'numeric'});
-          }catch(ex){tipDate.textContent=day.date;}
-          tipMain.textContent=day.count===0?'No contributions':day.count===1?'1 contribution':day.count+' contributions';
-          tip.classList.add('show');moveTip(e);
-        });
-        cell.addEventListener('mousemove',moveTip);
-        cell.addEventListener('mouseleave',()=>{tip.classList.remove('show');cell.classList.remove('sel');});
-        cell.addEventListener('click',()=>{
-          document.querySelectorAll('.pg-cell.sel').forEach(c=>c.classList.remove('sel'));
-          cell.classList.add('sel');
-        });
-        col.appendChild(cell);
+  const cols=document.createElement('div');cols.className='pg-cols';
+  weeks.forEach(week=>{
+    const col=document.createElement('div');col.className='pg-col';
+    week.forEach(day=>{
+      const cell=document.createElement('div');
+      cell.className='pg-cell lv'+day.level;
+      cell.addEventListener('mouseenter',e=>{
+        try{
+          const d=new Date(day.date+'T12:00:00');
+          tipDate.textContent=d.toLocaleDateString('en-US',{weekday:'short',month:'long',day:'numeric',year:'numeric'});
+        }catch(ex){tipDate.textContent=day.date;}
+        tipMain.textContent=day.count===0?'No contributions':day.count===1?'1 contribution':day.count+' contributions';
+        tip.classList.add('show');moveTip(e);
       });
-      cols.appendChild(col);
+      cell.addEventListener('mousemove',moveTip);
+      cell.addEventListener('mouseleave',()=>{tip.classList.remove('show');cell.classList.remove('sel');});
+      cell.addEventListener('click',()=>{
+        document.querySelectorAll('.pg-cell.sel').forEach(c=>c.classList.remove('sel'));
+        cell.classList.add('sel');
+      });
+      col.appendChild(cell);
     });
-    main.appendChild(cols);
-    container.appendChild(main);
-    wrap.innerHTML='';
-    wrap.appendChild(container);
-  }catch(e){useFallbackImage(wrap,loading,totalEl,contribEl,badge);}
+    cols.appendChild(col);
+  });
+  main.appendChild(cols);
+  container.appendChild(main);
+  wrap.innerHTML='';
+  wrap.appendChild(container);
 }
 
 function moveTip(e){
