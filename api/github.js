@@ -1,34 +1,31 @@
 // Vercel serverless function — /api/github
-// Calls GitHub GraphQL API server-side so the token stays hidden
-// Returns: { total: number, days: [{date, count, level}] }
+// Server-side only — token never reaches the browser
 
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Cache-Control', 's-maxage=3600, stale-while-revalidate'); // cache 1 hour
+  res.setHeader('Cache-Control', 's-maxage=3600, stale-while-revalidate=86400');
 
   const TOKEN = process.env.GITHUB_TOKEN;
   if (!TOKEN) {
-    return res.status(500).json({ error: 'GITHUB_TOKEN not set in Vercel env vars' });
+    return res.status(500).json({ error: 'GITHUB_TOKEN env var not set in Vercel' });
   }
 
-  const query = `
-    query {
-      user(login: "Rafie-kun") {
-        contributionsCollection {
-          contributionCalendar {
-            totalContributions
-            weeks {
-              contributionDays {
-                date
-                contributionCount
-                contributionLevel
-              }
+  const query = `{
+    user(login: "Rafie-kun") {
+      contributionsCollection {
+        contributionCalendar {
+          totalContributions
+          weeks {
+            contributionDays {
+              date
+              contributionCount
+              contributionLevel
             }
           }
         }
       }
     }
-  `;
+  }`;
 
   try {
     const r = await fetch('https://api.github.com/graphql', {
@@ -43,8 +40,7 @@ export default async function handler(req, res) {
     });
 
     if (!r.ok) {
-      const text = await r.text();
-      return res.status(r.status).json({ error: text });
+      return res.status(r.status).json({ error: 'GitHub API error: ' + r.status });
     }
 
     const json = await r.json();
@@ -53,15 +49,7 @@ export default async function handler(req, res) {
     }
 
     const cal = json.data.user.contributionsCollection.contributionCalendar;
-    const total = cal.totalContributions;
-
-    const levelMap = {
-      'NONE': 0,
-      'FIRST_QUARTILE': 1,
-      'SECOND_QUARTILE': 2,
-      'THIRD_QUARTILE': 3,
-      'FOURTH_QUARTILE': 4
-    };
+    const levelMap = { NONE:0, FIRST_QUARTILE:1, SECOND_QUARTILE:2, THIRD_QUARTILE:3, FOURTH_QUARTILE:4 };
 
     const days = [];
     cal.weeks.forEach(week => {
@@ -74,8 +62,8 @@ export default async function handler(req, res) {
       });
     });
 
-    return res.status(200).json({ total, days });
+    return res.status(200).json({ total: cal.totalContributions, days });
   } catch (err) {
     return res.status(500).json({ error: err.message });
   }
-}
+};
