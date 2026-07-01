@@ -1238,9 +1238,10 @@ function showYear(year){
   if(contribEl) contribEl.textContent=total;
   if(badge) badge.textContent='⭐ '+total+' CONTRIBUTIONS';
 
-  // Clear loading state
+  // Clear wrap and render fresh
   const loading=document.getElementById('pgLoading');
   if(loading) loading.style.display='none';
+  wrap.innerHTML='';
 
   renderPixelGraph(days,wrap,null);
 }
@@ -1248,7 +1249,7 @@ function renderPixelGraph(gridDays,wrap,loading){
   const weeks=[];
   for(let i=0;i<gridDays.length;i+=7)weeks.push(gridDays.slice(i,i+7));
 
-  loading.style.display='none';
+  if(loading) loading.style.display='none';
   const container=document.createElement('div');
 
   const MONTHS=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
