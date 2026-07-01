@@ -598,6 +598,22 @@ section{max-width:920px;margin:0 auto;padding:56px 24px;}
 .pg-legend{display:flex;align-items:center;gap:5px;justify-content:flex-end;margin-top:8px;font-family:'Press Start 2P',monospace;font-size:6px;color:#334;}
 .leg-sq{width:11px;height:11px;}
 .pg-loading{font-family:'Press Start 2P',monospace;font-size:8px;color:#334;text-align:center;padding:32px;animation:blink 1s step-end infinite;}
+/* Year tabs */
+.gh-year-tabs{display:flex;gap:4px;margin-bottom:10px;flex-wrap:wrap;}
+.gh-year-btn{
+  font-family:'Press Start 2P',monospace;font-size:7px;
+  padding:5px 9px;cursor:pointer;
+  background:#0a0e14;color:#445;
+  border-top:2px solid #1a2a3a;border-left:2px solid #1a2a3a;
+  border-right:2px solid #000;border-bottom:2px solid #000;
+  transition:filter .1s;
+}
+.gh-year-btn:hover{filter:brightness(1.6);}
+.gh-year-btn.active{
+  background:#0a2a0a;color:var(--green);
+  border-color:var(--green);
+}
+
 /* Tooltip */
 .pg-tip{
   position:fixed;z-index:9999;pointer-events:none;display:none;
@@ -967,6 +983,8 @@ footer{
         <span class="gh-graph-title">⬛ CONTRIBUTION GRAPH</span>
         <span class="gh-graph-total" id="ghTotal">Loading...</span>
       </div>
+      <!-- Year tabs like GitHub -->
+      <div class="gh-year-tabs" id="ghYearTabs"></div>
       <div id="pgWrap"><div class="pg-loading" id="pgLoading">⛏ Mining contribution data...</div></div>
       <div class="pg-legend">
         Less
@@ -1153,44 +1171,78 @@ async function buildGraph(){
   const totalEl=document.getElementById('ghTotal');
   const contribEl=document.getElementById('ghContribs');
   const badge=document.getElementById('ghBadge');
+  const tabsEl=document.getElementById('ghYearTabs');
 
-  // jogruber API returns {total:{2026:N}, contributions:[{date,count,level}]}
-  // level is already 0-4, no remapping needed. No token. Auto-updates.
   try{
+    // Fetch ALL years at once — no year param = returns everything
     const res=await fetch(
-      'https://github-contributions-api.jogruber.de/v4/Rafie-kun?y=last',
+      'https://github-contributions-api.jogruber.de/v4/Rafie-kun',
       {signal:AbortSignal.timeout(10000)}
     );
     if(!res.ok) throw new Error('API status '+res.status);
     const data=await res.json();
-
     if(!data.contributions||!data.contributions.length) throw new Error('empty');
 
-    // Total for last year
-    const year=new Date().getFullYear();
-    const total=data.total[year]||data.total[year-1]||
-      data.contributions.reduce((a,b)=>a+b.count,0);
+    // Store all data globally so year tabs can switch without re-fetching
+    window._ghData=data;
 
-    if(totalEl) totalEl.textContent=total+' contributions · last year';
-    if(contribEl) contribEl.textContent=total;
-    if(badge) badge.textContent='⭐ '+total+' CONTRIBUTIONS';
+    // Build year list from total object, sorted newest first
+    const years=Object.keys(data.total)
+      .filter(y=>y!=='lastYear'&&!isNaN(y))
+      .map(Number)
+      .sort((a,b)=>b-a);
 
-    // Filter to last 52 weeks only (API may return multiple years)
-    const cutoff=new Date();
-    cutoff.setFullYear(cutoff.getFullYear()-1);
-    const days=data.contributions.filter(d=>new Date(d.date)>=cutoff);
+    // Build year tab buttons
+    if(tabsEl){
+      tabsEl.innerHTML='';
+      years.forEach((yr,i)=>{
+        const btn=document.createElement('button');
+        btn.className='gh-year-btn'+(i===0?' active':'');
+        btn.textContent=yr;
+        btn.onclick=()=>{
+          document.querySelectorAll('.gh-year-btn').forEach(b=>b.classList.remove('active'));
+          btn.classList.add('active');
+          showYear(yr);
+        };
+        tabsEl.appendChild(btn);
+      });
+    }
 
-    renderPixelGraph(days,wrap,loading);
+    // Show the most recent year by default
+    showYear(years[0]);
+
   }catch(e){
-    console.warn('jogruber API failed:',e.message);
-    // Static image fallback — at least shows the graph shape
+    console.warn('Contributions API failed:',e.message);
     if(loading) loading.style.display='none';
-    wrap.innerHTML='<img src="https://ghchart.rshah.org/5aac44/Rafie-kun"'+
-      ' style="width:100%;display:block;image-rendering:pixelated;" alt="GitHub contributions">';
+    wrap.innerHTML='<img src="https://ghchart.rshah.org/5aac44/Rafie-kun" style="width:100%;display:block;image-rendering:pixelated;" alt="GitHub contributions">';
     if(totalEl) totalEl.textContent='contributions · last year';
     if(contribEl) contribEl.textContent='—';
     if(badge) badge.textContent='⭐ CONTRIBUTIONS';
   }
+}
+
+function showYear(year){
+  const data=window._ghData;
+  if(!data) return;
+
+  const wrap=document.getElementById('pgWrap');
+  const totalEl=document.getElementById('ghTotal');
+  const contribEl=document.getElementById('ghContribs');
+  const badge=document.getElementById('ghBadge');
+
+  // Filter contributions to selected year
+  const days=data.contributions.filter(d=>d.date.startsWith(year+''));
+  const total=data.total[year]||days.reduce((a,b)=>a+b.count,0);
+
+  if(totalEl) totalEl.textContent=total+' contributions · '+year;
+  if(contribEl) contribEl.textContent=total;
+  if(badge) badge.textContent='⭐ '+total+' CONTRIBUTIONS';
+
+  // Clear loading state
+  const loading=document.getElementById('pgLoading');
+  if(loading) loading.style.display='none';
+
+  renderPixelGraph(days,wrap,null);
 }
 function renderPixelGraph(gridDays,wrap,loading){
   const weeks=[];
