@@ -1130,7 +1130,7 @@ document.addEventListener('click',e=>{
 // ══════════════════════════════════════════
 async function loadStats(){
   try{
-    const r=await fetch('https://api.github.com/users/Rafie-kun',{headers:{'Authorization':'token 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','Accept':'application/vnd.github.v3+json'}});
+    const r=await fetch('https://api.github.com/users/Rafie-kun',{headers:{'Accept':'application/vnd.github.v3+json'}});
     if(!r.ok)return;
     const d=await r.json();
     const s=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v;};
@@ -1148,119 +1148,49 @@ async function loadStats(){
 const MONTHS=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 
 async function buildGraph(){
-  const TOKEN='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';
   const wrap=document.getElementById('pgWrap');
   const loading=document.getElementById('pgLoading');
   const totalEl=document.getElementById('ghTotal');
   const contribEl=document.getElementById('ghContribs');
   const badge=document.getElementById('ghBadge');
 
-  // Use GitHub GraphQL API — returns exact contribution calendar, no scraping needed
-  const query=`query{
-    user(login:"Rafie-kun"){
-      contributionsCollection{
-        contributionCalendar{
-          totalContributions
-          weeks{
-            contributionDays{
-              date
-              contributionCount
-              contributionLevel
-            }
-          }
-        }
-      }
-    }
-  }`;
-
+  // jogruber API returns {total:{2026:N}, contributions:[{date,count,level}]}
+  // level is already 0-4, no remapping needed. No token. Auto-updates.
   try{
-    const res=await fetch('https://api.github.com/graphql',{
-      method:'POST',
-      headers:{
-        'Authorization':'bearer '+TOKEN,
-        'Content-Type':'application/json',
-        'Accept':'application/json'
-      },
-      body:JSON.stringify({query}),
-      signal:AbortSignal.timeout(10000)
-    });
+    const res=await fetch(
+      'https://github-contributions-api.jogruber.de/v4/Rafie-kun?y=last',
+      {signal:AbortSignal.timeout(10000)}
+    );
+    if(!res.ok) throw new Error('API status '+res.status);
+    const data=await res.json();
 
-    if(!res.ok) throw new Error('GraphQL HTTP '+res.status);
-    const json=await res.json();
-    if(json.errors) throw new Error(json.errors[0].message);
+    if(!data.contributions||!data.contributions.length) throw new Error('empty');
 
-    const cal=json.data.user.contributionsCollection.contributionCalendar;
-    const total=cal.totalContributions;
-
-    // Flatten weeks -> days
-    const days=[];
-    cal.weeks.forEach(w=>w.contributionDays.forEach(d=>{
-      // Map GitHub's level strings to 0-4
-      const lvlMap={
-        'NONE':0,'FIRST_QUARTILE':1,'SECOND_QUARTILE':2,'THIRD_QUARTILE':3,'FOURTH_QUARTILE':4
-      };
-      days.push({
-        date:d.date,
-        count:d.contributionCount,
-        level:lvlMap[d.contributionLevel]??0
-      });
-    }));
+    // Total for last year
+    const year=new Date().getFullYear();
+    const total=data.total[year]||data.total[year-1]||
+      data.contributions.reduce((a,b)=>a+b.count,0);
 
     if(totalEl) totalEl.textContent=total+' contributions · last year';
     if(contribEl) contribEl.textContent=total;
     if(badge) badge.textContent='⭐ '+total+' CONTRIBUTIONS';
 
+    // Filter to last 52 weeks only (API may return multiple years)
+    const cutoff=new Date();
+    cutoff.setFullYear(cutoff.getFullYear()-1);
+    const days=data.contributions.filter(d=>new Date(d.date)>=cutoff);
+
     renderPixelGraph(days,wrap,loading);
   }catch(e){
-    console.warn('GraphQL failed:',e.message,'. Trying REST fallback...');
-    await buildGraphFromEvents(wrap,loading,totalEl,contribEl,badge,TOKEN);
+    console.warn('jogruber API failed:',e.message);
+    // Static image fallback — at least shows the graph shape
+    if(loading) loading.style.display='none';
+    wrap.innerHTML='<img src="https://ghchart.rshah.org/5aac44/Rafie-kun"'+
+      ' style="width:100%;display:block;image-rendering:pixelated;" alt="GitHub contributions">';
+    if(totalEl) totalEl.textContent='contributions · last year';
+    if(contribEl) contribEl.textContent='—';
+    if(badge) badge.textContent='⭐ CONTRIBUTIONS';
   }
-}
-
-// REST fallback — covers last ~90 days from events
-async function buildGraphFromEvents(wrap,loading,totalEl,contribEl,badge,TOKEN){
-  const today=new Date();
-  const gridDays=[];
-  const start=new Date(today);
-  start.setDate(start.getDate()-364-start.getDay());
-  for(let d=new Date(start);d<=today;d.setDate(d.getDate()+1)){
-    gridDays.push({date:d.toISOString().slice(0,10),count:0,level:0});
-  }
-  const dateMap={};
-  gridDays.forEach((g,i)=>dateMap[g.date]=i);
-
-  try{
-    for(let page=1;page<=10;page++){
-      const r=await fetch(
-        'https://api.github.com/users/Rafie-kun/events/public?per_page=100&page='+page,
-        {headers:{'Accept':'application/vnd.github.v3+json','Authorization':'token '+TOKEN},signal:AbortSignal.timeout(5000)}
-      );
-      if(!r.ok) break;
-      const evts=await r.json();
-      if(!evts.length) break;
-      evts.forEach(ev=>{
-        if(!['PushEvent','CreateEvent','PullRequestEvent','IssuesEvent'].includes(ev.type)) return;
-        const date=ev.created_at.slice(0,10);
-        if(dateMap[date]===undefined) return;
-        const n=(ev.type==='PushEvent'&&ev.payload?.commits?.length)||1;
-        gridDays[dateMap[date]].count+=n;
-      });
-      const oldest=evts[evts.length-1]?.created_at?.slice(0,10)||'';
-      if(oldest&&oldest<gridDays[0].date) break;
-    }
-  }catch(e){}
-
-  let total=0;
-  gridDays.forEach(g=>{
-    total+=g.count;
-    g.level=g.count===0?0:g.count===1?1:g.count<=3?2:g.count<=6?3:4;
-  });
-
-  const display=Math.max(total,126);
-  if(totalEl) totalEl.textContent=display+' contributions · last year';
-  if(contribEl) contribEl.textContent=display;
-  if(badge) badge.textContent='⭐ '+display+' CONTRIBUTIONS';
-  renderPixelGraph(gridDays,wrap,loading);
 }
 function renderPixelGraph(gridDays,wrap,loading){
   const weeks=[];
