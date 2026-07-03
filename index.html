@@ -163,13 +163,13 @@ section{max-width:920px;margin:0 auto;padding:56px 24px;}
 .skill-body{flex:1;min-width:0;}
 .skill-name{font-family:'Press Start 2P',monospace;font-size:7px;color:#ccc;margin-bottom:6px;line-height:1.4;}
 .xp-track{height:7px;background:#050810;border-top:1px solid #000;border-left:1px solid #000;border-right:1px solid #3a4a5a;border-bottom:1px solid #3a4a5a;}
-.xp-bar{height:100%;width:var(--w,60%);animation:xpfill 1.2s ease-out both;}
+.xp-bar{height:100%;width:60%;animation:xpfill 1.2s ease-out both;}
 .rarity{font-family:'Press Start 2P',monospace;font-size:5px;margin-top:4px;}
 .r-common .xp-bar{background:#888;}.r-common .rarity{color:#888;}
 .r-uncommon .xp-bar{background:var(--green);}.r-uncommon .rarity{color:var(--green);}
 .r-rare .xp-bar{background:#4a90d9;}.r-rare .rarity{color:#4a90d9;}
 .r-epic .xp-bar{background:#9b59b6;}.r-epic .rarity{color:#9b59b6;}
-.r-legendary .xp-bar{background:linear-gradient(90deg,#FFD700,#ff8c00,#FFD700);background-size:200% auto;animation:xpfill 1.2s ease-out both,shimmer 2s linear infinite;}.r-legendary .rarity{color:var(--gold);}
+.r-legendary .xp-bar{background:linear-gradient(90deg,#FFD700,#ff8c00,#FFD700);background-size:200% auto;animation:xpfill 1.2s ease-out both,shimmer 2s linear infinite;width:100%;}.r-legendary .rarity{color:var(--gold);}
 
 /* projects */
 .projects-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;}
@@ -426,18 +426,18 @@ footer{background:#080c10;border-top:4px solid #1a2030;padding:24px 20px 80px;te
 <section id="skills" class="reveal">
   <div class="sec-header"><div class="sec-icon tex-grass">🎒</div><div class="sec-title">// Skills / Inventory</div></div>
   <div class="skills-grid">
-    <div class="skill-item r-rare"><span class="skill-emo">🐍</span><div class="skill-body"><div class="skill-name">Python</div><div class="xp-track"><div class="xp-bar" style="--w:60%"></div></div><div class="rarity">◆ RARE · Intermediate</div></div></div>
-    <div class="skill-item r-uncommon"><span class="skill-emo">🌐</span><div class="skill-body"><div class="skill-name">HTML / CSS</div><div class="xp-track"><div class="xp-bar" style="--w:75%"></div></div><div class="rarity">◆ UNCOMMON · Solid</div></div></div>
-    <div class="skill-item r-rare"><span class="skill-emo">⚡</span><div class="skill-body"><div class="skill-name">JavaScript</div><div class="xp-track"><div class="xp-bar" style="--w:45%"></div></div><div class="rarity">◆ RARE · Learning</div></div></div>
-    <div class="skill-item r-epic"><span class="skill-emo">🧠</span><div class="skill-body"><div class="skill-name">Psychology</div><div class="xp-track"><div class="xp-bar" style="--w:70%"></div></div><div class="rarity">◆ EPIC · Studying</div></div></div>
-    <div class="skill-item r-uncommon"><span class="skill-emo">🐙</span><div class="skill-body"><div class="skill-name">Git / GitHub</div><div class="xp-track"><div class="xp-bar" style="--w:65%"></div></div><div class="rarity">◆ UNCOMMON · Regular</div></div></div>
-    <div class="skill-item r-legendary"><span class="skill-emo">💬</span><div class="skill-body"><div class="skill-name">Freelancing</div><div class="xp-track"><div class="xp-bar" style="--w:90%"></div></div><div class="rarity">◆ LEGENDARY · Active</div></div></div>
-    <div class="skill-item r-common"><span class="skill-emo">🔍</span><div class="skill-body"><div class="skill-name">Problem Solving</div><div class="xp-track"><div class="xp-bar" style="--w:55%"></div></div><div class="rarity">◆ COMMON</div></div></div>
-    <div class="skill-item r-rare"><span class="skill-emo">🎨</span><div class="skill-body"><div class="skill-name">UI Design</div><div class="xp-track"><div class="xp-bar" style="--w:50%"></div></div><div class="rarity">◆ RARE · Exploring</div></div></div>
-    <div class="skill-item r-uncommon"><span class="skill-emo">📝</span><div class="skill-body"><div class="skill-name">Content Writing</div><div class="xp-track"><div class="xp-bar" style="--w:80%"></div></div><div class="rarity">◆ UNCOMMON · Active</div></div></div>
-    <div class="skill-item r-epic"><span class="skill-emo">🎮</span><div class="skill-body"><div class="skill-name">Minecraft</div><div class="xp-track"><div class="xp-bar" style="--w:95%"></div></div><div class="rarity">◆ EPIC · Obviously</div></div></div>
-    <div class="skill-item r-legendary"><span class="skill-emo">☕</span><div class="skill-body"><div class="skill-name">Caffeine</div><div class="xp-track"><div class="xp-bar" style="--w:100%"></div></div><div class="rarity">◆ LEGENDARY · Max Lv</div></div></div>
-    <div class="skill-item r-common"><span class="skill-emo">☁️</span><div class="skill-body"><div class="skill-name">Cloud Basics</div><div class="xp-track"><div class="xp-bar" style="--w:30%"></div></div><div class="rarity">◆ COMMON · Basics</div></div></div>
+    <div class="skill-item r-rare"><span class="skill-emo">🐍</span><div class="skill-body"><div class="skill-name">Python</div><div class="xp-track"><div class="xp-bar" data-xp="60%"></div></div><div class="rarity">◆ RARE · Intermediate</div></div></div>
+    <div class="skill-item r-uncommon"><span class="skill-emo">🌐</span><div class="skill-body"><div class="skill-name">HTML / CSS</div><div class="xp-track"><div class="xp-bar" data-xp="75%"></div></div><div class="rarity">◆ UNCOMMON · Solid</div></div></div>
+    <div class="skill-item r-rare"><span class="skill-emo">⚡</span><div class="skill-body"><div class="skill-name">JavaScript</div><div class="xp-track"><div class="xp-bar" data-xp="45%"></div></div><div class="rarity">◆ RARE · Learning</div></div></div>
+    <div class="skill-item r-epic"><span class="skill-emo">🧠</span><div class="skill-body"><div class="skill-name">Psychology</div><div class="xp-track"><div class="xp-bar" data-xp="70%"></div></div><div class="rarity">◆ EPIC · Studying</div></div></div>
+    <div class="skill-item r-uncommon"><span class="skill-emo">🐙</span><div class="skill-body"><div class="skill-name">Git / GitHub</div><div class="xp-track"><div class="xp-bar" data-xp="65%"></div></div><div class="rarity">◆ UNCOMMON · Regular</div></div></div>
+    <div class="skill-item r-legendary"><span class="skill-emo">💬</span><div class="skill-body"><div class="skill-name">Freelancing</div><div class="xp-track"><div class="xp-bar" data-xp="90%"></div></div><div class="rarity">◆ LEGENDARY · Active</div></div></div>
+    <div class="skill-item r-common"><span class="skill-emo">🔍</span><div class="skill-body"><div class="skill-name">Problem Solving</div><div class="xp-track"><div class="xp-bar" data-xp="55%"></div></div><div class="rarity">◆ COMMON</div></div></div>
+    <div class="skill-item r-rare"><span class="skill-emo">🎨</span><div class="skill-body"><div class="skill-name">UI Design</div><div class="xp-track"><div class="xp-bar" data-xp="50%"></div></div><div class="rarity">◆ RARE · Exploring</div></div></div>
+    <div class="skill-item r-uncommon"><span class="skill-emo">📝</span><div class="skill-body"><div class="skill-name">Content Writing</div><div class="xp-track"><div class="xp-bar" data-xp="80%"></div></div><div class="rarity">◆ UNCOMMON · Active</div></div></div>
+    <div class="skill-item r-epic"><span class="skill-emo">🎮</span><div class="skill-body"><div class="skill-name">Minecraft</div><div class="xp-track"><div class="xp-bar" data-xp="95%"></div></div><div class="rarity">◆ EPIC · Obviously</div></div></div>
+    <div class="skill-item r-legendary"><span class="skill-emo">☕</span><div class="skill-body"><div class="skill-name">Caffeine</div><div class="xp-track"><div class="xp-bar" data-xp="100%"></div></div><div class="rarity">◆ LEGENDARY · Max Lv</div></div></div>
+    <div class="skill-item r-common"><span class="skill-emo">☁️</span><div class="skill-body"><div class="skill-name">Cloud Basics</div><div class="xp-track"><div class="xp-bar" data-xp="30%"></div></div><div class="rarity">◆ COMMON · Basics</div></div></div>
   </div>
   <p style="margin-top:14px;font-family:'Press Start 2P',monospace;font-size:6px;color:#334;">COMMON → UNCOMMON → RARE → EPIC → LEGENDARY</p>
 </section>
@@ -916,6 +916,13 @@ async function loadNowWorking(){
     el.textContent='Building things... 🔥';
   }
 }
+
+// ── XP BARS ──────────────────────────────────────────
+(function(){
+  document.querySelectorAll('.xp-bar[data-xp]').forEach(el=>{
+    el.style.width=el.getAttribute('data-xp');
+  });
+})();
 
 // ── SCROLL REVEAL ─────────────────────────────────
 const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vis');});},{threshold:.08});
