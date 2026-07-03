@@ -325,6 +325,22 @@ footer{background:#080c10;border-top:4px solid #1a2030;padding:24px 20px 80px;te
 .now-text{font-family:'Press Start 2P',monospace;font-size:6px;color:var(--green);line-height:1.8;}
 .now-sub{font-size:14px;color:#aaa;margin-top:2px;}
 
+/* click to play prompt */
+#music-prompt{
+  position:fixed;bottom:60px;left:50%;transform:translateX(-50%);
+  background:#0e1520;
+  border-top:3px solid var(--green);border-left:3px solid var(--green);
+  border-right:3px solid #000;border-bottom:3px solid #000;
+  padding:12px 20px;z-index:999;
+  display:flex;align-items:center;gap:10px;
+  font-family:'Press Start 2P',monospace;font-size:8px;color:var(--green);
+  cursor:pointer;white-space:nowrap;
+  animation:blink .8s step-end infinite;
+  box-shadow:4px 4px 0 #000;
+}
+#music-prompt:hover{filter:brightness(1.4);}
+#music-prompt.hidden{display:none;}
+
 /* scroll reveal */
 .reveal{opacity:0;transform:translateY(20px);transition:opacity .5s,transform .5s;}
 .reveal.vis{opacity:1;transform:none;}
@@ -534,6 +550,10 @@ footer{background:#080c10;border-top:4px solid #1a2030;padding:24px 20px 80px;te
 <footer>
   <div class="footer-txt">© 2026 <span>Hossain Fazle Rafie</span> · Built block by block · Pure HTML/CSS/JS<br>rafie-kun.github.io · No Creepers were harmed 🔥</div>
 </footer>
+
+<div id="music-prompt" onclick="startMusicFromPrompt()">
+  🎵 CLICK TO START MUSIC
+</div>
 
 <div class="music-bar">
   <div class="music-disc" id="mDisc" onclick="togglePlay()">🎵</div>
@@ -816,6 +836,8 @@ window.onYouTubeIframeAPIReady=function(){
 };
 function loadYT(){if(document.getElementById('yt-api'))return;const s=document.createElement('script');s.id='yt-api';s.src='https://www.youtube.com/iframe_api';document.head.appendChild(s);}
 function setUI(p){
+  // Hide the prompt once music starts
+  if(p){const pr=document.getElementById('music-prompt');if(pr)pr.classList.add('hidden');}
   playing=p;
   document.getElementById('mDisc').classList.toggle('spin',p);
   document.getElementById('mPlayBtn').textContent=p?'⏸ PAUSE':'▶ PLAY';
@@ -823,6 +845,19 @@ function setUI(p){
   const viz=document.getElementById('mViz');if(viz)[...viz.children].forEach(b=>b.classList.toggle('play',p));
   const sub=document.getElementById('mSub');if(sub)sub.textContent=p?'🎮 Now playing':'🎮 Minecraft OST · Paused';
 }
+function startMusicFromPrompt(){
+  const prompt=document.getElementById('music-prompt');
+  if(prompt) prompt.classList.add('hidden');
+  if(!ytReady||!ytPlayer){loadYT();
+    // wait for YT to load then play
+    const wait=setInterval(()=>{
+      if(ytReady&&ytPlayer){clearInterval(wait);ytPlayer.playVideo();}
+    },300);
+    return;
+  }
+  ytPlayer.playVideo();
+}
+
 function togglePlay(){if(!ytReady||!ytPlayer){loadYT();return;}playing?ytPlayer.pauseVideo():ytPlayer.playVideo();}
 function nextTrack(){ti=(ti+1)%TRACKS.length;const t=TRACKS[ti];document.getElementById('mName').textContent=t.name+' — '+t.artist;if(ytReady&&ytPlayer?.loadVideoById)ytPlayer.loadVideoById(t.id);}
 function prevTrack(){ti=(ti-1+TRACKS.length)%TRACKS.length;const t=TRACKS[ti];document.getElementById('mName').textContent=t.name+' — '+t.artist;if(ytReady&&ytPlayer?.loadVideoById)ytPlayer.loadVideoById(t.id);}
