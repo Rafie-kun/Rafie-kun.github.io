@@ -299,6 +299,32 @@ footer{background:#080c10;border-top:4px solid #1a2030;padding:24px 20px 80px;te
 .footer-txt{font-family:'Press Start 2P',monospace;font-size:8px;color:#334;line-height:2.2;}
 .footer-txt span{color:var(--green);}
 
+/* scroll progress bar */
+#scroll-bar{position:fixed;top:0;left:0;height:3px;width:0%;background:linear-gradient(90deg,var(--green),var(--gold),var(--teal));z-index:9999;transition:width .1s;}
+
+/* back to top */
+#back-top{position:fixed;bottom:70px;right:16px;z-index:997;width:44px;height:44px;background:#1a1a1a;border-top:3px solid #555;border-left:3px solid #555;border-right:3px solid #000;border-bottom:3px solid #000;display:none;align-items:center;justify-content:center;cursor:pointer;font-size:18px;transition:filter .1s;}
+#back-top:hover{filter:brightness(1.5);}
+#back-top.show{display:flex;}
+
+/* typing cursor */
+.typing-cursor{display:inline-block;width:3px;height:1em;background:var(--teal);vertical-align:middle;margin-left:2px;animation:blink .7s step-end infinite;}
+
+/* currently working widget */
+.now-widget{
+  position:fixed;bottom:70px;left:16px;z-index:997;
+  background:#0e1520;
+  border-top:3px solid var(--green);border-left:3px solid var(--green);
+  border-right:3px solid #000;border-bottom:3px solid #000;
+  padding:10px 14px;max-width:220px;
+  display:flex;align-items:center;gap:10px;
+  animation:slideInLeft .5s ease;
+}
+@keyframes slideInLeft{from{transform:translateX(-120%);opacity:0}to{transform:translateX(0);opacity:1}}
+.now-dot{width:8px;height:8px;background:var(--green);flex-shrink:0;animation:blink .9s step-end infinite;}
+.now-text{font-family:'Press Start 2P',monospace;font-size:6px;color:var(--green);line-height:1.8;}
+.now-sub{font-size:14px;color:#aaa;margin-top:2px;}
+
 /* scroll reveal */
 .reveal{opacity:0;transform:translateY(20px);transition:opacity .5s,transform .5s;}
 .reveal.vis{opacity:1;transform:none;}
@@ -307,6 +333,16 @@ footer{background:#080c10;border-top:4px solid #1a2030;padding:24px 20px 80px;te
 </style>
 </head>
 <body>
+
+<div id="scroll-bar"></div>
+<button id="back-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Back to top">▲</button>
+<div class="now-widget">
+  <div class="now-dot"></div>
+  <div>
+    <div class="now-text">NOW WORKING ON</div>
+    <div class="now-sub" id="nowText">Loading...</div>
+  </div>
+</div>
 
 <nav>
   <div class="nav-logo"><span class="nav-torch">🔥</span>RAFIE.EXE<span class="nav-torch" style="animation-delay:.7s">🔥</span></div>
@@ -348,7 +384,7 @@ footer{background:#080c10;border-top:4px solid #1a2030;padding:24px 20px 80px;te
   <div class="hero-content">
     <div class="player-card">
       <span class="player-name">Hossain Fazle Rafie</span>
-      <div class="player-class">⚡ Freelancer · HS Student · Coder · Psych Student</div>
+      <div class="player-class">⚡ <span id="typingText"></span><span class="typing-cursor"></span></div>
       <div class="player-level">Level 19 · Intermediate · Dhaka, BD</div>
       <div class="hp-row"><span class="hp-label">❤ HP</span><div class="hp-bar"><div class="hp-fill"></div></div><span class="hp-num">900/1000</span></div>
       <div class="hearts">❤️❤️❤️❤️❤️❤️❤️❤️❤️🖤</div>
@@ -440,6 +476,7 @@ footer{background:#080c10;border-top:4px solid #1a2030;padding:24px 20px 80px;te
       <div class="gh-stat"><span class="gh-num" id="ghRepos">—</span><div class="gh-lbl">📦 Public Repos</div></div>
       <div class="gh-stat"><span class="gh-num" id="ghFollowers">—</span><div class="gh-lbl">👥 Followers</div></div>
       <div class="gh-stat"><span class="gh-num" id="ghFollowing">—</span><div class="gh-lbl">🔭 Following</div></div>
+      <div class="gh-stat"><span class="gh-num" id="ghStars">—</span><div class="gh-lbl">⭐ Total Stars</div></div>
       <div class="gh-stat"><span class="gh-num" id="ghContribs">—</span><div class="gh-lbl">🟩 Contributions</div></div>
     </div>
     <div class="gh-graph-wrap">
@@ -566,6 +603,15 @@ async function loadStats(){
     s('ghRepos',d.public_repos??'—');
     s('ghFollowers',d.followers??'—');
     s('ghFollowing',d.following??'—');
+    // Fetch all repos to sum up total stars
+    try{
+      const rr=await fetch('https://api.github.com/users/Rafie-kun/repos?per_page=100',{headers:{'Accept':'application/vnd.github.v3+json'}});
+      if(rr.ok){
+        const repos=await rr.json();
+        const stars=repos.reduce((a,r)=>a+(r.stargazers_count||0),0);
+        s('ghStars',stars);
+      }
+    }catch(e){s('ghStars','—');}
   }catch(e){}
 }
 
@@ -802,6 +848,75 @@ async function sendMsg(){
   btn.disabled=false;btn.textContent='⚔ SEND MESSAGE';
 }
 
+// ── SCROLL PROGRESS BAR ──────────────────────────────
+window.addEventListener('scroll',()=>{
+  const el=document.getElementById('scroll-bar');
+  const btn=document.getElementById('back-top');
+  const pct=(window.scrollY/(document.body.scrollHeight-window.innerHeight))*100;
+  if(el) el.style.width=pct+'%';
+  if(btn) btn.classList.toggle('show',window.scrollY>400);
+});
+
+// ── TYPING ANIMATION ──────────────────────────────────
+const TYPING_LINES=[
+  'Freelancer',
+  'HS Student',
+  'Coder',
+  'Psych Student',
+  'Dungeon Explorer',
+  'Block Builder',
+];
+let _tIdx=0,_tChar=0,_tDeleting=false;
+function typeNext(){
+  const el=document.getElementById('typingText');
+  if(!el) return;
+  const line=TYPING_LINES[_tIdx];
+  if(_tDeleting){
+    _tChar--;
+    el.textContent=line.substring(0,_tChar);
+    if(_tChar===0){
+      _tDeleting=false;
+      _tIdx=(_tIdx+1)%TYPING_LINES.length;
+      setTimeout(typeNext,400);
+    }else{setTimeout(typeNext,40);}
+  }else{
+    _tChar++;
+    el.textContent=line.substring(0,_tChar);
+    if(_tChar===line.length){
+      _tDeleting=true;
+      setTimeout(typeNext,1800);
+    }else{setTimeout(typeNext,80);}
+  }
+}
+setTimeout(typeNext,800);
+
+// ── CURRENTLY WORKING ON ──────────────────────────────
+// Reads your latest GitHub push event to show what you're working on
+async function loadNowWorking(){
+  const el=document.getElementById('nowText');
+  if(!el) return;
+  try{
+    const r=await fetch('https://api.github.com/users/Rafie-kun/events/public?per_page=5',{
+      headers:{'Accept':'application/vnd.github.v3+json'}
+    });
+    if(!r.ok) throw new Error();
+    const events=await r.json();
+    // Find most recent push
+    const push=events.find(e=>e.type==='PushEvent');
+    if(push){
+      const repo=push.repo.name.replace('Rafie-kun/','');
+      const msg=push.payload?.commits?.[0]?.message||'Pushing code';
+      el.textContent=repo+' · '+msg.substring(0,28)+(msg.length>28?'…':'');
+    }else{
+      const ev=events[0];
+      if(ev) el.textContent=ev.repo.name.replace('Rafie-kun/','')+' ('+ev.type.replace('Event','')+')';
+      else el.textContent='Building things...';
+    }
+  }catch(e){
+    el.textContent='Building things... 🔥';
+  }
+}
+
 // ── SCROLL REVEAL ─────────────────────────────────
 const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vis');});},{threshold:.08});
 document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
@@ -812,6 +927,7 @@ applyTheme(new Date().getHours()>=6&&new Date().getHours()<18);
 loadStats();
 buildGraph();
 updateSocialCards();
+loadNowWorking();
 </script>
 </body>
 </html>
