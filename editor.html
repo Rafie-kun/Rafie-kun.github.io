@@ -821,6 +821,8 @@ async function buildFullHTML(token){
   }).join('\n');
   html=html.replace(/(<div class="ach-list">)([\s\S]*?)(<\/div>\s*<\/section>\s*<div class="divider">[\s\S]*?id="github")/,`$1\n${achItems}\n</div></section><div class="divider"></div>\n<section id="github"`);
 
+  // Remove any existing profile image first, then inject the new one
+  html=html.replace(/<img[^>]*alt="Profile"[^>]*>/g,'');
   if(pfpData){html=html.replace(/(<div class="player-card">)/,`$1<img src="${pfpData}" style="width:64px;height:64px;object-fit:cover;border:2px solid #000;margin-bottom:8px;display:block;margin-left:auto;margin-right:auto;" alt="Profile">`);}
 
   localStorage.setItem('rafie_profile',JSON.stringify({name,role,age,level,location,about,github,email,discord,phone,linkedin,twitter}));
