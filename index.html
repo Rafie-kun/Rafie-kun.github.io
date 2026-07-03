@@ -551,10 +551,6 @@ footer{background:#080c10;border-top:4px solid #1a2030;padding:24px 20px 80px;te
   <div class="footer-txt">© 2026 <span>Hossain Fazle Rafie</span> · Built block by block · Pure HTML/CSS/JS<br>rafie-kun.github.io · No Creepers were harmed 🔥</div>
 </footer>
 
-<div id="music-prompt" onclick="startMusicFromPrompt()">
-  🎵 CLICK TO START MUSIC
-</div>
-
 <div class="music-bar">
   <div class="music-disc" id="mDisc" onclick="togglePlay()">🎵</div>
   <div class="music-info"><div class="music-name" id="mName">Living Mice — C418</div><div class="music-sub" id="mSub">🎮 Minecraft OST · Click play to start</div></div>
@@ -566,7 +562,6 @@ footer{background:#080c10;border-top:4px solid #1a2030;padding:24px 20px 80px;te
   </div>
   <div class="vol-row">VOL<input type="range" min="0" max="100" value="50" id="mVol" oninput="setVol(this.value)"></div>
 </div>
-<iframe id="ytFrame" allow="autoplay" style="display:none;width:1px;height:1px;position:fixed;bottom:0;right:0"></iframe>
 
 <script>
 // ── THEME ──────────────────────────────────────────
@@ -810,85 +805,79 @@ function updateSocialCards(){
   }
 }
 
-// ── MUSIC ────────────────────────────────────────
+// ── MUSIC — native HTML5 audio, no YouTube needed ───
+// Tracks hosted on archive.org (free, no CORS issues)
 const TRACKS=[
-  {name:'Living Mice',artist:'C418',id:'K-PX1zxgxfA'},
-  {name:'Mice on Venus',artist:'C418',id:'NBsHGSMuQoQ'},
-  {name:'Sweden',artist:'C418',id:'gHvCBJEMvGA'},
-  {name:'Wet Hands',artist:'C418',id:'bGI8BaL4sH0'},
-  {name:'Subwoofer Lullaby',artist:'C418',id:'W_uMFHf84aU'},
-  {name:'Intro',artist:'C418',id:'2hPHMGYKPoU'},
-  {name:'Clark',artist:'C418',id:'Lh8RQPD-BrQ'},
+  {name:'Living Mice',    artist:'C418', url:'https://archive.org/download/minecraft-volume-alpha/C418_-_01_-_Key.mp3'},
+  {name:'Mice on Venus',  artist:'C418', url:'https://archive.org/download/minecraft-volume-alpha/C418_-_04_-_Mice_on_Venus.mp3'},
+  {name:'Sweden',         artist:'C418', url:'https://archive.org/download/minecraft-volume-alpha/C418_-_13_-_Sweden.mp3'},
+  {name:'Wet Hands',      artist:'C418', url:'https://archive.org/download/minecraft-volume-alpha/C418_-_09_-_Wet_Hands.mp3'},
+  {name:'Subwoofer Lullaby',artist:'C418',url:'https://archive.org/download/minecraft-volume-alpha/C418_-_05_-_Subwoofer_Lullaby.mp3'},
+  {name:'Clark',          artist:'C418', url:'https://archive.org/download/minecraft-volume-alpha/C418_-_12_-_Clark.mp3'},
+  {name:'Intro',          artist:'C418', url:'https://archive.org/download/minecraft-volume-alpha/C418_-_02_-_Door.mp3'},
 ];
-let ti=0,playing=false,ytReady=false,ytPlayer=null;
 
-window.onYouTubeIframeAPIReady=function(){
-  ytReady=true;
-  ytPlayer=new YT.Player('ytFrame',{
-    height:'1',width:'1',videoId:TRACKS[ti].id,
-    playerVars:{autoplay:0,controls:0,disablekb:1,fs:0,rel:0,origin:location.origin||'https://rafie-kun.github.io'},
-    events:{
-      onReady(e){
-        e.target.setVolume(parseInt(document.getElementById('mVol').value));
-        // If prompt was already clicked while API was loading, play now
-        const prompt=document.getElementById('music-prompt');
-        if(prompt&&prompt.textContent.includes('LOADING')){
-          e.target.playVideo();
-        }
-      },
-      onStateChange(e){if(e.data===YT.PlayerState.PLAYING)setUI(true);if(e.data===YT.PlayerState.PAUSED)setUI(false);if(e.data===YT.PlayerState.ENDED)nextTrack();},
-      onError(){nextTrack();}
-    }
-  });
-};
-function loadYT(){if(document.getElementById('yt-api'))return;const s=document.createElement('script');s.id='yt-api';s.src='https://www.youtube.com/iframe_api';document.head.appendChild(s);}
+let ti=0, playing=false;
+const audio=new Audio();
+audio.volume=0.5;
+audio.addEventListener('ended',()=>nextTrack());
+audio.addEventListener('play',()=>setUI(true));
+audio.addEventListener('pause',()=>setUI(false));
+audio.addEventListener('error',()=>{console.warn('Track failed, skipping');nextTrack();});
+
 function setUI(p){
-  // Hide the prompt once music starts
-  if(p){const pr=document.getElementById('music-prompt');if(pr)pr.classList.add('hidden');}
   playing=p;
-  document.getElementById('mDisc').classList.toggle('spin',p);
-  document.getElementById('mPlayBtn').textContent=p?'⏸ PAUSE':'▶ PLAY';
-  document.getElementById('mPlayBtn').classList.toggle('on',p);
-  const viz=document.getElementById('mViz');if(viz)[...viz.children].forEach(b=>b.classList.toggle('play',p));
-  const sub=document.getElementById('mSub');if(sub)sub.textContent=p?'🎮 Now playing':'🎮 Minecraft OST · Paused';
+  const disc=document.getElementById('mDisc');
+  const btn=document.getElementById('mPlayBtn');
+  const viz=document.getElementById('mViz');
+  const sub=document.getElementById('mSub');
+  const prompt=document.getElementById('music-prompt');
+  if(disc) disc.classList.toggle('spin',p);
+  if(btn) btn.textContent=p?'⏸ PAUSE':'▶ PLAY';
+  if(btn) btn.classList.toggle('on',p);
+  if(viz) [...viz.children].forEach(b=>b.classList.toggle('play',p));
+  if(sub) sub.textContent=p?'🎮 Now playing · '+TRACKS[ti].name:'🎮 Minecraft OST · Click play';
+  if(prompt&&p) prompt.classList.add('hidden');
 }
+
+function loadTrack(idx){
+  ti=idx;
+  const t=TRACKS[ti];
+  audio.src=t.url;
+  const el=document.getElementById('mName');
+  if(el) el.textContent=t.name+' — '+t.artist;
+}
+
+function togglePlay(){
+  if(!audio.src) loadTrack(ti);
+  if(playing){audio.pause();}
+  else{audio.play().catch(e=>console.warn('Play blocked:',e));}
+}
+
+function nextTrack(){
+  const wasPlaying=playing;
+  loadTrack((ti+1)%TRACKS.length);
+  if(wasPlaying) audio.play().catch(()=>{});
+}
+
+function prevTrack(){
+  const wasPlaying=playing;
+  loadTrack((ti-1+TRACKS.length)%TRACKS.length);
+  if(wasPlaying) audio.play().catch(()=>{});
+}
+
+function setVol(v){audio.volume=parseInt(v)/100;}
+
 function startMusicFromPrompt(){
   const prompt=document.getElementById('music-prompt');
-  // Update prompt text to show loading
-  if(prompt) prompt.textContent='⏳ LOADING MUSIC...';
-
-  // Load YT API if not already loaded
-  loadYT();
-
-  // Poll until ready then play
-  let attempts=0;
-  const wait=setInterval(()=>{
-    attempts++;
-    if(ytReady&&ytPlayer){
-      clearInterval(wait);
-      try{
-        ytPlayer.playVideo();
-        if(prompt) prompt.classList.add('hidden');
-      }catch(e){
-        // Player not ready yet, try once more
-        setTimeout(()=>{
-          try{ytPlayer.playVideo();if(prompt)prompt.classList.add('hidden');}catch(e2){}
-        },500);
-      }
-    }
-    // If YT API loaded but player not created yet, it means onYouTubeIframeAPIReady
-    // hasn't fired — keep waiting up to 10s
-    if(attempts>100){
-      clearInterval(wait);
-      if(prompt){prompt.textContent='❌ FAILED — check connection';setTimeout(()=>prompt.classList.add('hidden'),2000);}
-    }
-  },100);
+  if(!audio.src) loadTrack(ti);
+  audio.play()
+    .then(()=>{ if(prompt) prompt.classList.add('hidden'); })
+    .catch(e=>{ console.warn('Autoplay blocked:',e); if(prompt) prompt.classList.add('hidden'); });
 }
 
-function togglePlay(){if(!ytReady||!ytPlayer){loadYT();return;}playing?ytPlayer.pauseVideo():ytPlayer.playVideo();}
-function nextTrack(){ti=(ti+1)%TRACKS.length;const t=TRACKS[ti];document.getElementById('mName').textContent=t.name+' — '+t.artist;if(ytReady&&ytPlayer?.loadVideoById)ytPlayer.loadVideoById(t.id);}
-function prevTrack(){ti=(ti-1+TRACKS.length)%TRACKS.length;const t=TRACKS[ti];document.getElementById('mName').textContent=t.name+' — '+t.artist;if(ytReady&&ytPlayer?.loadVideoById)ytPlayer.loadVideoById(t.id);}
-function setVol(v){if(ytReady&&ytPlayer?.setVolume)ytPlayer.setVolume(parseInt(v));}
+// Preload first track src so it's ready
+loadTrack(0);
 
 // ── CONTACT FORM ──────────────────────────────────
 async function sendMsg(){
