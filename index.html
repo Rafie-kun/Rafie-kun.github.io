@@ -840,7 +840,7 @@ async function sendMsg(){
   if(!n||!em||!m){err.textContent='⚠ Fill in name, email, and message.';err.style.display='block';return;}
   btn.disabled=true;btn.textContent='⏳ SENDING...';
   try{
-    const r=await fetch('https://api.web3forms.com/submit',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({access_key:'YOUR_WEB3FORMS_ACCESS_KEY',name:n,email:em,subject:s||'Portfolio Contact',message:m})});
+    const r=await fetch('https://api.web3forms.com/submit',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({access_key:'6415f871-a4b7-430b-ab24-db5d9dfc5111',name:n,email:em,subject:s||'Portfolio Contact',message:m})});
     const d=await r.json();
     if(d.success){ok.style.display='block';['fname','femail','fsubject','fmessage'].forEach(id=>{document.getElementById(id).value='';});}
     else{err.style.display='block';}
