@@ -687,7 +687,7 @@ footer{background:rgba(0,0,0,.55);border-top:3px solid #000;padding:24px 20px 40
   <div class="jb-head">♪ JUKEBOX</div>
   <div class="jb-row">
     <div class="music-disc" id="mDisc" onclick="togglePlay()"><img src="assets/textures/disc.png" alt="disc"></div>
-    <div class="music-info"><div class="music-name" id="mName">Living Mice — C418</div><div class="music-sub" id="mSub">Minecraft OST · Click play to start</div></div>
+    <div class="music-info"><div class="music-name" id="mName">Blockwave — Ambient Loop</div><div class="music-sub" id="mSub">Ambient synth · Click play to start</div></div>
   </div>
   <div class="music-btns">
     <button class="music-btn" onclick="prevTrack()">⏮</button>
@@ -1127,54 +1127,56 @@ function updateSocialCards(){
 }
 
 // ════════════════════════════════════════════════════════
-// MUSIC (jukebox) — C418 tracks hosted in this repo:
-//   assets/music/*.mp3  (upload to enable playback;
-//   the player degrades gracefully if files are missing)
+// MUSIC (jukebox) — procedural ambient synth, generated live with the
+// Web Audio API. No external mp3s: nothing to host, nothing to 404,
+// and no copyrighted Minecraft OST files to redistribute.
 // ════════════════════════════════════════════════════════
-const BASE='https://raw.githubusercontent.com/Rafie-kun/Rafie-kun.github.io/main/assets/music/';
 const TRACKS=[
-  {name:'Living Mice',      artist:'C418', url:BASE+'living_mice.mp3'},
-  {name:'Wet Hands',        artist:'C418', url:BASE+'wet_hands.mp3'},
-  {name:'Sweden',           artist:'C418', url:BASE+'sweden.mp3'},
-  {name:'Subwoofer Lullaby',artist:'C418', url:BASE+'subwoofer_lullaby.mp3'},
-  {name:'Mice on Venus',    artist:'C418', url:BASE+'mice_on_venus.mp3'}
+  {name:'Blockwave',  artist:'Ambient Loop', notes:[0,4,7,11,7,4]},
+  {name:'Cave Drift', artist:'Ambient Loop', notes:[0,3,7,10,7,3]},
+  {name:'Sunrise Bit', artist:'Ambient Loop', notes:[0,5,9,12,9,5]},
+  {name:'Night Hum',  artist:'Ambient Loop', notes:[0,2,7,9,7,2]}
 ];
 
-let _ti=0,_playing=false,_errorCount=0,_titleTmr=null;
-const _audio=new Audio();
-_audio.preload='none';
-_audio.volume=0.5;
-
-_audio.addEventListener('ended',()=>{
-  _errorCount=0;
-  const wasPlaying=_playing;
-  _ti=(_ti+1)%TRACKS.length;
-  _updateName();
-  if(wasPlaying){
-    _audio.src=TRACKS[_ti].url;
-    _audio.play().then(()=>{_setUI(true);_showTitle();}).catch(()=>_setUI(false));
-  }else{
-    _setUI(false);
-  }
-});
-
-_audio.addEventListener('error',()=>{
-  _errorCount++;
-  console.warn('Audio error on track',_ti,'count',_errorCount);
-  if(_errorCount>=TRACKS.length){
-    console.warn('All tracks failed to load');
-    _errorCount=0;
-    _playing=false;
-    _setUI(false);
-    return;
-  }
-  if(_playing){
-    _ti=(_ti+1)%TRACKS.length;
-    _audio.src=TRACKS[_ti].url;
-    _updateName();
-    _audio.play().then(()=>_setUI(true)).catch(()=>{_playing=false;_setUI(false);});
-  }
-});
+let _ti=0,_playing=false,_titleTmr=null;
+let _actx=null,_master=null,_padOsc=[],_seqTimer=null;
+function _ensureAudio(){
+  if(_actx)return;
+  _actx=new (window.AudioContext||window.webkitAudioContext)();
+  _master=_actx.createGain();_master.gain.value=0.5;_master.connect(_actx.destination);
+}
+function _freq(semi){return 220*Math.pow(2,semi/12);}
+function _stopPad(){
+  if(_seqTimer){clearInterval(_seqTimer);_seqTimer=null;}
+  _padOsc.forEach(o=>{try{o.gain.gain.cancelScheduledValues(_actx.currentTime);o.gain.gain.linearRampToValueAtTime(0,_actx.currentTime+.3);}catch(e){}
+    try{o.osc.stop(_actx.currentTime+.35);}catch(e){}});
+  _padOsc=[];
+}
+function _startPad(){
+  _ensureAudio();
+  if(_actx.state==='suspended')_actx.resume();
+  _stopPad();
+  const notes=TRACKS[_ti].notes;
+  [0,7,12].forEach((semi,i)=>{
+    const osc=_actx.createOscillator();osc.type='sine';osc.frequency.value=_freq(semi-12);
+    const g=_actx.createGain();g.gain.value=0;
+    osc.connect(g);g.connect(_master);osc.start();
+    g.gain.linearRampToValueAtTime(.05-i*.012,_actx.currentTime+2);
+    _padOsc.push({osc,gain:g});
+  });
+  let step=0;
+  _seqTimer=setInterval(()=>{
+    if(!_actx)return;
+    const semi=notes[step%notes.length];step++;
+    const osc=_actx.createOscillator();osc.type='triangle';osc.frequency.value=_freq(semi);
+    const g=_actx.createGain();g.gain.value=0;
+    osc.connect(g);g.connect(_master);
+    const t=_actx.currentTime;
+    g.gain.linearRampToValueAtTime(.09,t+.05);
+    g.gain.exponentialRampToValueAtTime(.0001,t+1.6);
+    osc.start(t);osc.stop(t+1.7);
+  },1400);
+}
 
 function _setUI(p){
   _playing=p;
@@ -1186,7 +1188,7 @@ function _setUI(p){
   if(disc)disc.classList.toggle('spin',p);
   if(btn){btn.textContent=p?'⏸ PAUSE':'▶ PLAY';btn.classList.toggle('on',p);}
   if(viz)[...viz.children].forEach(b=>b.classList.toggle('play',p));
-  if(sub)sub.textContent=p?'🎮 Now playing · '+TRACKS[_ti].name:'🎮 Minecraft OST · Click play';
+  if(sub)sub.textContent=p?'🎮 Now playing · '+TRACKS[_ti].name:'🎮 Ambient synth · Click play';
   if(prompt&&p)prompt.classList.add('hidden');
   if(p)_showTitle();
 }
@@ -1207,52 +1209,34 @@ function _updateName(){
 }
 
 function togglePlay(){
-  _errorCount=0;
-  if(!_audio.src||_audio.src===''){
-    _audio.src=TRACKS[_ti].url;
-  }
   if(_playing){
-    _audio.pause();
+    _stopPad();
     _setUI(false);
   }else{
-    _audio.play().then(()=>_setUI(true)).catch(e=>{
-      console.warn('Play blocked or unavailable:',e.message);
-      _setUI(false);
-    });
+    _startPad();
+    _setUI(true);
   }
 }
 
 function nextTrack(){
-  _errorCount=0;
   _ti=(_ti+1)%TRACKS.length;
   _updateName();
-  _audio.src=TRACKS[_ti].url;
-  if(_playing){
-    _audio.play().then(()=>{_setUI(true);_showTitle();}).catch(()=>_setUI(false));
-  }
+  if(_playing){_startPad();_showTitle();}
 }
 
 function prevTrack(){
-  _errorCount=0;
   _ti=(_ti-1+TRACKS.length)%TRACKS.length;
   _updateName();
-  _audio.src=TRACKS[_ti].url;
-  if(_playing){
-    _audio.play().then(()=>{_setUI(true);_showTitle();}).catch(()=>_setUI(false));
-  }
+  if(_playing){_startPad();_showTitle();}
 }
 
-function setVol(v){_audio.volume=parseInt(v)/100;}
+function setVol(v){_ensureAudio();_master.gain.value=parseInt(v)/100;}
 
 function startMusicFromPrompt(){
-  _errorCount=0;
   const prompt=document.getElementById('music-prompt');
-  if(!_audio.src||_audio.src===''){
-    _audio.src=TRACKS[_ti].url;
-  }
-  _audio.play()
-    .then(()=>{_setUI(true);if(prompt)prompt.classList.add('hidden');})
-    .catch(()=>{if(prompt)prompt.classList.add('hidden');});
+  _startPad();
+  _setUI(true);
+  if(prompt)prompt.classList.add('hidden');
 }
 
 _updateName();
