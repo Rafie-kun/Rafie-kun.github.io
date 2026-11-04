@@ -206,7 +206,7 @@ nav::after{content:'';position:absolute;bottom:-6px;left:0;right:0;height:2px;ba
 .deco-mossy{background:var(--mossy);}
 .deco-teal{background:var(--teal);}
 
-/* ═══ MINECRAFT GUI OVERRIDES ═══ */
+/* minecraft gui overrides */
 .nav-sub{color:#c6c6c6;}
 .dh-title{color:#4a3a00;text-shadow:1px 1px 0 #fff;}
 .token-box::before{color:#a01818;border-color:#a01818;}
@@ -501,7 +501,7 @@ nav::after{content:'';position:absolute;bottom:-6px;left:0;right:0;height:2px;ba
 <div class="toast" id="toast"></div>
 
 <script>
-// ── CONFIG ────────────────────────────────────────────────────────────
+// config
 const GH_OWNER='Rafie-kun';
 const GH_REPO='Rafie-kun.github.io';
 const SAVED_TOKEN_KEY='rafie_gh_token';
@@ -509,7 +509,7 @@ let readIssues=JSON.parse(localStorage.getItem('rafie_read_issues')||'[]');
 let pollingInterval=null;
 let pfpData='';
 
-// ── DEFAULT DATA ──────────────────────────────────────────────────────
+// default data
 const defaultTypingLines=['Freelancer','HS Student','Coder','Psych Student','Dungeon Explorer','Block Builder','Article Writer'];
 
 const defaultWork=[
@@ -542,7 +542,7 @@ const defaultAchievements=[
 let typingLines=[...defaultTypingLines];
 let workData=[],skillsData=[],projectsData=[],achievementsData=[];
 
-// ── INIT ──────────────────────────────────────────────────────────────
+// init
 window.onload=()=>{
   renderTypingLines();
   renderWork(defaultWork);
@@ -570,7 +570,7 @@ window.onload=()=>{
   }
 };
 
-// ── HELPERS ───────────────────────────────────────────────────────────
+// helpers
 function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 function g(id){return document.getElementById(id)?.value||'';}
 function getToken(){return document.getElementById('ghToken').value.trim();}
@@ -581,11 +581,11 @@ function toggleInbox(head){const body=document.getElementById('inboxBody');const
 function toggleNotifDrawer(){const d=document.getElementById('notifDrawer');d.classList.toggle('open');if(d.classList.contains('open')){const t=getToken();if(t)loadDrawerInbox(t);}}
 function toggleNowMode(){const m=g('nowMode');document.getElementById('nowManualField').style.display=m==='manual'?'block':'none';}
 
-// ── PFP ───────────────────────────────────────────────────────────────
+// pfp
 function handlePfp(input){const file=input.files[0];if(!file)return;const r=new FileReader();r.onload=e=>{pfpData=e.target.result;localStorage.setItem('rafie_pfp',pfpData);showPfp(pfpData);toast('Profile photo updated!');};r.readAsDataURL(file);}
 function showPfp(src){document.getElementById('pfpPreview').innerHTML=`<img src="${src}" alt="Profile">`;}
 
-// ── TYPING LINES ──────────────────────────────────────────────────────
+// typing lines
 function renderTypingLines(){
   const list=document.getElementById('typingList');
   list.innerHTML='';
@@ -602,7 +602,7 @@ function renderTypingLines(){
 function addTypingLine(){typingLines.push('New Line');renderTypingLines();}
 function removeTypingLine(i){typingLines.splice(i,1);renderTypingLines();}
 
-// ── CONTACT PREVIEW ───────────────────────────────────────────────────
+// contact preview
 function refreshContactPreview(){
   const fields=[
     {id:'email',ico:'📧',lbl:'EMAIL',href:v=>'mailto:'+v},
@@ -624,7 +624,7 @@ function refreshContactPreview(){
   });
 }
 
-// ── CONTACT SAVE ──────────────────────────────────────────────────────
+// contact save
 function saveContactInfo(){
   const data={email:g('email'),discord:g('discord'),phone:g('phone'),github:g('githubContact'),linkedin:g('linkedin'),twitter:g('twitter'),otherLink:g('otherLink')};
   localStorage.setItem('rafie_contact',JSON.stringify(data));
@@ -646,7 +646,7 @@ function loadContactInfo(){
   }catch(e){}
 }
 
-// ── NOTIFICATIONS ─────────────────────────────────────────────────────
+// notifications
 async function requestNotifPermission(){if(!('Notification' in window))return false;if(Notification.permission==='granted')return true;if(Notification.permission==='denied')return false;const p=await Notification.requestPermission();return p==='granted';}
 function updateNotifBtnUI(){const btn=document.getElementById('notifPermBtn');if(!btn)return;if(!('Notification' in window)){btn.textContent='🔕 Not Supported';btn.disabled=true;}else if(Notification.permission==='granted'){btn.textContent='🔔 NOTIFICATIONS ON';btn.className='mc-btn btn-green btn-sm';}else if(Notification.permission==='denied'){btn.textContent='🔕 BLOCKED';btn.className='mc-btn btn-gray btn-sm';}else{btn.textContent='🔔 ENABLE ALERTS';btn.className='mc-btn btn-gold btn-sm';}}
 async function handleNotifBtn(){const granted=await requestNotifPermission();updateNotifBtnUI();if(granted){toast('🔔 Browser notifications enabled!');const t=getToken();if(t)startPolling(t);}else{toast('Notifications blocked. Allow in browser settings.',true);}}
@@ -655,7 +655,7 @@ function openIssueById(issueId){const inboxBody=document.getElementById('inboxBo
 async function pollForNewMessages(token){try{const r=await fetch(`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/issues?state=open&per_page=30&sort=created&direction=desc`,{headers:{Authorization:'Bearer '+token}});if(!r.ok)return;const issues=await r.json();if(!Array.isArray(issues))return;const currentIds=issues.map(i=>i.id);const knownIds=JSON.parse(localStorage.getItem('rafie_known_ids')||'[]');const newIssues=knownIds.length>0?issues.filter(i=>!knownIds.includes(i.id)):[];if(newIssues.length>0){newIssues.forEach(issue=>{const info=parseIssueBody(issue.body||'');const from=info.from||issue.user?.login||'Someone';sendBrowserNotif('New Message!','👤 '+from+'\n📌 '+(info.subject||issue.title),issue.id);toast('📬 New message from '+from+'!');});loadInbox();}localStorage.setItem('rafie_known_ids',JSON.stringify(currentIds));updateBadge(issues);}catch(e){}}
 function startPolling(token){if(pollingInterval)clearInterval(pollingInterval);pollForNewMessages(token);pollingInterval=setInterval(()=>pollForNewMessages(token),60000);}
 
-// ── INBOX ─────────────────────────────────────────────────────────────
+// inbox
 async function loadInbox(){
   const token=getToken();const list=document.getElementById('inboxList');
   if(!token){list.innerHTML='<div class="inbox-empty">🔑 ENTER YOUR GITHUB TOKEN ABOVE</div>';return;}
@@ -700,7 +700,7 @@ function updateBadge(issues){const u=issues.filter(i=>!readIssues.includes(i.id)
 function markAllRead(){document.querySelectorAll('.msg-card.unread').forEach(c=>{const id=parseInt(c.dataset.issueId);if(id&&!readIssues.includes(id))readIssues.push(id);c.classList.remove('unread');});localStorage.setItem('rafie_read_issues',JSON.stringify(readIssues));document.getElementById('notifBadge').classList.remove('show');document.getElementById('inboxCountBadge').classList.remove('show');toast('All messages marked as read!');}
 function timeAgo(d){const diff=Date.now()-new Date(d).getTime();const m=Math.floor(diff/60000);if(m<60)return m+'m ago';const h=Math.floor(m/60);if(h<24)return h+'h ago';return Math.floor(h/24)+'d ago';}
 
-// ── TOKEN TEST ────────────────────────────────────────────────────────
+// token test
 async function testToken(){
   const token=getToken();if(!token){toast('Please enter a token first!',true);return;}
   document.getElementById('tokenStatus').textContent='⏳ Testing token...';
@@ -711,14 +711,14 @@ async function testToken(){
   }catch(e){document.getElementById('tokenStatus').textContent='❌ Network error';document.getElementById('tokenStatus').style.color='var(--red-bright)';}
 }
 
-// ── SAVE LOCAL ────────────────────────────────────────────────────────
+// save local
 async function saveLocal(){
   const token=getToken();if(!token){toast('Enter token first!',true);return;}
   try{const result=await buildFullHTML(token);const blob=new Blob([result.html],{type:'text/html'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='index.html';a.click();toast('✅ index.html downloaded!');}
   catch(e){toast('Build failed: '+e.message,true);}
 }
 
-// ── PUBLISH ───────────────────────────────────────────────────────────
+// publish
 async function publishSite(){
   const token=getToken();if(!token){toast('Enter your GitHub token first!',true);return;}
   setStatus('⏳ Fetching live site...','loading');
@@ -743,7 +743,7 @@ async function publishSite(){
   }catch(e){setStatus('❌ Network error','error');toast('Network error!',true);}
 }
 
-// ── BUILD FULL HTML ───────────────────────────────────────────────────
+// build full html
 async function buildFullHTML(token){
   const headers={Authorization:'Bearer '+token,Accept:'application/vnd.github.v3+json'};
   const r=await fetch(`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/index.html`,{headers});
@@ -770,52 +770,50 @@ async function buildFullHTML(token){
   const nowMode=g('nowMode');
   const nowManual=g('nowManual')||'';
 
-  // Patch name
+  // patch name
   html=html.replace(/(<span class="player-name">)[^<]*(<\/span>)/g,`$1${esc(name)}$2`);
-  // Patch role — keep the span#typingText for animation
+  // patch role — keep the span#typingText for animation
   html=html.replace(/(<div class="player-class">⚡ <span id="typingText"><\/span>)/,'$1');
-  // Patch level
+  // patch level
   html=html.replace(/(<div class="player-level">)[^<]*(<\/div>)/g,`<div class="player-level">Level ${esc(age)} · ${esc(level)} · ${esc(location)}</div>`);
-  // Patch HP value
+  // patch HP value
   html=html.replace(/(<span class="hp-num"[^>]*>)[^<]*(<\/span>)/g,`$1${esc(hpVal)}$2`);
-  // Patch HP fill width based on fraction
+  // patch HP fill width based on fraction
   try{const[cur,max]=hpVal.split('/').map(Number);if(cur&&max){const pct=Math.round(Math.min(100,cur/max*100));html=html.replace(/(<div class="hp-fill"[^>]*style=")[^"]*(")/,`$1width:${pct}%$2`);}}catch(e){}
-  // Patch hearts
+  // patch hearts
   const fullH='❤️'.repeat(Math.max(0,Math.min(10,hearts)));
   const emptyH='🖤'.repeat(Math.max(0,10-Math.min(10,hearts)));
   html=html.replace(/(<div class="hearts">)[^<]*(<\/div>)/g,`<div class="hearts">${fullH}${emptyH}</div>`);
-  // Patch about
+  // patch about
   html=html.replace(/(<p class="about-text">)([\s\S]*?)(<\/p>)/,`<p class="about-text">${about.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>')}</p>`);
-  // Patch typing lines array in JS
+  // patch typing lines array in JS
   const typingArr=JSON.stringify(typingLines);
   html=html.replace(/const TYPING_LINES=\[[\s\S]*?\];/,`const TYPING_LINES=${typingArr};`);
-  // Patch "now working on" mode — replace the whole function (its closing
-  // brace is at column 0, so \n\} anchors safely) with a manual-only version.
+  // patch "now working on" mode, swap the whole function for a manual version
   if(nowMode==='manual'&&nowManual){
     html=html.replace(/async function loadNowWorking\(\)\{[\s\S]*?\n\}/,
       `async function loadNowWorking(){const el=document.getElementById('nowText');if(!el)return;el.textContent=${JSON.stringify(nowManual)};}`);
   }
-  // Patch web3forms key
+  // patch web3forms key
   html=html.replace(/access_key:'[^']*'/g,`access_key:'${w3key}'`);
-  // Patch email
+  // patch email
   html=html.replace(/rafiecool249@gmail\.com/g,esc(email));
-  // Patch discord
+  // patch discord
   html=html.replace(/rafiekunsimp/g,esc(discord));
-  // Patch phone
+  // patch phone
   html=html.replace(/\+880 1319 343526/g,esc(phone));
-  // Patch github
+  // patch github
   html=html.replace(/Rafie-kun/g,esc(github));
 
-  // Patch contact cards — rebuild the entire grid
+  // patch contact cards — rebuild the entire grid
   const contactCards=buildContactCardsHTML(email,discord,phone,github,linkedin,twitter,otherLink);
   html=html.replace(/(<div class="contact-grid">)([\s\S]*?)(<\/div>\s*<div class="contact-form">)/,
     `<div class="contact-grid">${contactCards}</div><div class="contact-form">`);
 
-  // Patch LinkedIn & Twitter social updater (anchor on the function's
-  // column-0 closing brace so inner braces don't truncate the match)
+  // patch LinkedIn & Twitter social updater function
   html=html.replace(/function updateSocialCards\(\)\{[\s\S]*?\n\}/,buildSocialUpdaterJS(linkedin,twitter));
 
-  // Patch work experience
+  // patch work experience
   const workItems=workData.map(w=>{
     const period=w.current?(w.start+' – Present'):(w.start+(w.end?' – '+w.end:''));
     const badge=w.current?'<div class="badge badge-on">▶ CURRENT</div>':'<div class="badge badge-off">COMPLETED</div>';
@@ -825,13 +823,13 @@ async function buildFullHTML(token){
   html=html.replace(/(<!-- WORK -->[\s\S]*?<section id="work"[^>]*>[\s\S]*?<div class="sec-header">[\s\S]*?<\/div>\s*<\/div>\s*)([\s\S]*?)(<\/section>)/,
     (_,pre,_content,post)=>pre+workItems+'\n'+post);
 
-  // Patch skills
+  // patch skills
   const skillItems=skillsData.map(s=>{
     return `<div class="skill-item r-${s.rarity}"><span class="skill-emo">${s.emoji}</span><div class="skill-body"><div class="skill-name">${esc(s.name)}</div><div class="xp-track"><div class="xp-bar" style="--w:60%"></div></div><div class="rarity">◆ ${s.rarity.toUpperCase()}</div></div></div>`;
   }).join('\n');
   html=html.replace(/(<div class="skills-grid">)([\s\S]*?)(<\/div>\s*<p[^>]*style="margin-top)/,`$1\n${skillItems}\n$3`);
 
-  // Patch projects
+  // patch projects
   const projItems=projectsData.map(p=>{
     const tagsHTML=(p.tags||'').split(',').map(t=>{const tc=t.trim();const cls=tc==='Python'||tc==='HTML'||tc==='CSS'||tc==='JS'?'tag-g':tc.includes('Finance')||tc.includes('CLI')?'tag-b':'tag-t';return `<span class="tag ${cls}">${esc(tc)}</span>`;}).join('');
     if(p.coming)return `<div class="proj-card"><div class="proj-icon-box">${p.emoji}</div><div class="proj-title">${esc(p.name)}</div><div class="proj-desc">${esc(p.desc)}</div><div class="tags"><span class="tag tag-t">Soon™</span></div><div class="locked-overlay"><div style="font-size:36px">🔒</div><div class="locked-text">CHEST LOCKED<br>COME BACK LATER</div></div></div>`;
@@ -842,7 +840,7 @@ async function buildFullHTML(token){
   }).join('\n');
   html=html.replace(/(<div class="projects-grid">)([\s\S]*?)(<\/div>\s*<\/section>\s*<div class="divider">)/,`$1\n${projItems}\n</div></section><div class="divider">`);
 
-  // Patch achievements
+  // patch achievements
   const achItems=achievementsData.map(a=>{
     const cls=a.locked?'ach locked':'ach';
     const badge=a.locked?'<div class="ach-badge ab-lock">LOCKED</div>':'<div class="ach-badge ab-gold">UNLOCKED</div>';
@@ -876,7 +874,7 @@ function buildSocialUpdaterJS(linkedin,twitter){
 }`;
 }
 
-// ── WORK / SKILLS / PROJECTS / ACHIEVEMENTS ───────────────────────────
+// work / skills / projects / achievements
 function renderWork(data){workData=JSON.parse(JSON.stringify(data));const list=document.getElementById('workList');list.innerHTML='';workData.forEach((w,i)=>{list.innerHTML+=`<div class="list-item"><div class="list-item-header"><span class="item-num">⚔ JOB #${i+1}</span><button class="remove-btn" onclick="removeWork(${i})">✕ REMOVE</button></div><div class="field-row"><div class="field"><label>JOB TITLE</label><input type="text" value="${esc(w.title)}" oninput="workData[${i}].title=this.value"></div><div class="field"><label>COMPANY</label><input type="text" value="${esc(w.company)}" oninput="workData[${i}].company=this.value"></div></div><div class="field-row3"><div class="field"><label>START</label><input type="text" value="${esc(w.start)}" oninput="workData[${i}].start=this.value"></div><div class="field"><label>END</label><input type="text" value="${esc(w.end)}" placeholder="blank=present" oninput="workData[${i}].end=this.value"></div><div class="field"><label>CURRENT?</label><select onchange="workData[${i}].current=this.value==='true'"><option value="true" ${w.current?'selected':''}>✅ Current</option><option value="false" ${!w.current?'selected':''}>❌ Past</option></select></div></div><div class="field"><label>DESCRIPTION</label><textarea oninput="workData[${i}].desc=this.value">${esc(w.desc)}</textarea></div></div>`;});}
 function addWork(){workData.push({title:'',company:'',current:false,start:'',end:'',desc:''});renderWork(workData);}
 function removeWork(i){workData.splice(i,1);renderWork(workData);}

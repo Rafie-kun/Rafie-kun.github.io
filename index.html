@@ -7,7 +7,7 @@
 <meta name="description" content="Hossain Fazle Rafie — Freelancer, coder, and psychology student from Dhaka, Bangladesh. Minecraft-edition portfolio.">
 <link rel="icon" href="assets/textures/grass_side.png">
 <style>
-/* ── FONTS: real Minecraft (Mojangles) font ───────────── */
+/* fonts: real minecraft (mojangles) font */
 @font-face{font-family:'Minecraft';src:url('assets/fonts/MinecraftDefault-Regular.ttf') format('truetype');font-weight:400;font-display:swap;}
 @font-face{font-family:'Minecraft';src:url('assets/fonts/MinecraftDefault-Bold.ttf') format('truetype');font-weight:700;font-display:swap;}
 @font-face{font-family:'Press Start 2P';src:url('assets/fonts/MinecraftDefault-Bold.ttf') format('truetype');font-weight:400 900;font-display:swap;}
@@ -36,7 +36,7 @@ a,button,input,textarea,select,[onclick]{cursor:pointer;}
 img{image-rendering:pixelated;}
 ::-webkit-scrollbar{width:10px}::-webkit-scrollbar-track{background:#000}::-webkit-scrollbar-thumb{background:#8b8b8b;border:2px solid #000;}
 
-/* ── MC BUTTONS ───────────────────────────────────────── */
+/* mc buttons */
 .mc-btn{
   font-family:'Minecraft',monospace;font-size:16px;line-height:1.1;font-weight:400;
   color:#fff;text-shadow:2px 2px 0 var(--shadow);
@@ -54,7 +54,7 @@ img{image-rendering:pixelated;}
 .btn-dark{background:linear-gradient(180deg,#4a4a4a 0%,#3f3f3f 46%,#373737 54%,#2f2f2f 100%);}
 .btn-dark:hover{background:linear-gradient(180deg,#5a5a5a 0%,#4f4f4f 46%,#474747 54%,#3f3f3f 100%);}
 
-/* ── FIXED WIDGETS ────────────────────────────────────── */
+/* fixed widgets */
 #scroll-bar{position:fixed;top:0;left:0;height:4px;width:0%;background:#80ff20;z-index:9999;transition:width .1s linear;}
 #back-top{position:fixed;bottom:112px;right:14px;z-index:996;width:40px;height:40px;display:none;align-items:center;justify-content:center;font-size:16px;color:#fff;text-shadow:2px 2px 0 var(--shadow);background:linear-gradient(180deg,#8b8b8b,#5f5f5f);border:2px solid #000;box-shadow:inset 2px 2px 0 #b7b7b7,inset -2px -2px 0 #3b3b3b;}
 #back-top:hover{background:linear-gradient(180deg,#93a3c8,#66769c);}
@@ -80,7 +80,7 @@ img{image-rendering:pixelated;}
 #music-prompt.hidden{display:none !important;pointer-events:none;}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
 
-/* MC tooltip */
+/* mc tooltip */
 .mc-tip{
   position:fixed;z-index:9999;pointer-events:none;display:none;
   background:rgba(16,0,16,.94);border:2px solid #000;box-shadow:inset 0 0 0 2px #3a1ae0;
@@ -91,19 +91,13 @@ img{image-rendering:pixelated;}
 .tt-sub{font-size:14px;color:#808080;text-shadow:2px 2px 0 var(--shadow);margin-top:2px;}
 .tt-common{color:#808080}.tt-uncommon{color:#ffff55}.tt-rare{color:#55ffff}.tt-epic{color:#ff55ff}.tt-legendary{color:#ffaa00}
 
-/* ── HERO / TITLE SCREEN ─────────────────────────────── */
+/* hero / title screen */
 .hero{min-height:100vh;position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 16px 170px;}
 .pano{position:absolute;inset:-4% -6%;perspective:1400px;perspective-origin:50% 50%;}
-/* real 6-face Minecraft title panorama — the camera sits at the cube's
-   centre (translateZ == perspective), so the box always fills the view
-   and slowly rotating it reproduces the in-game title screen drift.
-   Every face uses the same "rotate, then translateZ out" order. */
+/* 6-face panorama cube, camera sits in the middle and it slowly spins */
 .cube{position:absolute;left:50%;top:50%;width:0;height:0;transform-style:preserve-3d;animation:panoSpin 240s linear infinite;}
 .cube>i{position:absolute;left:-512px;top:-512px;width:1024px;height:1024px;background-repeat:no-repeat;background-size:100% 100%;backface-visibility:hidden;}
-/* Faces point INWARD (negative translateZ) because the camera sits at the cube's
-   centre — outward-facing walls would show their backs and be culled.
-   Y-angles 0/-90/180/90 walk the ring the PNG edges proved (0→1→2→3→0), so
-   each face's right edge meets the next face's left edge with no seam. */
+/* faces point inward so we're looking at the inside of the box */
 .cube>i.f0{background-image:url('assets/panorama/panorama_0.png');transform:translateZ(-512px);}
 .cube>i.f1{background-image:url('assets/panorama/panorama_1.png');transform:rotateY(-90deg) translateZ(-512px);}
 .cube>i.f2{background-image:url('assets/panorama/panorama_2.png');transform:rotateY(180deg) translateZ(-512px);}
@@ -114,15 +108,10 @@ img{image-rendering:pixelated;}
   from{transform:translateZ(1400px) rotateY(0deg);}
   to  {transform:translateZ(1400px) rotateY(360deg);}
 }
-/* day/night tint laid OVER the panorama (the gradient used to be the whole
-   background — now the real panorama is, and this colour-washes it so the
-   cycle still reads: light blue wash by day, deep blue-black by night). */
+/* colour wash on top of the panorama for day/night */
 .sky{position:absolute;inset:0;background:linear-gradient(180deg,var(--sky-top) 0%,var(--sky-bot) 100%);opacity:var(--sky-op,.14);transition:background 2.5s linear,opacity 2.5s linear;}
 #starsCanvas{position:absolute;inset:0;z-index:4;opacity:var(--stars);transition:opacity 2s;pointer-events:none;}
-/* sun & moon are ADDITIVE glow sprites: opaque near-black background with a
-   bright core. The game blends them with additive blending so the dark pixels
-   contribute nothing — done here with `screen`, which makes black invisible
-   and keeps the glow. Composited normally they would read as black squares. */
+/* sun/moon textures are dark with a bright core, screen blend hides the dark part */
 .sun{position:absolute;left:var(--sun-x);top:var(--sun-y);width:104px;height:104px;transform:translate(-50%,-50%);opacity:var(--sun-op);z-index:5;background:url('assets/textures/gui/sun.png') center/100% 100% no-repeat;image-rendering:pixelated;mix-blend-mode:screen;transition:opacity 2s;pointer-events:none;}
 .moon{position:absolute;left:var(--moon-x);top:var(--moon-y);width:80px;height:80px;transform:translate(-50%,-50%);opacity:var(--moon-op);z-index:5;transition:opacity 2s;pointer-events:none;mix-blend-mode:screen;}
 .moon img{width:100%;height:100%;image-rendering:pixelated;}
@@ -166,7 +155,7 @@ body.day .campfire-glow{opacity:.35;}
 @keyframes swing{0%,100%{transform:rotate(-5deg)}50%{transform:rotate(5deg)}}
 @keyframes rise{0%{transform:translateY(0);opacity:1}100%{transform:translateY(-80px);opacity:0}}
 
-/* ── TITLE, SPLASH, MENU ─────────────────────────────── */
+/* title, splash, menu */
 .hero-content{position:relative;z-index:10;text-align:center;width:100%;}
 .logo-wrap{position:relative;display:inline-block;max-width:100%;}
 #logo{display:block;width:min(720px,90vw);height:auto;image-rendering:pixelated;filter:drop-shadow(0 6px 0 rgba(0,0,0,.35));}
@@ -187,7 +176,7 @@ body.day .campfire-glow{opacity:.35;}
 .corner-br{right:16px;text-align:right;}
 .f3{position:absolute;top:14px;left:14px;z-index:11;text-align:left;pointer-events:none;}
 .f3 div{display:inline-block;background:rgba(0,0,0,.55);color:#fff;font-size:13px;text-shadow:2px 2px 0 var(--shadow);padding:1px 6px;margin-bottom:3px;}
-/* ── SECTION CHROME ───────────────────────────────────── */
+/* section chrome */
 section{max-width:960px;margin:0 auto;padding:44px 20px 8px;}
 .sec-header{display:flex;align-items:center;gap:14px;margin-bottom:24px;}
 .sec-icon{width:56px;height:56px;background:var(--slot);border:2px solid;border-color:var(--slot-dk) var(--gui-hi) var(--gui-hi) var(--slot-dk);display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 0 0 2px #000;}
@@ -224,7 +213,7 @@ section{max-width:960px;margin:0 auto;padding:44px 20px 8px;}
 .hearts{display:flex;gap:3px;justify-content:center;font-size:22px;}
 .cta-buttons{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:22px;}
 
-/* ── ABOUT ────────────────────────────────────────────── */
+/* about */
 .about-text{font-size:17px;color:var(--tx);line-height:1.8;}
 .hi-g{color:#a86a00;}.hi-t{color:#0a7a8a;}.hi-gr{color:#2a7a1a;}
 .stat-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-top:22px;}
@@ -234,7 +223,7 @@ section{max-width:960px;margin:0 auto;padding:44px 20px 8px;}
 .stat-val{font-family:'Minecraft',monospace;font-weight:700;font-size:13px;color:#1a1a1a;margin-bottom:4px;text-shadow:1px 1px 0 rgba(255,255,255,.4);}
 .stat-lbl{font-size:14px;color:#3a3a3a;}
 
-/* ── WORK ─────────────────────────────────────────────── */
+/* work */
 .work-item{padding:20px 20px 20px 24px;margin-bottom:12px;position:relative;transition:filter .1s;}
 .work-item:hover{filter:brightness(1.06);}
 .work-item::before{content:'';position:absolute;left:0;top:0;bottom:0;width:6px;}
@@ -246,7 +235,7 @@ section{max-width:960px;margin:0 auto;padding:44px 20px 8px;}
 .work-co{font-size:16px;color:#0a7a8a;margin-bottom:6px;}
 .work-desc{font-size:16px;color:#4a4a4a;}
 
-/* ── SKILLS (inventory) ───────────────────────────────── */
+/* skills (inventory) */
 .skills-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px;}
 .skill-item{padding:12px;display:flex;align-items:center;gap:12px;transition:filter .1s;}
 .skill-item:hover{filter:brightness(1.06);}
@@ -263,7 +252,7 @@ section{max-width:960px;margin:0 auto;padding:44px 20px 8px;}
 @keyframes shimmer{0%{background-position:-200% center}100%{background-position:200% center}}
 .rarity-legend{font-size:11px;color:#7a7a7a;margin-top:14px;text-shadow:1px 1px 0 rgba(255,255,255,.4);}
 
-/* ── PROJECTS ─────────────────────────────────────────── */
+/* projects */
 .projects-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;}
 .proj-card{padding:20px;position:relative;transition:filter .1s;}
 .proj-card:hover{filter:brightness(1.05);}
@@ -278,7 +267,7 @@ section{max-width:960px;margin:0 auto;padding:44px 20px 8px;}
 .locked-overlay{position:absolute;inset:0;background:rgba(0,0,0,.88);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;}
 .locked-text{font-family:'Minecraft',monospace;font-weight:700;font-size:15px;color:#ffaa00;text-align:center;animation:blink 1.2s step-end infinite;line-height:1.8;text-shadow:2px 2px 0 var(--shadow);}
 
-/* ── ACHIEVEMENTS (advancement toasts) ───────────────── */
+/* achievements (advancement toasts) */
 .ach-list{display:flex;flex-direction:column;gap:12px;}
 .ach{
   background:linear-gradient(180deg,#e8e0d0,#d4cab4);
@@ -298,7 +287,7 @@ section{max-width:960px;margin:0 auto;padding:44px 20px 8px;}
 .ab-lock{color:#8a8a8a;border-color:#555;}
 .ab-gold{color:#ffcc00;border-color:#c07c00;}
 
-/* ── GITHUB (statistics screen) ───────────────────────── */
+/* github (statistics screen) */
 .gh-panel{padding:24px;position:relative;}
 .gh-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;margin-bottom:22px;}
 .gh-stat{background:#0a0e14;border:3px solid #000;box-shadow:inset 2px 2px 0 #3a4a5a;padding:16px 10px;text-align:center;transition:filter .1s;}
@@ -345,7 +334,7 @@ section{max-width:960px;margin:0 auto;padding:44px 20px 8px;}
 .pg-tip-main{font-size:15px;color:#fff;text-shadow:2px 2px 0 var(--shadow);margin-bottom:4px;}
 .pg-tip-date{font-size:13px;color:#808080;text-shadow:2px 2px 0 var(--shadow);}
 
-/* ── CONTACT ──────────────────────────────────────────── */
+/* contact */
 .contact-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px;margin-bottom:14px;}
 .contact-card{padding:16px;display:flex;align-items:center;gap:12px;text-decoration:none;transition:filter .1s;}
 .contact-card:hover{filter:brightness(1.08);}
@@ -375,7 +364,7 @@ footer{background:rgba(0,0,0,.55);border-top:3px solid #000;padding:24px 20px 40
 .reveal{opacity:0;transform:translateY(20px);transition:opacity .5s,transform .5s;}
 .reveal.vis{opacity:1;transform:none;}
 
-/* ── HUD: hearts / XP / hotbar ────────────────────────── */
+/* hud: hearts / xp / hotbar */
 .hud{position:fixed;bottom:0;left:0;right:0;z-index:995;display:flex;flex-direction:column;align-items:center;gap:3px;pointer-events:none;padding-bottom:6px;}
 .hud-hearts{display:flex;gap:2px;}
 .hud-hearts img{width:17px;height:16px;image-rendering:pixelated;}
@@ -460,7 +449,7 @@ footer{background:rgba(0,0,0,.55);border-top:3px solid #000;padding:24px 20px 40
   </div>
 </div>
 
-<!-- ═══ TITLE SCREEN ═══ -->
+<!-- title screen -->
 <div class="hero" id="top">
   <div class="pano">
     <i class="cube"><i class="f0"></i><i class="f1"></i><i class="f2"></i><i class="f3"></i><i class="f4"></i><i class="f5"></i></i>
@@ -522,7 +511,7 @@ footer{background:rgba(0,0,0,.55);border-top:3px solid #000;padding:24px 20px 40
 
 <div class="divider"></div>
 
-<!-- ═══ ABOUT ═══ -->
+<!-- about -->
 <section id="about" class="reveal">
   <div class="sec-header"><div class="sec-icon"><img src="assets/textures/grass_side.png" alt=""></div><div class="sec-title">About Me</div></div>
 
@@ -562,7 +551,7 @@ footer{background:rgba(0,0,0,.55);border-top:3px solid #000;padding:24px 20px 40
 
 <div class="divider"></div>
 
-<!-- ═══ SKILLS ═══ -->
+<!-- skills -->
 <section id="skills" class="reveal">
   <div class="sec-header"><div class="sec-icon"><img src="assets/textures/ore_diamond.png" alt=""></div><div class="sec-title">Skills / Inventory</div></div>
   <div class="skills-grid">
@@ -583,7 +572,7 @@ footer{background:rgba(0,0,0,.55);border-top:3px solid #000;padding:24px 20px 40
 </section>
 <div class="divider"></div>
 
-<!-- ═══ PROJECTS ═══ -->
+<!-- projects -->
 <section id="projects" class="reveal">
   <div class="sec-header"><div class="sec-icon"><img src="assets/textures/crafting_table.png" alt=""></div><div class="sec-title">Projects / Builds</div></div>
   <div class="projects-grid">
@@ -595,7 +584,7 @@ footer{background:rgba(0,0,0,.55);border-top:3px solid #000;padding:24px 20px 40
 
 <div class="divider"></div>
 
-<!-- ═══ ACHIEVEMENTS ═══ -->
+<!-- achievements -->
 <section id="achievements" class="reveal">
   <div class="sec-header"><div class="sec-icon"><img src="assets/textures/gold_block.png" alt=""></div><div class="sec-title">Achievements</div></div>
   <div class="ach-list">
@@ -610,7 +599,7 @@ footer{background:rgba(0,0,0,.55);border-top:3px solid #000;padding:24px 20px 40
 
 <div class="divider"></div>
 
-<!-- ═══ GITHUB ═══ -->
+<!-- github -->
 <section id="github" class="reveal">
   <div class="sec-header"><div class="sec-icon"><img src="assets/textures/obsidian.png" alt=""></div><div class="sec-title">GitHub / Code Vault</div></div>
   <div class="gh-panel">
@@ -649,7 +638,7 @@ footer{background:rgba(0,0,0,.55);border-top:3px solid #000;padding:24px 20px 40
 
 <div class="divider"></div>
 
-<!-- ═══ CONTACT ═══ -->
+<!-- contact -->
 <section id="contact" class="reveal">
   <div class="sec-header"><div class="sec-icon"><img src="assets/textures/paper.png" alt=""></div><div class="sec-title">Contact Me</div></div>
   <div class="contact-grid">
@@ -679,7 +668,7 @@ footer{background:rgba(0,0,0,.55);border-top:3px solid #000;padding:24px 20px 40
   <div class="footer-txt">© 2026 <span>Hossain Fazle Rafie</span> · Built block by block · Pure HTML/CSS/JS<br>rafie-kun.github.io · No Creepers were harmed 🔥</div>
 </footer>
 
-<!-- ═══ HUD ═══ -->
+<!-- hud -->
 <div id="nowPlayingTitle"></div>
 <div id="music-prompt" onclick="startMusicFromPrompt()">🎵 CLICK TO PLAY MUSIC</div>
 
@@ -717,20 +706,9 @@ footer{background:rgba(0,0,0,.55);border-top:3px solid #000;padding:24px 20px 40
 
 <div class="mc-tip" id="mcTip"><div class="tt-name" id="mcTipName"></div><div class="tt-sub" id="mcTipSub"></div></div>
 <script>
-// ════════════════════════════════════════════════════════
-// DAY / NIGHT CYCLE — how it works:
-//   The page reads the visitor's REAL local clock (hours + minutes)
-//   and maps it through a table of sky keyframes (deep night →
-//   pre-dawn → sunrise → day → sunset → night). The keyframes are
-//   smoothly interpolated, so the sky, sun, moon, stars and the
-//   world-darkening veil always match the real time.
-//   updateSky() runs on load, every 15 seconds, and whenever the
-//   tab becomes visible again — so a page left open across
-//   sunrise/sunset updates by itself (the old version only checked
-//   the clock once, at load, and hard-switched at 6:00/18:00).
-//   Manual override: TIME button / glowstone hotbar slot cycles
-//   AUTO → DAY → NIGHT and stores the choice for the session.
-// ════════════════════════════════════════════════════════
+// day/night cycle, follows the visitor's real local clock
+// updateSky() runs on load, every 15s, and on tab focus
+// the TIME button / glowstone slot lets you override it manually
 function clamp01(v){return v<0?0:v>1?1:v;}
 function store(k,v){try{v===null?sessionStorage.removeItem(k):sessionStorage.setItem(k,v);}catch(e){}}
 function read(k){try{return sessionStorage.getItem(k);}catch(e){return null;}}
@@ -803,8 +781,6 @@ function updateSky(){
   root.setProperty('--sky-top',s.top);
   root.setProperty('--sky-bot',s.bot);
   root.setProperty('--veil',String(s.veil));
-  /* how hard the sky gradient washes the panorama: barely-there by day,
-     heavy blue-black at night, warm at dawn/dusk. */
   root.setProperty('--sky-op',String(clamp01(0.06+s.veil*1.35)));
   root.setProperty('--stars',String(s.stars));
   root.setProperty('--sun-x',sp.x+'%');root.setProperty('--sun-y',sp.y+'%');root.setProperty('--sun-op',String(sp.op));
@@ -815,19 +791,26 @@ function updateSky(){
   if(tb)tb.textContent='TIME: '+mode.toUpperCase();
   const st=document.getElementById('slotTime');
   if(st)st.dataset.ttSub='Mode: '+mode.toUpperCase()+' — click to cycle';
-  const f3=document.getElementById('f3time');
-  if(f3){
-    const hh=String(now.getHours()).padStart(2,'0');
-    const mm=String(now.getMinutes()).padStart(2,'0');
-    const ss=String(now.getSeconds()).padStart(2,'0');
-    const phase=mode!=='auto'?(mode==='day'?'Forced DAY':'Forced NIGHT'):(isDay?'Daytime':'Nighttime');
-    f3.textContent='Time: '+phase+' · '+hh+':'+mm+':'+ss;
-  }
+  updateClock();
 }
+function updateClock(){
+  const f3=document.getElementById('f3time');
+  if(!f3)return;
+  const now=new Date();
+  const mode=timeMode();
+  const h=now.getHours()+now.getMinutes()/60+now.getSeconds()/3600;
+  const isDay=mode==='day'||(mode==='auto'&&h>=6&&h<18);
+  const hh=String(now.getHours()).padStart(2,'0');
+  const mm=String(now.getMinutes()).padStart(2,'0');
+  const ss=String(now.getSeconds()).padStart(2,'0');
+  const phase=mode!=='auto'?(mode==='day'?'Forced DAY':'Forced NIGHT'):(isDay?'Daytime':'Nighttime');
+  f3.textContent='Time: '+phase+' · '+hh+':'+mm+':'+ss;
+}
+setInterval(updateClock,1000);
 setInterval(updateSky,15000);
 document.addEventListener('visibilitychange',function(){if(!document.hidden)updateSky();});
 
-// ── STARS ─────────────────────────────────────────────
+// stars
 function drawStars(){
   const c=document.getElementById('starsCanvas');
   if(!c)return;
@@ -846,7 +829,7 @@ function drawStars(){
   }
 }
 
-// ── TERRAIN (static blocks + rare ores) ───────────────
+// terrain (static blocks + rare ores)
 function buildTerrain(){
   const n=Math.ceil(window.innerWidth/48)+4;
   for(let ri=0;ri<5;ri++){
@@ -866,13 +849,10 @@ function buildTerrain(){
   }
 }
 
-// ── TITLE LOGO ─────────────────────────────────────────
-// The title uses the real cropped vanilla logo (gui/title/minecraft.png),
-// so nothing is drawn on a canvas any more. Kept as a no-op hook so the
-// late drawLogo() call in init stays harmless.
+// title logo is just an <img> now, this is a no-op kept so init doesn't break
 function drawLogo(){}
 
-// ── SPLASH TEXT ───────────────────────────────────────
+// splash text
 const SPLASHES=["Rafie's Portfolio!","100% vanilla HTML/CSS/JS!","Now with day/night cycle!",
   "Made in Dhaka!","No Creepers were harmed!","Punch trees, get skills!","Also try scrolling!",
   "0% frameworks!","Still early game!","Warning: may contain Psychology!","As seen on GitHub Pages!",
@@ -885,7 +865,7 @@ document.addEventListener('click',function(e){
   if(e.target&&e.target.id==='splash')pickSplash();
 });
 
-// ── HUD: hearts + XP ──────────────────────────────────
+// hud: hearts + xp
 (function(){
   const w=document.getElementById('hudHearts');
   if(w){
@@ -896,7 +876,7 @@ document.addEventListener('click',function(e){
   setTimeout(function(){const x=document.getElementById('xpFill');if(x)x.style.width='62%';},400);
 })();
 
-// ── HOTBAR NAV + SCROLL SPY ───────────────────────────
+// hotbar nav + scroll spy
 document.querySelectorAll('.slot[data-nav]').forEach(function(slot){
   slot.addEventListener('click',function(){
     const t=document.querySelector(slot.dataset.nav);
@@ -927,7 +907,7 @@ if(slotTime)slotTime.addEventListener('click',cycleTime);
   });
 })();
 
-// ── MC TOOLTIP (data-tt) ──────────────────────────────
+// mc tooltip (data-tt)
 (function(){
   const tip=document.getElementById('mcTip');
   const name=document.getElementById('mcTipName');
@@ -948,10 +928,10 @@ if(slotTime)slotTime.addEventListener('click',cycleTime);
   document.addEventListener('mouseleave',function(){tip.classList.remove('show');});
 })();
 
-// ── CAMPFIRE EMBERS ───────────────────────────────────
+// campfire embers
 (function(){const cs=['#ff8c00','#ffcc44','#ff4500','#ffa500'];for(let i=0;i<10;i++){const e=document.createElement('div');e.style.cssText='position:fixed;border-radius:0;pointer-events:none;z-index:2;left:calc(50% + '+(Math.random()-.5)*46+'px);bottom:'+(250+Math.random()*40)+'px;background:'+cs[i%4]+';width:'+(3+Math.random()*4)+'px;height:'+(3+Math.random()*4)+'px;animation:rise '+(2+Math.random()*3)+'s linear '+(Math.random()*4)+'s infinite;';document.body.appendChild(e);}})();
 
-// ── BLOCK-BREAK CLICK PARTICLES ───────────────────────
+// block-break click particles
 document.addEventListener('click',function(e){
   if(e.target&&e.target.id==='splash')return;
   const colors=['#5aac44','#8B6340','#7a7a7a','#fcee4b','#5decf5','#a07848'];
@@ -962,9 +942,7 @@ document.addEventListener('click',function(e){
     setTimeout(function(){p.remove();},750);
   }
 });
-// ════════════════════════════════════════════════════════
-// GITHUB STATS
-// ════════════════════════════════════════════════════════
+// github stats
 async function loadStats(){
   try{
     const r=await fetch('https://api.github.com/users/Rafie-kun',{headers:{'Accept':'application/vnd.github.v3+json'}});
@@ -984,9 +962,7 @@ async function loadStats(){
   }catch(e){}
 }
 
-// ════════════════════════════════════════════════════════
-// CONTRIBUTION GRAPH (jogruber API — no token needed)
-// ════════════════════════════════════════════════════════
+// contribution graph, uses jogruber's api so no token needed
 let _ghAllData=null;
 const MONTHS=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 
@@ -1106,9 +1082,7 @@ function moveTip(e){
   t.style.left=x+'px';t.style.top=y+'px';
 }
 
-// ════════════════════════════════════════════════════════
-// SOCIAL CARDS (LinkedIn / Twitter visibility)
-// ════════════════════════════════════════════════════════
+// social cards (linkedin / twitter visibility)
 function updateSocialCards(){
   const liVal=document.getElementById('contact-linkedin');
   const liCard=document.getElementById('linkedin-card');
@@ -1126,11 +1100,7 @@ function updateSocialCards(){
   }
 }
 
-// ════════════════════════════════════════════════════════
-// MUSIC (jukebox) — procedural ambient synth, generated live with the
-// Web Audio API. No external mp3s: nothing to host, nothing to 404,
-// and no copyrighted Minecraft OST files to redistribute.
-// ════════════════════════════════════════════════════════
+// music player, synth generated with Web Audio so there's no mp3 files to host
 const TRACKS=[
   {name:'Blockwave',  artist:'Ambient Loop', notes:[0,4,7,11,7,4]},
   {name:'Cave Drift', artist:'Ambient Loop', notes:[0,3,7,10,7,3]},
@@ -1193,7 +1163,7 @@ function _setUI(p){
   if(p)_showTitle();
 }
 
-// MC-style "now playing" song title overlay
+// "now playing" title overlay
 function _showTitle(){
   const t=document.getElementById('nowPlayingTitle');
   if(!t)return;
@@ -1241,9 +1211,7 @@ function startMusicFromPrompt(){
 
 _updateName();
 
-// ════════════════════════════════════════════════════════
-// CONTACT FORM (Web3Forms)
-// ════════════════════════════════════════════════════════
+// contact form (web3forms)
 const FORM_LOAD_TIME=Date.now();
 const FORM_COOLDOWN_MS=60000;
 function isValidEmail(v){return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);}
@@ -1256,7 +1224,7 @@ async function sendMsg(){
   const btn=document.getElementById('fsubmit');
   const ok=document.getElementById('formOk');const err=document.getElementById('formErr');
   ok.style.display='none';err.style.display='none';
-  /* bots fill hidden fields and submit instantly — both are free spam signals */
+  /* bots fill hidden fields, humans don't see this one */
   if(honey){ok.style.display='block';['fname','femail','fsubject','fmessage','fhoney'].forEach(id=>{document.getElementById(id).value='';});return;}
   if(Date.now()-FORM_LOAD_TIME<2500){err.textContent='⚠ Please take a moment before sending.';err.style.display='block';return;}
   const last=parseInt(localStorage.getItem('rafie_last_msg')||'0',10);
@@ -1274,9 +1242,7 @@ async function sendMsg(){
   btn.disabled=false;btn.textContent='⚔ SEND MESSAGE';
 }
 
-// ════════════════════════════════════════════════════════
-// SCROLL PROGRESS BAR + BACK-TO-TOP
-// ════════════════════════════════════════════════════════
+// scroll progress bar + back-to-top
 window.addEventListener('scroll',()=>{
   const el=document.getElementById('scroll-bar');
   const btn=document.getElementById('back-top');
@@ -1286,9 +1252,7 @@ window.addEventListener('scroll',()=>{
   if(btn)btn.classList.toggle('show',window.scrollY>400);
 });
 
-// ════════════════════════════════════════════════════════
-// TYPING ANIMATION
-// ════════════════════════════════════════════════════════
+// typing animation
 const TYPING_LINES=['Freelancer','HS Student','Coder','Psych Student','Dungeon Explorer','Block Builder','Article Writer'];
 let _tIdx=0,_tChar=0,_tDeleting=false;
 function typeNext(){
@@ -1314,9 +1278,7 @@ function typeNext(){
 }
 setTimeout(typeNext,800);
 
-// ════════════════════════════════════════════════════════
-// "NOW WORKING ON" — reads the latest public push event
-// ════════════════════════════════════════════════════════
+// "now working on" — reads the latest public push event
 async function loadNowWorking(){
   const el=document.getElementById('nowText');
   if(!el)return;
@@ -1339,24 +1301,18 @@ async function loadNowWorking(){
   }
 }
 
-// ════════════════════════════════════════════════════════
-// SKILL XP BARS (animate width from data-xp)
-// ════════════════════════════════════════════════════════
+// skill xp bars, animate width from data-xp
 (function(){
   document.querySelectorAll('.xp-bar[data-xp]').forEach(el=>{
     el.style.width=el.getAttribute('data-xp');
   });
 })();
 
-// ════════════════════════════════════════════════════════
-// SCROLL REVEAL
-// ════════════════════════════════════════════════════════
+// scroll reveal
 const revealObs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vis');});},{threshold:.08});
 document.querySelectorAll('.reveal').forEach(el=>revealObs.observe(el));
 
-// ════════════════════════════════════════════════════════
-// INIT
-// ════════════════════════════════════════════════════════
+// init
 updateSky();
 buildTerrain();
 drawStars();
