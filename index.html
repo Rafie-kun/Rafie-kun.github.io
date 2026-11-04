@@ -31,9 +31,8 @@ body{
   overflow-x:hidden;padding-bottom:150px;
   background-image:linear-gradient(rgba(0,0,0,.74),rgba(0,0,0,.74)),url('assets/textures/dirt.png');
   background-size:auto,64px 64px;
-  cursor:url('assets/textures/cursor.png') 2 2,auto;
 }
-a,button,input,textarea,select,[onclick]{cursor:url('assets/textures/cursor.png') 2 2,auto;}
+a,button,input,textarea,select,[onclick]{cursor:pointer;}
 img{image-rendering:pixelated;}
 ::-webkit-scrollbar{width:10px}::-webkit-scrollbar-track{background:#000}::-webkit-scrollbar-thumb{background:#8b8b8b;border:2px solid #000;}
 
@@ -41,18 +40,18 @@ img{image-rendering:pixelated;}
 .mc-btn{
   font-family:'Minecraft',monospace;font-size:16px;line-height:1.1;font-weight:400;
   color:#fff;text-shadow:2px 2px 0 var(--shadow);
-  background:linear-gradient(180deg,#8b8b8b 0%,#7c7c7c 46%,#6f6f6f 54%,#5f5f5f 100%);
-  border:2px solid #000;box-shadow:inset 2px 2px 0 #b7b7b7,inset -2px -2px 0 #3b3b3b;
+  background:#6f6f6f;
+  border:6px solid transparent;border-image:url('assets/textures/gui/button.png') 4 fill repeat;image-rendering:pixelated;
   padding:10px 16px;display:inline-block;text-align:center;text-decoration:none;letter-spacing:0;
 }
-.mc-btn:hover{background:linear-gradient(180deg,#93a3c8 0%,#8292b8 46%,#7484aa 54%,#66769c 100%);}
-.mc-btn:active{box-shadow:inset -2px -2px 0 #b7b7b7,inset 2px 2px 0 #3b3b3b;background:#5f5f5f;}
-.mc-btn:disabled{background:#565656;color:#a0a0a0;text-shadow:2px 2px 0 #2a2a2a;box-shadow:inset 2px 2px 0 #6a6a6a,inset -2px -2px 0 #3b3b3b;}
-.btn-green{background:linear-gradient(180deg,#6aa84a 0%,#4c8f34 46%,#3f8028 54%,#347020 100%);box-shadow:inset 2px 2px 0 #8ec87a,inset -2px -2px 0 #1f4a0e;}
+.mc-btn:hover{border-image-source:url('assets/textures/gui/button_hl.png');}
+.mc-btn:active{background:#5f5f5f;}
+.mc-btn:disabled{background:#565656;color:#a0a0a0;text-shadow:2px 2px 0 #2a2a2a;border-image-source:url('assets/textures/gui/button.png');filter:grayscale(.4) brightness(.8);}
+.btn-green{background:linear-gradient(180deg,#6aa84a 0%,#4c8f34 46%,#3f8028 54%,#347020 100%);}
 .btn-green:hover{background:linear-gradient(180deg,#7cbd5a 0%,#5aa340 46%,#4d9434 54%,#3f8428 100%);}
-.btn-blue{background:linear-gradient(180deg,#5a7fb8 0%,#4a6ca4 46%,#3f6096 54%,#35548a 100%);box-shadow:inset 2px 2px 0 #7f9fd0,inset -2px -2px 0 #1f3a60;}
+.btn-blue{background:linear-gradient(180deg,#5a7fb8 0%,#4a6ca4 46%,#3f6096 54%,#35548a 100%);}
 .btn-blue:hover{background:linear-gradient(180deg,#6a8fc8 0%,#5a7cb4 46%,#4f70a6 54%,#45649a 100%);}
-.btn-dark{background:linear-gradient(180deg,#4a4a4a 0%,#3f3f3f 46%,#373737 54%,#2f2f2f 100%);box-shadow:inset 2px 2px 0 #6a6a6a,inset -2px -2px 0 #1a1a1a;}
+.btn-dark{background:linear-gradient(180deg,#4a4a4a 0%,#3f3f3f 46%,#373737 54%,#2f2f2f 100%);}
 .btn-dark:hover{background:linear-gradient(180deg,#5a5a5a 0%,#4f4f4f 46%,#474747 54%,#3f3f3f 100%);}
 
 /* ── FIXED WIDGETS ────────────────────────────────────── */
@@ -94,12 +93,39 @@ img{image-rendering:pixelated;}
 
 /* ── HERO / TITLE SCREEN ─────────────────────────────── */
 .hero{min-height:100vh;position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 16px 170px;}
-.pano{position:absolute;inset:-4% -6%;}
-.sky{position:absolute;inset:0;background:linear-gradient(180deg,var(--sky-top) 0%,var(--sky-bot) 100%);transition:background 2.5s linear;}
+.pano{position:absolute;inset:-4% -6%;perspective:1400px;perspective-origin:50% 50%;}
+/* real 6-face Minecraft title panorama — the camera sits at the cube's
+   centre (translateZ == perspective), so the box always fills the view
+   and slowly rotating it reproduces the in-game title screen drift.
+   Every face uses the same "rotate, then translateZ out" order. */
+.cube{position:absolute;left:50%;top:50%;width:0;height:0;transform-style:preserve-3d;animation:panoSpin 240s linear infinite;}
+.cube>i{position:absolute;left:-512px;top:-512px;width:1024px;height:1024px;background-repeat:no-repeat;background-size:100% 100%;backface-visibility:hidden;}
+/* Faces point INWARD (negative translateZ) because the camera sits at the cube's
+   centre — outward-facing walls would show their backs and be culled.
+   Y-angles 0/-90/180/90 walk the ring the PNG edges proved (0→1→2→3→0), so
+   each face's right edge meets the next face's left edge with no seam. */
+.cube>i.f0{background-image:url('assets/panorama/panorama_0.png');transform:translateZ(-512px);}
+.cube>i.f1{background-image:url('assets/panorama/panorama_1.png');transform:rotateY(-90deg) translateZ(-512px);}
+.cube>i.f2{background-image:url('assets/panorama/panorama_2.png');transform:rotateY(180deg) translateZ(-512px);}
+.cube>i.f3{background-image:url('assets/panorama/panorama_3.png');transform:rotateY(90deg) translateZ(-512px);}
+.cube>i.f4{background-image:url('assets/panorama/panorama_4.png');transform:rotateX(-90deg) translateZ(-512px);}
+.cube>i.f5{background-image:url('assets/panorama/panorama_5.png');transform:rotateX(90deg) translateZ(-512px);}
+@keyframes panoSpin{
+  from{transform:translateZ(1400px) rotateY(0deg);}
+  to  {transform:translateZ(1400px) rotateY(360deg);}
+}
+/* day/night tint laid OVER the panorama (the gradient used to be the whole
+   background — now the real panorama is, and this colour-washes it so the
+   cycle still reads: light blue wash by day, deep blue-black by night). */
+.sky{position:absolute;inset:0;background:linear-gradient(180deg,var(--sky-top) 0%,var(--sky-bot) 100%);opacity:var(--sky-op,.14);transition:background 2.5s linear,opacity 2.5s linear;}
 #starsCanvas{position:absolute;inset:0;z-index:4;opacity:var(--stars);transition:opacity 2s;pointer-events:none;}
-.sun{position:absolute;left:var(--sun-x);top:var(--sun-y);width:64px;height:64px;transform:translate(-50%,-50%);opacity:var(--sun-op);z-index:5;background:#fffbe0;box-shadow:0 0 34px rgba(255,240,150,.85),0 0 80px rgba(255,230,120,.4);transition:opacity 2s;pointer-events:none;}
-.moon{position:absolute;left:var(--moon-x);top:var(--moon-y);width:56px;height:56px;transform:translate(-50%,-50%);opacity:var(--moon-op);z-index:5;transition:opacity 2s;pointer-events:none;}
-.moon img{width:100%;height:100%;}
+/* sun & moon are ADDITIVE glow sprites: opaque near-black background with a
+   bright core. The game blends them with additive blending so the dark pixels
+   contribute nothing — done here with `screen`, which makes black invisible
+   and keeps the glow. Composited normally they would read as black squares. */
+.sun{position:absolute;left:var(--sun-x);top:var(--sun-y);width:104px;height:104px;transform:translate(-50%,-50%);opacity:var(--sun-op);z-index:5;background:url('assets/textures/gui/sun.png') center/100% 100% no-repeat;image-rendering:pixelated;mix-blend-mode:screen;transition:opacity 2s;pointer-events:none;}
+.moon{position:absolute;left:var(--moon-x);top:var(--moon-y);width:80px;height:80px;transform:translate(-50%,-50%);opacity:var(--moon-op);z-index:5;transition:opacity 2s;pointer-events:none;mix-blend-mode:screen;}
+.moon img{width:100%;height:100%;image-rendering:pixelated;}
 .cloud{position:absolute;z-index:1;animation:cloudDrift linear infinite;pointer-events:none;}
 @keyframes cloudDrift{from{left:-240px}to{left:110%}}
 .cloud-body{background:#f4f6ff;box-shadow:0 8px 0 rgba(20,30,60,.18);}
@@ -125,10 +151,8 @@ body:not(.day) .cloud-body{background:#8790a6;box-shadow:0 8px 0 rgba(0,0,0,.25)
 .tree .trunk i{background-image:url('assets/textures/log_side.png');}
 .creeper{position:absolute;bottom:241px;z-index:2;animation:bob 2.2s ease-in-out infinite;}
 @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
-.cr-head{width:64px;height:64px;margin:0 auto;position:relative;background:#5aac44;border-left:3px solid #6acc50;border-top:3px solid #6acc50;border-right:3px solid #1a5a1a;border-bottom:3px solid #1a5a1a;}
-.cr-head::before{content:'';position:absolute;width:16px;height:8px;background:#000;top:16px;left:8px;box-shadow:24px 0 0 #000;}
-.cr-head::after{content:'';position:absolute;width:8px;height:8px;background:#000;top:32px;left:16px;box-shadow:8px 0 0 #000,-8px 8px 0 #000,0 8px 0 #000,8px 8px 0 #000,16px 8px 0 #000;}
-.cr-body{width:40px;height:40px;margin:0 auto;background:#4a9a3a;border-left:3px solid #5acc44;border-top:3px solid #5acc44;border-right:3px solid #1a4a1a;border-bottom:3px solid #1a4a1a;}
+.cr-head{width:64px;height:64px;margin:0 auto;position:relative;background:url('assets/textures/gui/creeper_face.png') center/100% 100% no-repeat;image-rendering:pixelated;filter:drop-shadow(3px 3px 0 rgba(0,0,0,.35));}
+.cr-body{width:40px;height:56px;margin:0 auto;background:url('assets/textures/gui/creeper_body.png') center/100% 100% no-repeat;image-rendering:pixelated;filter:drop-shadow(3px 3px 0 rgba(0,0,0,.35));}
 .campfire{position:absolute;bottom:255px;left:50%;transform:translateX(-50%);z-index:4;display:flex;flex-direction:column;align-items:center;pointer-events:none;}
 .campfire-flame{font-size:44px;line-height:1;animation:flicker 1.4s ease-in-out infinite;filter:drop-shadow(0 0 14px #f60) drop-shadow(0 0 28px #f30);margin-bottom:-6px;}
 @keyframes flicker{0%,100%{opacity:1}20%{opacity:.8}40%{opacity:1}60%{opacity:.85}}
@@ -354,9 +378,9 @@ footer{background:rgba(0,0,0,.55);border-top:3px solid #000;padding:24px 20px 40
 /* ── HUD: hearts / XP / hotbar ────────────────────────── */
 .hud{position:fixed;bottom:0;left:0;right:0;z-index:995;display:flex;flex-direction:column;align-items:center;gap:3px;pointer-events:none;padding-bottom:6px;}
 .hud-hearts{display:flex;gap:2px;}
-.hud-hearts img{width:17px;height:16px;}
-.xp-hud{width:364px;max-width:88vw;height:12px;background:#0a0a0a;border:2px solid #000;position:relative;box-shadow:inset -1px -1px 0 #3a3a3a;}
-.xp-fill{height:100%;width:0;background:#80ff20;transition:width 1.4s ease-out;}
+.hud-hearts img{width:17px;height:16px;image-rendering:pixelated;}
+.xp-hud{width:364px;max-width:88vw;height:12px;background:url('assets/textures/gui/xp_bar_bg.png') center/100% 100% no-repeat;image-rendering:pixelated;border:2px solid #000;position:relative;}
+.xp-fill{height:100%;width:0;background:url('assets/textures/gui/xp_bar_full.png') left/364px 100% no-repeat;image-rendering:pixelated;transition:width 1.4s ease-out;}
 .xp-level{position:absolute;left:50%;top:-17px;transform:translateX(-50%);font-family:'Minecraft',monospace;font-weight:700;font-size:15px;color:#80ff20;text-shadow:2px 2px 0 #000;}
 .hotbar{display:flex;gap:2px;padding:4px;background:rgba(16,16,16,.72);border:3px solid #000;box-shadow:inset 2px 2px 0 rgba(255,255,255,.28),inset -2px -2px 0 rgba(0,0,0,.55);pointer-events:auto;}
 .slot{position:relative;width:44px;height:44px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.06);border:2px solid rgba(0,0,0,.55);}
@@ -439,11 +463,12 @@ footer{background:rgba(0,0,0,.55);border-top:3px solid #000;padding:24px 20px 40
 <!-- ═══ TITLE SCREEN ═══ -->
 <div class="hero" id="top">
   <div class="pano">
+    <i class="cube"><i class="f0"></i><i class="f1"></i><i class="f2"></i><i class="f3"></i><i class="f4"></i><i class="f5"></i></i>
     <div class="sky"></div>
     <div class="night-veil"></div>
     <canvas id="starsCanvas"></canvas>
     <div class="sun"></div>
-    <div class="moon"><img src="assets/textures/moon.png" alt="Moon"></div>
+    <div class="moon"><img src="assets/textures/gui/moon.png" alt="Moon"></div>
     <div class="cloud" style="top:8%;animation-duration:95s;"><div class="cloud-body" style="width:96px;height:28px;"></div></div>
     <div class="cloud" style="top:16%;animation-duration:130s;animation-delay:-55s;"><div class="cloud-body" style="width:72px;height:24px;"></div></div>
     <div class="cloud" style="top:5%;animation-duration:110s;animation-delay:-80s;"><div class="cloud-body" style="width:128px;height:32px;"></div></div>
@@ -472,7 +497,7 @@ footer{background:rgba(0,0,0,.55);border-top:3px solid #000;padding:24px 20px 40
 
   <div class="hero-content">
     <div class="logo-wrap">
-      <canvas id="logo" width="720" height="170" aria-label="MINECRAFT"></canvas>
+      <img id="logo" src="assets/textures/gui/minecraft_logo.png" alt="MINECRAFT" width="1024" height="176">
       <div class="splash" id="splash">Rafie's Portfolio!</div>
     </div>
     <div class="menu">
@@ -529,7 +554,7 @@ footer{background:rgba(0,0,0,.55);border-top:3px solid #000;padding:24px 20px 40
 
 <!-- WORK -->
 <section id="work" class="reveal">
-  <div class="sec-header"><div class="sec-icon"><img src="assets/textures/planks.png" alt=""></div><div class="sec-title">Work Experience</div></div>
+  <div class="sec-header"><div class="sec-icon"><img src="assets/textures/book.png" alt=""></div><div class="sec-title">Work Experience</div></div>
   <div class="work-item work-current"><div class="badge badge-on">▶ CURRENT</div><div class="work-title">Article Writer</div><div class="work-co">📍 Dynamic Teen Collection · 2026 – Present</div><div class="work-desc">Writing articles and content for a teen-focused publication brand.</div></div>
   <div class="work-item work-current"><div class="badge badge-on">▶ CURRENT</div><div class="work-title">Freelancer</div><div class="work-co">📍 Self-Employed · 2023 – Present</div><div class="work-desc">Solo runs. Took on contracts, built things, survived without a guild.</div></div>
   <div class="work-item work-done"><div class="badge badge-off">COMPLETED</div><div class="work-title">Instagram Shop Manager</div><div class="work-co">📍 Various Clients · 2023 – 2025</div><div class="work-desc">Managed and operated Instagram storefronts. Shops got taken down eventually.</div></div>
@@ -560,7 +585,7 @@ footer{background:rgba(0,0,0,.55);border-top:3px solid #000;padding:24px 20px 40
 
 <!-- ═══ PROJECTS ═══ -->
 <section id="projects" class="reveal">
-  <div class="sec-header"><div class="sec-icon"><img src="assets/textures/chest.png" alt=""></div><div class="sec-title">Projects / Builds</div></div>
+  <div class="sec-header"><div class="sec-icon"><img src="assets/textures/crafting_table.png" alt=""></div><div class="sec-title">Projects / Builds</div></div>
   <div class="projects-grid">
     <div class="proj-card"><div class="proj-icon-box">💰</div><div class="proj-title" id="proj1-title">CraftEconomy</div><div class="proj-desc" id="proj1-desc">A budget tracking app for real-world money management. No magic — just maths.</div><div class="tags"><span class="tag tag-g">Python</span><span class="tag tag-b">Finance</span><span class="tag tag-t">CLI</span></div><a id="proj1-link" href="https://github.com/Rafie-kun/CraftEconomy" target="_blank" class="mc-btn btn-green" style="font-size:13px;padding:9px 14px;">View on GitHub →</a></div>
     <div class="proj-card"><div class="proj-icon-box">🌐</div><div class="proj-title" id="proj2-title">Dungeon Portfolio</div><div class="proj-desc" id="proj2-desc">This very site. Minecraft-themed personal portfolio. Pure HTML/CSS/JS.</div><div class="tags"><span class="tag tag-g">HTML</span><span class="tag tag-g">CSS</span><span class="tag tag-g">JS</span></div><a id="proj2-link" href="https://github.com/Rafie-kun/Rafie-kun.github.io" target="_blank" class="mc-btn btn-green" style="font-size:13px;padding:9px 14px;">View on GitHub →</a></div>
@@ -642,6 +667,7 @@ footer{background:rgba(0,0,0,.55);border-top:3px solid #000;padding:24px 20px 40
     </div>
     <div class="form-field"><label>SUBJECT</label><input type="text" id="fsubject" placeholder="Collaboration, hire, etc..."></div>
     <div class="form-field"><label>MESSAGE</label><textarea id="fmessage" placeholder="Write your message here..."></textarea></div>
+    <input type="text" id="fhoney" name="honeypot" autocomplete="off" tabindex="-1" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0" aria-hidden="true">
     <button class="mc-btn form-submit" id="fsubmit" onclick="sendMsg()">⚔ SEND MESSAGE</button>
     <div class="form-ok" id="formOk">✅ MESSAGE SENT!<br>I'll get back to you soon. 🔥</div>
     <div class="form-err" id="formErr">❌ SEND FAILED<br>Try emailing me directly at rafiecool249@gmail.com</div>
@@ -678,9 +704,9 @@ footer{background:rgba(0,0,0,.55);border-top:3px solid #000;padding:24px 20px 40
   <div class="xp-hud"><span class="xp-level">19</span><div class="xp-fill" id="xpFill"></div></div>
   <div class="hotbar" id="hotbar">
     <div class="slot" data-nav="#about" data-tt="About Me" data-tt-sub="Spawn point"><img src="assets/textures/grass_side.png" alt=""></div>
-    <div class="slot" data-nav="#work" data-tt="Work Experience" data-tt-sub="Quest log"><img src="assets/textures/planks.png" alt=""></div>
+    <div class="slot" data-nav="#work" data-tt="Work Experience" data-tt-sub="Quest log"><img src="assets/textures/book.png" alt=""></div>
     <div class="slot" data-nav="#skills" data-tt="Skills" data-tt-sub="Inventory"><img src="assets/textures/ore_diamond.png" alt=""></div>
-    <div class="slot" data-nav="#projects" data-tt="Projects" data-tt-sub="Chest"><img src="assets/textures/chest.png" alt=""></div>
+    <div class="slot" data-nav="#projects" data-tt="Projects" data-tt-sub="Workbench"><img src="assets/textures/crafting_table.png" alt=""></div>
     <div class="slot" data-nav="#achievements" data-tt="Achievements" data-tt-sub="Advancements"><img src="assets/textures/gold_block.png" alt=""></div>
     <div class="slot" data-nav="#github" data-tt="GitHub" data-tt-sub="Code vault"><img src="assets/textures/obsidian.png" alt=""></div>
     <div class="slot" data-nav="#contact" data-tt="Contact" data-tt-sub="Send a message"><img src="assets/textures/paper.png" alt=""></div>
@@ -777,6 +803,9 @@ function updateSky(){
   root.setProperty('--sky-top',s.top);
   root.setProperty('--sky-bot',s.bot);
   root.setProperty('--veil',String(s.veil));
+  /* how hard the sky gradient washes the panorama: barely-there by day,
+     heavy blue-black at night, warm at dawn/dusk. */
+  root.setProperty('--sky-op',String(clamp01(0.06+s.veil*1.35)));
   root.setProperty('--stars',String(s.stars));
   root.setProperty('--sun-x',sp.x+'%');root.setProperty('--sun-y',sp.y+'%');root.setProperty('--sun-op',String(sp.op));
   root.setProperty('--moon-x',mp.x+'%');root.setProperty('--moon-y',mp.y+'%');root.setProperty('--moon-op',String(mp.op));
@@ -837,42 +866,11 @@ function buildTerrain(){
   }
 }
 
-// ── TITLE LOGO (MINECRAFT, stone-filled, 3D extruded) ─
-let logoTex=new Image();
-logoTex.src='assets/textures/logo_stone.png';
-function drawLogo(){
-  const c=document.getElementById('logo');
-  if(!c||!c.getContext)return;
-  const ctx=c.getContext('2d');
-  const size=96,text='MINECRAFT';
-  ctx.font='700 '+size+'px Minecraft';
-  const w=Math.ceil(ctx.measureText(text).width)+48,h=156;
-  if(c.width!==w||c.height!==h){c.width=w;c.height=h;}
-  ctx.clearRect(0,0,w,h);
-  ctx.imageSmoothingEnabled=false;
-  ctx.font='700 '+size+'px Minecraft';
-  ctx.textBaseline='alphabetic';
-  const x=24,y=122;
-  ctx.fillStyle='#2f3438';                                   // 3D extrusion
-  for(let i=8;i>0;i--)ctx.fillText(text,x+i*1.3,y+i*1.3);
-  ctx.lineWidth=9;ctx.lineJoin='miter';ctx.strokeStyle='#000'; // black outline
-  ctx.strokeText(text,x,y);
-  let fill='#a8a8a8';                                        // stone face
-  if(logoTex.complete&&logoTex.naturalWidth){
-    const pat=ctx.createPattern(logoTex,'repeat');
-    if(pat){
-      try{if(pat.setTransform)pat.setTransform(new DOMMatrix().scale(3));}catch(e){}
-      fill=pat;
-    }
-  }
-  ctx.fillStyle=fill;
-  ctx.fillText(text,x,y);
-}
-if(document.fonts&&document.fonts.load){
-  document.fonts.load('700 96px Minecraft').then(function(){drawLogo();});
-  document.fonts.ready.then(function(){drawLogo();});
-}
-logoTex.onload=drawLogo;
+// ── TITLE LOGO ─────────────────────────────────────────
+// The title uses the real cropped vanilla logo (gui/title/minecraft.png),
+// so nothing is drawn on a canvas any more. Kept as a no-op hook so the
+// late drawLogo() call in init stays harmless.
+function drawLogo(){}
 
 // ── SPLASH TEXT ───────────────────────────────────────
 const SPLASHES=["Rafie's Portfolio!","100% vanilla HTML/CSS/JS!","Now with day/night cycle!",
@@ -892,7 +890,7 @@ document.addEventListener('click',function(e){
   const w=document.getElementById('hudHearts');
   if(w){
     let html='';
-    for(let i=0;i<10;i++)html+='<img src="assets/textures/'+(i<9?'heart_full':'heart_empty')+'.png" alt="">';
+    for(let i=0;i<10;i++)html+='<img src="assets/textures/gui/'+(i<9?'heart_full':'heart_bg')+'.png" alt="">';
     w.innerHTML=html;
   }
   setTimeout(function(){const x=document.getElementById('xpFill');if(x)x.style.width='62%';},400);
@@ -1262,20 +1260,31 @@ _updateName();
 // ════════════════════════════════════════════════════════
 // CONTACT FORM (Web3Forms)
 // ════════════════════════════════════════════════════════
+const FORM_LOAD_TIME=Date.now();
+const FORM_COOLDOWN_MS=60000;
+function isValidEmail(v){return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);}
 async function sendMsg(){
   const n=document.getElementById('fname').value.trim();
   const em=document.getElementById('femail').value.trim();
   const s=document.getElementById('fsubject').value.trim();
   const m=document.getElementById('fmessage').value.trim();
+  const honey=document.getElementById('fhoney').value.trim();
   const btn=document.getElementById('fsubmit');
   const ok=document.getElementById('formOk');const err=document.getElementById('formErr');
   ok.style.display='none';err.style.display='none';
+  /* bots fill hidden fields and submit instantly — both are free spam signals */
+  if(honey){ok.style.display='block';['fname','femail','fsubject','fmessage','fhoney'].forEach(id=>{document.getElementById(id).value='';});return;}
+  if(Date.now()-FORM_LOAD_TIME<2500){err.textContent='⚠ Please take a moment before sending.';err.style.display='block';return;}
+  const last=parseInt(localStorage.getItem('rafie_last_msg')||'0',10);
+  if(Date.now()-last<FORM_COOLDOWN_MS){err.textContent='⚠ Please wait a bit before sending another message.';err.style.display='block';return;}
   if(!n||!em||!m){err.textContent='⚠ Fill in name, email, and message.';err.style.display='block';return;}
+  if(!isValidEmail(em)){err.textContent='⚠ Enter a valid email address.';err.style.display='block';return;}
+  if(n.length>100||s.length>150||m.length>3000){err.textContent='⚠ One of the fields is too long.';err.style.display='block';return;}
   btn.disabled=true;btn.textContent='⏳ SENDING...';
   try{
-    const r=await fetch('https://api.web3forms.com/submit',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({access_key:'6415f871-a4b7-430b-ab24-db5d9dfc5111',name:n,email:em,subject:s||'Portfolio Contact',message:m})});
+    const r=await fetch('https://api.web3forms.com/submit',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({access_key:'6415f871-a4b7-430b-ab24-db5d9dfc5111',name:n,email:em,subject:s||'Portfolio Contact',message:m,botcheck:honey})});
     const d=await r.json();
-    if(d.success){ok.style.display='block';['fname','femail','fsubject','fmessage'].forEach(id=>{document.getElementById(id).value='';});}
+    if(d.success){localStorage.setItem('rafie_last_msg',String(Date.now()));ok.style.display='block';['fname','femail','fsubject','fmessage'].forEach(id=>{document.getElementById(id).value='';});}
     else{err.style.display='block';}
   }catch(ex){err.style.display='block';}
   btn.disabled=false;btn.textContent='⚔ SEND MESSAGE';
